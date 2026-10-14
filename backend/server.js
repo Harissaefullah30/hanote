@@ -42,8 +42,12 @@ mongoose.connect(process.env.MONGO_URI)
 // ============================================
 
 const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+try {
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+} catch (error) {
+    console.log('Skip bikin folder uploads (serverless):', error.message);
 }
 
 const storage = multer.diskStorage({
@@ -296,12 +300,14 @@ app.get('/', (req, res) => {
 // API ENDPOINT - GALERI (MUSEUM CINTA)
 // ============================================
 
-
-
 // Setup folder galeri di dalam uploads
 const galeriDir = path.join(__dirname, 'uploads/galeri');
-if (!fs.existsSync(galeriDir)) {
-    fs.mkdirSync(galeriDir, { recursive: true });
+try {
+    if (!fs.existsSync(galeriDir)) {
+        fs.mkdirSync(galeriDir, { recursive: true });
+    }
+} catch (error) {
+    console.log('Skip bikin folder galeri (serverless):', error.message);
 }
 
 // Konfigurasi storage untuk galeri
@@ -820,8 +826,12 @@ app.post('/api/game/balap/start', async (req, res) => {
 
 // Setup folder upload petualangan
 const petualanganDir = path.join(__dirname, 'uploads/petualangan');
-if (!fs.existsSync(petualanganDir)) {
-    fs.mkdirSync(petualanganDir, { recursive: true });
+try {
+    if (!fs.existsSync(petualanganDir)) {
+        fs.mkdirSync(petualanganDir, { recursive: true });
+    }
+} catch (error) {
+    console.log('Skip bikin folder petualangan (serverless):', error.message);
 }
 
 const petualanganStorage = multer.diskStorage({
