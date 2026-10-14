@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 Love Photobox HarisAnita - Registrasi</title>
+        <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           LOVE PHOTOBOX HARISANITA - PINK & UNGU
+           ============================================ */
+
+        body.photobox-body {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 50%, #f093fb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .photobox-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 30px 24px;
+            box-shadow: 
+                0 20px 60px rgba(240, 147, 251, 0.4),
+                inset 0 0 60px rgba(240, 147, 251, 0.05);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* TOMBOL KEMBALI */
+        .photobox-btn-back {
+            display: inline-block;
+            margin-bottom: 16px;
+            background: transparent;
+            border: 2px solid #f093fb;
+            color: #a03bb5;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 8px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .photobox-btn-back:hover {
+            background: #f093fb;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* PIGURA GANTUNG */
+        .photobox-pigura {
+            position: relative;
+            margin: 0 auto 30px;
+            max-width: 420px;
+            animation: piguraGoyang 4s ease-in-out infinite;
+            transform-origin: top center;
+        }
+
+        @keyframes piguraGoyang {
+            0%, 100% { transform: rotate(-1.5deg); }
+            50% { transform: rotate(1.5deg); }
+        }
+
+        .photobox-pigura-tali {
+            width: 2px;
+            height: 18px;
+            background: linear-gradient(180deg, #a03bb5 0%, #6b156b 100%);
+            margin: 0 auto;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .photobox-pigura-paku {
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle at 30% 30%, #f093fb, #a03bb5);
+            border-radius: 50%;
+            margin: 0 auto -5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .photobox-pigura-frame {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 6px;
+            border-radius: 12px;
+            box-shadow: 
+                0 15px 40px rgba(240, 147, 251, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .photobox-pigura-frame::before {
+            content: '';
+            position: absolute;
+            top: 3px; left: 3px; right: 3px; bottom: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 9px;
+            pointer-events: none;
+        }
+
+        .photobox-pigura-inner {
+            background: linear-gradient(135deg, #fff8fc 0%, #fce4f0 100%);
+            border-radius: 8px;
+            padding: 18px 24px;
+            text-align: center;
+            border: 2px solid rgba(240, 147, 251, 0.4);
+        }
+
+        .photobox-pigura-ornamen {
+            font-size: 14px;
+            color: #f093fb;
+            letter-spacing: 6px;
+            margin-bottom: 6px;
+        }
+
+        .photobox-pigura-judul {
+            font-size: 18px;
+            font-weight: 800;
+            color: #a03bb5;
+            letter-spacing: 3px;
+            margin-bottom: 2px;
+        }
+
+        .photobox-pigura-nama {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+            font-family: Georgia, serif;
+            margin-bottom: 6px;
+        }
+
+        .photobox-pigura-garis {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #f093fb, transparent);
+            margin: 0 auto 8px;
+        }
+
+        .photobox-pigura-quote {
+            font-size: 12px;
+            color: #c16ed4;
+            font-style: italic;
+            font-family: Georgia, serif;
+        }
+
+        /* FOTO BERDUA */
+        .photobox-foto-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .photobox-foto-frame {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 
+                0 0 0 3px #f093fb,
+                0 10px 30px rgba(240, 147, 251, 0.4);
+            transition: all 0.4s;
+        }
+
+        .photobox-foto-frame:hover {
+            transform: scale(1.05) rotate(-3deg);
+        }
+
+        .photobox-foto-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photobox-foto-label {
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.5);
+        }
+
+        /* FORM STEP */
+        .photobox-form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .photobox-step {
+            background: linear-gradient(135deg, rgba(251, 194, 235, 0.15), rgba(240, 147, 251, 0.08));
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px dashed rgba(240, 147, 251, 0.3);
+        }
+
+        .photobox-step-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #a03bb5;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .photobox-step-sub {
+            font-size: 11px;
+            color: #c16ed4;
+            font-style: italic;
+            margin-bottom: 14px;
+        }
+
+        /* GRID BINGKAI */
+        .photobox-frame-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .frame-item {
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .frame-item:hover {
+            transform: scale(1.1);
+        }
+
+        .frame-item.terpilih {
+            border-color: #a03bb5;
+            box-shadow: 0 6px 20px rgba(160, 59, 181, 0.5);
+            transform: scale(1.08);
+        }
+
+        .frame-item.terpilih::after {
+            content: '✓';
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            font-size: 14px;
+            color: white;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+
+                .photobox-layout-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+                .layout-item {
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid rgba(240, 147, 251, 0.3);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 14px 8px;
+            gap: 6px;
+            min-height: 80px;
+        }
+
+        .layout-item:hover {
+            transform: translateY(-4px);
+            border-color: #f093fb;
+        }
+
+        .layout-item.terpilih {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-color: #a03bb5;
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+        }
+
+                .layout-icon {
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+
+        .layout-nama {
+            font-size: 11px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.2;
+            color: #a03bb5;
+        }
+        /* GRID DURASI */
+        .photobox-durasi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .durasi-item {
+            padding: 14px 10px;
+            border-radius: 14px;
+            border: 3px solid rgba(240, 147, 251, 0.3);
+            background: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+            font-weight: 800;
+            color: #a03bb5;
+        }
+
+        .durasi-item:hover {
+            transform: translateY(-4px);
+            border-color: #f093fb;
+        }
+
+        .durasi-item.terpilih {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-color: #a03bb5;
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .photobox-custom-waktu {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 14px;
+            border: 2px solid rgba(240, 147, 251, 0.3);
+        }
+
+        .photobox-custom-waktu label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #a03bb5;
+            margin-bottom: 6px;
+        }
+
+        .photobox-custom-waktu input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #f093fb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .photobox-custom-waktu input:focus {
+            outline: none;
+            border-color: #a03bb5;
+            box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.2);
+        }
+
+        /* GRID JUMLAH ORANG */
+        .photobox-orang-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .orang-item {
+            padding: 14px 10px;
+            border-radius: 14px;
+            border: 3px solid rgba(240, 147, 251, 0.3);
+            background: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+            font-weight: 800;
+            color: #a03bb5;
+        }
+
+        .orang-item:hover {
+            transform: translateY(-4px);
+            border-color: #f093fb;
+        }
+
+        .orang-item.terpilih {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-color: #a03bb5;
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .photobox-custom-orang {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 14px;
+            border: 2px solid rgba(240, 147, 251, 0.3);
+        }
+
+        .photobox-custom-orang label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #a03bb5;
+            margin-bottom: 6px;
+        }
+
+        .photobox-custom-orang input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #f093fb;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .photobox-custom-orang input:focus {
+            outline: none;
+            border-color: #a03bb5;
+            box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.2);
+        }
+
+        /* GRID FILTER */
+        .photobox-filter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .filter-item {
+            padding: 14px 8px;
+            border-radius: 14px;
+            border: 3px solid rgba(240, 147, 251, 0.3);
+            background: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-item:hover {
+            transform: translateY(-4px);
+            border-color: #f093fb;
+        }
+
+        .filter-item.terpilih {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border-color: #a03bb5;
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        .filter-preview {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+        }
+
+        .filter-item[data-filter="natural"] .filter-preview { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
+        .filter-item[data-filter="vintage"] .filter-preview { background: linear-gradient(135deg, #d4a373, #bc8a5f); }
+        .filter-item[data-filter="bw"] .filter-preview { background: linear-gradient(135deg, #ccc, #666); }
+        .filter-item[data-filter="warm"] .filter-preview { background: linear-gradient(135deg, #ffb347, #ff7e5f); }
+        .filter-item[data-filter="cool"] .filter-preview { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .filter-item[data-filter="sepia"] .filter-preview { background: linear-gradient(135deg, #c9a06c, #8b6f47); }
+
+        .filter-nama {
+            font-size: 11px;
+            font-weight: 800;
+            color: inherit;
+        }
+
+        /* GRID BACKGROUND */
+        .photobox-bg-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .bg-item {
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .bg-item:hover {
+            transform: scale(1.1);
+        }
+
+        .bg-item.terpilih {
+            border-color: #a03bb5;
+            box-shadow: 0 6px 20px rgba(160, 59, 181, 0.5);
+            transform: scale(1.08);
+        }
+
+        .bg-item.terpilih::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            color: white;
+            font-weight: 800;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        /* CUSTOM FRAME */
+        .photobox-custom-frame-area {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .photobox-upload-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 20px;
+            border: 3px dashed #f093fb;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .photobox-upload-area:hover {
+            background: rgba(240, 147, 251, 0.1);
+            border-color: #a03bb5;
+        }
+
+        .photobox-upload-icon {
+            font-size: 32px;
+        }
+
+        .photobox-upload-text {
+            font-size: 13px;
+            font-weight: 800;
+            color: #a03bb5;
+        }
+
+        .photobox-warna-custom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 14px;
+            border: 2px solid rgba(240, 147, 251, 0.3);
+        }
+
+        .photobox-warna-custom label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #a03bb5;
+        }
+
+        .photobox-warna-custom input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: 2px solid #f093fb;
+            border-radius: 10px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .photobox-custom-preview {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.1));
+            border-radius: 14px;
+            border: 2px dashed #f093fb;
+        }
+
+        .photobox-custom-preview-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #a03bb5;
+            margin-bottom: 6px;
+        }
+
+        #previewFrameInfo {
+            font-size: 13px;
+            color: #6b156b;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .photobox-btn-hapus-frame {
+            margin-top: 8px;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ff9a9e, #f5576c);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* TOMBOL MULAI */
+        .photobox-btn-mulai {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.5);
+            font-family: inherit;
+        }
+
+        .photobox-btn-mulai:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.7);
+        }
+
+        .photobox-btn-mulai:active {
+            transform: scale(0.98);
+        }
+
+        /* PESAN */
+        .photobox-pesan {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #f5576c;
+            min-height: 20px;
+        }
+
+        /* FOOTER */
+        .photobox-footer {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 2px dashed rgba(240, 147, 251, 0.4);
+            font-size: 12px;
+            color: #c16ed4;
+            font-style: italic;
+        }
+
+        .photobox-footer p {
+            margin: 4px 0;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            body.photobox-body {
+                padding: 10px;
+            }
+
+            .photobox-container {
+                padding: 20px 16px;
+                border-radius: 20px;
+            }
+
+            .photobox-pigura-judul {
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
+
+            .photobox-pigura-nama {
+                font-size: 22px;
+                letter-spacing: 2px;
+            }
+
+            .photobox-foto-frame {
+                width: 110px;
+                height: 110px;
+            }
+
+            .photobox-step {
+                padding: 14px;
+            }
+
+            .photobox-step-title {
+                font-size: 13px;
+            }
+
+            .photobox-frame-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+
+            .frame-item {
+                font-size: 20px;
+            }
+
+                        .photobox-layout-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .layout-item {
+                min-height: 70px;
+                padding: 10px 6px;
+            }
+            .layout-icon {
+                font-size: 14px;
+            }
+            .layout-nama {
+                font-size: 10px;
+            }
+
+            .photobox-filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .photobox-bg-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+            }
+
+            .photobox-durasi-grid,
+            .photobox-orang-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .photobox-btn-mulai {
+                font-size: 14px;
+                padding: 16px;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body class="photobox-body">
+
+    <div id="hatiContainer"></div>
+
+    <div class="photobox-container">
+
+        <!-- TOMBOL KEMBALI -->
+        <button class="photobox-btn-back" onclick="kembaliKeLainnya()">⬅ Kembali</button>
+
+        <!-- PIGURA GANTUNG -->
+        <div class="photobox-pigura">
+            <div class="photobox-pigura-tali"></div>
+            <div class="photobox-pigura-paku"></div>
+            <div class="photobox-pigura-frame">
+                <div class="photobox-pigura-inner">
+                    <div class="photobox-pigura-ornamen">❦ ❦ ❦</div>
+                    <h1 class="photobox-pigura-judul">LOVE PHOTOBOX</h1>
+                    <h2 class="photobox-pigura-nama">HARISANITA</h2>
+                    <div class="photobox-pigura-garis"></div>
+                    <p class="photobox-pigura-quote">"Abadikan momen berdua" 💕</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOTO BERDUA -->
+        <div class="photobox-foto-section">
+            <div class="photobox-foto-frame">
+                 <img src="assets/images/foto-photobox.jpg" alt="Haris & Anita" />
+                <div class="photobox-foto-label">👫 Haris ❤️ Anita</div>
+            </div>
+        </div>
+
+        <!-- FORM REGISTRASI -->
+        <div class="photobox-form-section">
+
+            <!-- BINGKAI -->
+            <div class="photobox-step">
+                <div class="photobox-step-title">🎨 1. Pilih Bingkai (20 Pilihan)</div>
+                <div class="photobox-step-sub">Pilih bingkai favorit kalian 💕</div>
+                <div class="photobox-frame-grid" id="gridBingkai">
+                    <!-- Akan di-generate oleh JS -->
+                </div>
+            </div>
+
+            <!-- TATA LETAK -->
+            <div class="photobox-step">
+                <div class="photobox-step-title">📐 2. Pilih Tata Letak</div>
+                <div class="photobox-step-sub">Susunan foto dalam hasil akhir</div>
+                <div class="photobox-layout-grid" id="gridTataLetak">
+                    <!-- Akan di-generate oleh JS -->
+                </div>
+            </div>
+
+            <!-- DURASI -->
+            <div class="photobox-step">
+                <div class="photobox-step-title">⏱️ 3. Durasi Sesi Foto</div>
+                <div class="photobox-step-sub">Berapa lama sesi foto kalian?</div>
+                <div class="photobox-durasi-grid" id="gridDurasi">
+                    <!-- Akan di-generate oleh JS -->
+                </div>
+                <div class="photobox-custom-waktu" id="customWaktu" style="display: none;">
+                    <label>📝 Custom Waktu (menit):</label>
+                    <input type="number" id="inputCustomWaktu" placeholder="Contoh: 45" min="1" max="120" />
+                </div>
+            </div>
+
+            <!-- JUMLAH ORANG -->
+            <div class="photobox-step">
+                <div class="photobox-step-title">👥 4. Jumlah Orang</div>
+                <div class="photobox-step-sub">Berapa orang yang akan foto?</div>
+                <div class="photobox-orang-grid" id="gridJumlahOrang">
+                    <!-- Akan di-generate oleh JS -->
+                </div>
+                <div class="photobox-custom-orang" id="customOrang" style="display: none;">
+                    <label>📝 Jumlah Orang:</label>
+                    <input type="number" id="inputCustomOrang" placeholder="Contoh: 4" min="3" max="10" />
+                </div>
+            </div>
+
+            <!-- FILTER -->
+            <div class="photobox-step">
+                <div class="photobox-step-title">🎨 5. Filter Foto</div>
+                <div class="photobox-step-sub">Pilih suasana foto kalian</div>
+                <div class="photobox-filter-grid" id="gridFilter">
+                    <!-- Akan di-generate oleh JS -->
+                </div>
+            </div>
+
+            <!-- BACKGROUND -->
+            <div class="photobox-step">
+                <div class="photobox-step-title">🎨 6. Background</div>
+                <div class="photobox-step-sub">Pilih warna latar belakang</div>
+                <div class="photobox-bg-grid" id="gridBackground">
+                    <!-- Akan di-generate oleh JS -->
+                </div>
+            </div>
+
+            <!-- CUSTOM FRAME -->
+            <div class="photobox-step">
+                <div class="photobox-step-title">🖼️ 7. Custom Frame (Opsional)</div>
+                <div class="photobox-step-sub">Tambah bingkai sendiri (PNG) atau pilih warna</div>
+                <div class="photobox-custom-frame-area">
+                    <div class="photobox-upload-area" onclick="document.getElementById('uploadFrame').click()">
+                        <div class="photobox-upload-icon">📤</div>
+                        <div class="photobox-upload-text">Upload Bingkai PNG</div>
+                        <input type="file" id="uploadFrame" accept="image/png" style="display: none;" onchange="handleUploadFrame(event)" />
+                    </div>
+                    <div class="photobox-warna-custom">
+                        <label>🎨 Pilih Warna Bingkai:</label>
+                        <input type="color" id="inputWarnaFrame" value="#f093fb" />
+                    </div>
+                    <div class="photobox-custom-preview" id="customFramePreview" style="display: none;">
+                        <div class="photobox-custom-preview-label">Bingkai Custom:</div>
+                        <div id="previewFrameInfo">-</div>
+                        <button class="photobox-btn-hapus-frame" onclick="hapusCustomFrame()">❌ Hapus</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOMBOL MULAI -->
+            <button class="photobox-btn-mulai" onclick="mulaiSesiFoto()">
+                📸 MULAI SESI FOTO
+            </button>
+
+            <div class="photobox-pesan" id="pesanPhotobox"></div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="photobox-footer">
+            <p>📸 Love Photobox HarisAnita</p>
+            <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+        </div>
+
+    </div>
+
+        <script src="script.js"></script>
+    <script>
+        // ============================================
+        // LOVE PHOTOBOX HARISANITA - LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+
+        // ============================================
+        // DATA
+        // ============================================
+
+        const dataBingkai = [
+            { id: 'pink-cinta', nama: '💕 Pink Cinta', warna: '#f093fb' },
+            { id: 'sakura', nama: '🌸 Sakura', warna: '#ffb6c1' },
+            { id: 'ocean', nama: '🌊 Ocean', warna: '#4facfe' },
+            { id: 'rainbow', nama: '🌈 Rainbow', warna: '#ff6b9d' },
+            { id: 'glitter', nama: '✨ Glitter', warna: '#f5c542' },
+            { id: 'elegant-black', nama: '🖤 Elegant Black', warna: '#2d2d3a' },
+            { id: 'nature', nama: '🌿 Nature', warna: '#43e97b' },
+            { id: 'ribbon', nama: '🎀 Ribbon', warna: '#ff8ec7' },
+            { id: 'starry', nama: '⭐ Starry Night', warna: '#4a4a8a' },
+            { id: 'diamond', nama: '💎 Diamond', warna: '#a18cd1' },
+            { id: 'film', nama: '🎬 Film Strip', warna: '#1a1a2e' },
+            { id: 'vintage', nama: '📸 Vintage', warna: '#a67c52' },
+            { id: 'tropical', nama: '🌺 Tropical', warna: '#ff7e5f' },
+            { id: 'butterfly', nama: '🦋 Butterfly', warna: '#c084fc' },
+            { id: 'sunset', nama: '☀️ Sunset', warna: '#fa709a' },
+            { id: 'moonlight', nama: '🌙 Moonlight', warna: '#5b6bab' },
+            { id: 'watercolor', nama: '🎨 Watercolor', warna: '#a8e6cf' },
+            { id: 'rosegold', nama: '🌹 Rose Gold', warna: '#e8a87c' },
+            { id: 'minimalist', nama: '🍃 Minimalist', warna: '#d4edda' },
+            { id: 'custom', nama: '💝 Custom', warna: '#f093fb' }
+        ];
+
+                const dataTataLetak = [
+            { id: '1foto', nama: '1 Foto', icon: '⬛', jumlah: 1, grid: '1x1' },
+            { id: '2fotoh', nama: '2 Foto H', icon: '⬛⬛', jumlah: 2, grid: '2x1' },
+            { id: '2fotov', nama: '2 Foto V', icon: '⬛⬛', jumlah: 2, grid: '1x2' },
+            { id: '3fotov', nama: '3 Foto V', icon: '⬛⬛⬛', jumlah: 3, grid: '1x3' },
+            { id: '3fotoh', nama: '3 Foto H', icon: '⬛⬛⬛', jumlah: 3, grid: '3x1' },
+            { id: '4fotogrid', nama: '4 Foto Grid', icon: '⬛⬛⬛⬛', jumlah: 4, grid: '2x2' },
+            { id: '4fotostrip', nama: '4 Foto Strip', icon: '⬛⬛⬛⬛', jumlah: 4, grid: '4x1' },
+            { id: '6fotogrid', nama: '6 Foto Grid', icon: '⬛⬛⬛⬛⬛⬛', jumlah: 6, grid: '3x2' }
+        ];
+
+        const dataDurasi = [
+            { id: 30, nama: '30 Detik' },
+            { id: 60, nama: '1 Menit' },
+            { id: 600, nama: '10 Menit' },
+            { id: 1800, nama: '30 Menit' },
+            { id: 'custom', nama: 'Custom' }
+        ];
+
+        const dataOrang = [
+            { id: 1, nama: '1 Orang' },
+            { id: 2, nama: '2 Orang' },
+            { id: 'lebih', nama: 'Lebih dari 2' }
+        ];
+
+        const dataFilter = [
+            { id: 'natural', nama: 'Natural' },
+            { id: 'vintage', nama: 'Vintage' },
+            { id: 'bw', nama: 'B&W' },
+            { id: 'warm', nama: 'Warm' },
+            { id: 'cool', nama: 'Cool' },
+            { id: 'sepia', nama: 'Sepia' }
+        ];
+
+        const dataBackground = [
+            { id: 'putih', nama: 'Putih', warna: '#ffffff' },
+            { id: 'pink', nama: 'Pink', warna: '#fbc2eb' },
+            { id: 'biru', nama: 'Biru', warna: '#a6c1ee' },
+            { id: 'hitam', nama: 'Hitam', warna: '#1a1a2e' },
+            { id: 'rainbow', nama: 'Rainbow', warna: 'linear-gradient(135deg, #f093fb, #f5576c, #f5c542)' }
+        ];
+
+        // ============================================
+        // STATE
+        // ============================================
+
+        let tiketPhotobox = {
+            bingkai: null,
+            tataLetak: null,
+            durasi: null,
+            durasiCustom: null,
+            jumlahOrang: null,
+            jumlahOrangCustom: null,
+            filter: null,
+            background: null,
+            customFrame: null, // { tipe: 'png'|'warna', data: ... }
+            ruangan: ruangan
+        };
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+
+        function kembaliKeLainnya() {
+            window.location.href = 'lainnya.html';
+        }
+
+        // ============================================
+        // GENERATE BINGKAI
+        // ============================================
+
+        function generateBingkai() {
+            const grid = document.getElementById('gridBingkai');
+            grid.innerHTML = dataBingkai.map(b => `
+                <div class="frame-item" 
+                     data-id="${b.id}" 
+                     style="background: linear-gradient(135deg, ${b.warna}, ${b.warna}dd);"
+                     onclick="pilihBingkai('${b.id}', this)"
+                     title="${b.nama}">
+                    ${b.nama.split(' ')[0]}
+                </div>
+            `).join('');
+        }
+
+        function pilihBingkai(id, el) {
+            tiketPhotobox.bingkai = id;
+            document.querySelectorAll('#gridBingkai .frame-item').forEach(item => item.classList.remove('terpilih'));
+            el.classList.add('terpilih');
+        }
+
+        // ============================================
+        // GENERATE TATA LETAK
+        // ============================================
+
+                function generateTataLetak() {
+            const grid = document.getElementById('gridTataLetak');
+            grid.innerHTML = dataTataLetak.map(t => `
+                <div class="layout-item" 
+                     data-id="${t.id}"
+                     onclick="pilihTataLetak('${t.id}', this)">
+                    <div class="layout-icon">${t.icon}</div>
+                    <div class="layout-nama">${t.nama}</div>
+                </div>
+            `).join('');
+        }
+
+        function pilihTataLetak(id, el) {
+            tiketPhotobox.tataLetak = id;
+            document.querySelectorAll('#gridTataLetak .layout-item').forEach(item => item.classList.remove('terpilih'));
+            el.classList.add('terpilih');
+        }
+
+        // ============================================
+        // GENERATE DURASI
+        // ============================================
+
+        function generateDurasi() {
+            const grid = document.getElementById('gridDurasi');
+            grid.innerHTML = dataDurasi.map(d => `
+                <div class="durasi-item" 
+                     data-id="${d.id}"
+                     onclick="pilihDurasi('${d.id}', this)">
+                    ${d.nama}
+                </div>
+            `).join('');
+        }
+
+        function pilihDurasi(id, el) {
+            tiketPhotobox.durasi = id;
+            document.querySelectorAll('#gridDurasi .durasi-item').forEach(item => item.classList.remove('terpilih'));
+            el.classList.add('terpilih');
+            
+            const customWaktu = document.getElementById('customWaktu');
+            if (id === 'custom') {
+                customWaktu.style.display = 'block';
+            } else {
+                customWaktu.style.display = 'none';
+                tiketPhotobox.durasiCustom = null;
+            }
+        }
+
+        // ============================================
+        // GENERATE JUMLAH ORANG
+        // ============================================
+
+        function generateOrang() {
+            const grid = document.getElementById('gridJumlahOrang');
+            grid.innerHTML = dataOrang.map(o => `
+                <div class="orang-item" 
+                     data-id="${o.id}"
+                     onclick="pilihOrang('${o.id}', this)">
+                    ${o.nama}
+                </div>
+            `).join('');
+        }
+
+        function pilihOrang(id, el) {
+            tiketPhotobox.jumlahOrang = id;
+            document.querySelectorAll('#gridJumlahOrang .orang-item').forEach(item => item.classList.remove('terpilih'));
+            el.classList.add('terpilih');
+            
+            const customOrang = document.getElementById('customOrang');
+            if (id === 'lebih') {
+                customOrang.style.display = 'block';
+            } else {
+                customOrang.style.display = 'none';
+                tiketPhotobox.jumlahOrangCustom = null;
+            }
+        }
+
+        // ============================================
+        // GENERATE FILTER
+        // ============================================
+
+        function generateFilter() {
+            const grid = document.getElementById('gridFilter');
+            grid.innerHTML = dataFilter.map(f => `
+                <div class="filter-item" 
+                     data-filter="${f.id}"
+                     onclick="pilihFilter('${f.id}', this)">
+                    <div class="filter-preview"></div>
+                    <div class="filter-nama">${f.nama}</div>
+                </div>
+            `).join('');
+        }
+
+        function pilihFilter(id, el) {
+            tiketPhotobox.filter = id;
+            document.querySelectorAll('#gridFilter .filter-item').forEach(item => item.classList.remove('terpilih'));
+            el.classList.add('terpilih');
+        }
+
+        // ============================================
+        // GENERATE BACKGROUND
+        // ============================================
+
+        function generateBackground() {
+            const grid = document.getElementById('gridBackground');
+            grid.innerHTML = dataBackground.map(b => `
+                <div class="bg-item" 
+                     data-id="${b.id}"
+                     style="background: ${b.warna};"
+                     onclick="pilihBackground('${b.id}', this)"
+                     title="${b.nama}">
+                </div>
+            `).join('');
+        }
+
+        function pilihBackground(id, el) {
+            tiketPhotobox.background = id;
+            document.querySelectorAll('#gridBackground .bg-item').forEach(item => item.classList.remove('terpilih'));
+            el.classList.add('terpilih');
+        }
+
+        // ============================================
+        // CUSTOM FRAME
+        // ============================================
+
+        function handleUploadFrame(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.includes('png')) {
+                alert('⚠️ File harus format PNG!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                tiketPhotobox.customFrame = {
+                    tipe: 'png',
+                    data: e.target.result,
+                    nama: file.name
+                };
+                
+                document.getElementById('customFramePreview').style.display = 'block';
+                document.getElementById('previewFrameInfo').textContent = '📎 ' + file.name;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function hapusCustomFrame() {
+            tiketPhotobox.customFrame = null;
+            document.getElementById('customFramePreview').style.display = 'none';
+            document.getElementById('uploadFrame').value = '';
+        }
+
+        // Warna custom frame
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputWarna = document.getElementById('inputWarnaFrame');
+            if (inputWarna) {
+                inputWarna.addEventListener('change', function() {
+                    tiketPhotobox.customFrame = {
+                        tipe: 'warna',
+                        data: this.value
+                    };
+                    document.getElementById('customFramePreview').style.display = 'block';
+                    document.getElementById('previewFrameInfo').textContent = '🎨 Warna: ' + this.value;
+                });
+            }
+        });
+
+        // ============================================
+        // MULAI SESI FOTO
+        // ============================================
+
+        function mulaiSesiFoto() {
+            const pesan = document.getElementById('pesanPhotobox');
+            pesan.style.color = '#f5576c';
+
+            // Validasi
+            if (!tiketPhotobox.bingkai) {
+                pesan.textContent = '⚠️ Pilih bingkai dulu!';
+                return;
+            }
+
+            if (!tiketPhotobox.tataLetak) {
+                pesan.textContent = '⚠️ Pilih tata letak dulu!';
+                return;
+            }
+
+            if (!tiketPhotobox.durasi) {
+                pesan.textContent = '⚠️ Pilih durasi sesi!';
+                return;
+            }
+
+            if (tiketPhotobox.durasi === 'custom') {
+                const customVal = document.getElementById('inputCustomWaktu').value;
+                if (!customVal || customVal < 1) {
+                    pesan.textContent = '⚠️ Isi durasi custom (minimal 1 menit)!';
+                    return;
+                }
+                tiketPhotobox.durasiCustom = parseInt(customVal) * 60; // convert ke detik
+            }
+
+            if (!tiketPhotobox.jumlahOrang) {
+                pesan.textContent = '⚠️ Pilih jumlah orang!';
+                return;
+            }
+
+            if (tiketPhotobox.jumlahOrang === 'lebih') {
+                const customVal = document.getElementById('inputCustomOrang').value;
+                if (!customVal || customVal < 3) {
+                    pesan.textContent = '⚠️ Isi jumlah orang (minimal 3)!';
+                    return;
+                }
+                tiketPhotobox.jumlahOrangCustom = parseInt(customVal);
+            }
+
+            if (!tiketPhotobox.filter) {
+                pesan.textContent = '⚠️ Pilih filter foto!';
+                return;
+            }
+
+            if (!tiketPhotobox.background) {
+                pesan.textContent = '⚠️ Pilih background!';
+                return;
+            }
+
+            // Simpan ke localStorage
+            localStorage.setItem('tiketPhotobox', JSON.stringify(tiketPhotobox));
+
+            pesan.style.color = '#43e97b';
+            pesan.textContent = '✅ Tiket berhasil! Memasuki ruang foto... 📸';
+
+            // Redirect
+            setTimeout(() => {
+                window.location.href = 'ruang-photobox.html';
+            }, 1500);
+        }
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            const icons = ['❤️', '📸', '✨', '💕', '🌸'];
+            hati.textContent = icons[Math.floor(Math.random() * icons.length)];
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 700);
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+
+        window.addEventListener('load', function() {
+            generateBingkai();
+            generateTataLetak();
+            generateDurasi();
+            generateOrang();
+            generateFilter();
+            generateBackground();
+        });
+    </script>
+</body>
+</html>

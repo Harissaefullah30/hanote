@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Dompetaku - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           DOMPETAKU - KEUANGAN STYLE
+           ============================================ */
+
+        .keuangan-header {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-bottom: 2px dashed #f0e6f5;
+            margin-bottom: 20px;
+        }
+
+        .keuangan-header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .keuangan-header p {
+            color: #7c6b8a;
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* TOTAL CARD */
+        .total-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            padding: 24px 28px;
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .total-card .label {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .total-card .amount {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        /* KATEGORI CARD */
+        .kategori-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .kategori-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .kategori-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .kategori-card .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .kategori-card .nama {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d1b3d;
+        }
+
+        .kategori-card .jumlah {
+            font-size: 18px;
+            font-weight: 800;
+            color: #4a3f5c;
+            margin-top: 4px;
+        }
+
+        .kategori-card.haris .jumlah { color: #2e86de; }
+        .kategori-card.anita .jumlah { color: #e74c3c; }
+        .kategori-card.berdua .jumlah { color: #8e44ad; }
+
+        /* FORM */
+        .keuangan-form {
+            background: rgba(246, 240, 250, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px dashed #e8dff5;
+            margin-bottom: 24px;
+        }
+
+        .keuangan-form .form-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .keuangan-form .form-row > * {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .keuangan-form input,
+        .keuangan-form select,
+        .keuangan-form textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e8dff5;
+            border-radius: 14px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .keuangan-form input:focus,
+        .keuangan-form select:focus,
+        .keuangan-form textarea:focus {
+            outline: none;
+            border-color: #f093fb;
+            box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.12);
+        }
+
+        .keuangan-form textarea {
+            resize: vertical;
+            min-height: 40px;
+        }
+
+        .btn-simpan {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-simpan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        /* STATISTIK */
+        .statistik-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .statistik-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 18px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .statistik-card .judul {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d1b3d;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .statistik-card .detail {
+            font-size: 13px;
+            color: #4a3f5c;
+            line-height: 1.8;
+        }
+
+        .statistik-card .detail span {
+            font-weight: 600;
+        }
+
+        .statistik-card .detail .h { color: #2e86de; }
+        .statistik-card .detail .a { color: #e74c3c; }
+        .statistik-card .detail .b { color: #8e44ad; }
+
+        .statistik-card .total-hari {
+            font-size: 24px;
+            font-weight: 800;
+            color: #2d1b3d;
+            margin-top: 6px;
+        }
+
+        /* TANGGAL PICKER */
+        .tanggal-picker {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .tanggal-picker input {
+            padding: 8px 14px;
+            border: 2px solid #e8dff5;
+            border-radius: 12px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .tanggal-picker button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tanggal-picker button:hover {
+            transform: scale(1.05);
+        }
+
+        /* DAFTAR RIWAYAT */
+        .riwayat-item {
+            background: rgba(246, 240, 250, 0.4);
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-left: 4px solid #f093fb;
+        }
+
+        .riwayat-item .info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .riwayat-item .info .nama {
+            font-weight: 700;
+            color: #2d1b3d;
+            font-size: 15px;
+        }
+
+        .riwayat-item .info .meta {
+            font-size: 12px;
+            color: #7c6b8a;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .riwayat-item .jumlah {
+            font-weight: 800;
+            font-size: 16px;
+            color: #2d1b3d;
+        }
+
+        .riwayat-item .badge-pemilik {
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-haris { background: #d6eaf8; color: #1a5276; }
+        .badge-anita { background: #fadbd8; color: #7b2d26; }
+        .badge-berdua { background: #e8dff5; color: #4a3f5c; }
+
+        .riwayat-item .aksi {
+            display: flex;
+            gap: 6px;
+        }
+
+        .riwayat-item .aksi .btn {
+            font-size: 11px;
+            padding: 4px 10px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .kategori-row {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 8px;
+            }
+            .kategori-card {
+                padding: 12px;
+            }
+            .kategori-card .jumlah {
+                font-size: 14px;
+            }
+            .statistik-section {
+                grid-template-columns: 1fr;
+            }
+            .total-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .keuangan-form .form-row {
+                flex-direction: column;
+            }
+            .keuangan-form .form-row > * {
+                min-width: unset;
+            }
+            .tanggal-picker {
+                flex-direction: column;
+            }
+            .tanggal-picker input {
+                width: 100%;
+            }
+            .tanggal-picker button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMASI HATI -->
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeDashboard()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KEUANGAN HEADER -->
+            <div class="keuangan-header">
+                <h1>💰 Dompetaku</h1>
+                <p>"Kelola uang, jaga cinta" 💕</p>
+            </div>
+
+            <!-- TOTAL CARD -->
+            <div class="total-card">
+                <div>
+                    <div class="label">💵 Total Pengeluaran</div>
+                    <div class="amount">Rp <span id="totalSemua">0</span></div>
+                </div>
+                <div style="text-align:right;">
+                    <div class="label">📅 Hari Ini</div>
+                    <div class="amount" style="font-size:24px;">Rp <span id="totalHariIni">0</span></div>
+                </div>
+            </div>
+
+            <!-- KATEGORI CARD -->
+            <div class="kategori-row">
+                <div class="kategori-card haris">
+                    <span class="icon">👨</span>
+                    <div class="nama">Haris</div>
+                    <div class="jumlah">Rp <span id="totalHaris">0</span></div>
+                </div>
+                <div class="kategori-card anita">
+                    <span class="icon">👩</span>
+                    <div class="nama">Anita</div>
+                    <div class="jumlah">Rp <span id="totalAnita">0</span></div>
+                </div>
+                <div class="kategori-card berdua">
+                    <span class="icon">💑</span>
+                    <div class="nama">Berdua</div>
+                    <div class="jumlah">Rp <span id="totalBerdua">0</span></div>
+                </div>
+            </div>
+
+            <!-- FORM TAMBAH PENGELUARAN -->
+            <div class="keuangan-form">
+                <div class="form-row">
+                    <input type="text" id="inputNama" placeholder="📝 Nama pengeluaran..." />
+                    <input type="number" id="inputJumlah" placeholder="💰 Jumlah (Rp)" />
+                </div>
+                <div class="form-row">
+                    <input type="date" id="inputTanggal" />
+                    <select id="inputKategoriKeuangan">
+                        <option value="Makanan">🍔 Makanan</option>
+                        <option value="Transport">🚗 Transport</option>
+                        <option value="Belanja">🛍️ Belanja</option>
+                        <option value="Hiburan">🎬 Hiburan</option>
+                        <option value="Tagihan">📄 Tagihan</option>
+                        <option value="Lainnya">📌 Lainnya</option>
+                    </select>
+                    <select id="inputPemilikKeuangan">
+                        <option value="haris">👨 Haris</option>
+                        <option value="anita">👩 Anita</option>
+                        <option value="berdua">💑 Berdua</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <textarea id="inputDeskripsiKeuangan" placeholder="📄 Deskripsi (opsional)..." rows="2"></textarea>
+                </div>
+                <button class="btn-simpan" onclick="tambahPengeluaran()">💾 Simpan Pengeluaran</button>
+                <div id="pesanKeuangan" style="margin-top:10px;text-align:center;font-size:13px;color:#7c6b8a;"></div>
+            </div>
+
+            <!-- STATISTIK -->
+            <div class="statistik-section">
+                <!-- Statistik Hari Ini -->
+                <div class="statistik-card">
+                    <div class="judul">📅 Statistik Hari Ini</div>
+                    <div class="detail">
+                        <div>👨 Haris: <span class="h">Rp <span id="statHaris">0</span></span></div>
+                        <div>👩 Anita: <span class="a">Rp <span id="statAnita">0</span></span></div>
+                        <div>💑 Berdua: <span class="b">Rp <span id="statBerdua">0</span></span></div>
+                    </div>
+                    <div class="total-hari">Total: Rp <span id="statTotal">0</span></div>
+                </div>
+
+                <!-- Cek Tanggal Lain -->
+                <div class="statistik-card">
+                    <div class="judul">📆 Cek Tanggal Lain</div>
+                    <div class="tanggal-picker">
+                        <input type="date" id="inputCekTanggal" />
+                        <button onclick="cekTanggal()">🔍 Cek</button>
+                    </div>
+                    <div id="hasilCekTanggal" style="margin-top:12px;">
+                        <div class="detail" style="color:#b5a5c4;">Belum ada tanggal yang dipilih</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DAFTAR RIWAYAT -->
+            <div style="margin-top:10px;">
+                <h3 style="color:#2d1b3d;margin-bottom:12px;">📋 Riwayat Pengeluaran</h3>
+                <div id="daftarPengeluaran">
+                    <div class="kosong">
+                        <span>💰</span>
+                        <p>Belum ada pengeluaran</p>
+                        <p class="sub">Catat pengeluaran pertama! 💕</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+
+        // ============================================
+// FORMAT ANGKA KE RUPIAH
+// ============================================
+
+function formatRupiah(angka) {
+    return new Intl.NumberFormat('id-ID').format(angka);
+}
+        // ============================================
+        // DOMPETAKU - KEUANGAN LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+        ruanganAktif = ruangan;
+
+        let semuaPengeluaran = [];
+
+        function kembaliKeDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Ambil data pengeluaran
+        async function ambilPengeluaran() {
+            try {
+                const response = await fetch(`${API_URL}/keuangan?ruangan=${ruanganAktif}`);
+                if (!response.ok) throw new Error('Gagal mengambil data');
+                semuaPengeluaran = await response.json();
+                tampilkanPengeluaran();
+                updateStatistik();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('daftarPengeluaran').innerHTML = `
+                    <div class="kosong">
+                        <span>⚠️</span>
+                        <p>Gagal memuat data keuangan!</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Tampilkan riwayat
+        function tampilkanPengeluaran() {
+            const container = document.getElementById('daftarPengeluaran');
+            const sorted = [...semuaPengeluaran].sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+            
+            if (sorted.length === 0) {
+                container.innerHTML = `
+                    <div class="kosong">
+                        <span>💰</span>
+                        <p>Belum ada pengeluaran</p>
+                        <p class="sub">Catat pengeluaran pertama! 💕</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = sorted.map(p => {
+                const badgeClass = p.pemilik === 'haris' ? 'badge-haris' : p.pemilik === 'anita' ? 'badge-anita' : 'badge-berdua';
+                const labelPemilik = p.pemilik === 'haris' ? '👨 Haris' : p.pemilik === 'anita' ? '👩 Anita' : '💑 Berdua';
+                
+                return `
+                    <div class="riwayat-item">
+                        <div class="info">
+                            <div class="nama">${p.nama}</div>
+                            <div class="meta">
+                                <span>📅 ${p.tanggal}</span>
+                                <span>📂 ${p.kategori || 'Lainnya'}</span>
+                                <span class="badge-pemilik ${badgeClass}">${labelPemilik}</span>
+                                ${p.deskripsi ? `<span>📄 ${p.deskripsi}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="aksi">
+                            <span class="jumlah">Rp ${Number(p.jumlah).toLocaleString('id-ID')}</span>
+                            <button class="btn btn-danger btn-small" onclick="hapusPengeluaran('${p._id}')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update statistik
+        function updateStatistik() {
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Total semua
+            const totalAll = semuaPengeluaran.reduce((sum, p) => sum + Number(p.jumlah), 0);
+            document.getElementById('totalSemua').textContent = totalAll.toLocaleString('id-ID');
+            
+            // Total hari ini
+            const todayData = semuaPengeluaran.filter(p => p.tanggal === today);
+            const totalToday = todayData.reduce((sum, p) => sum + Number(p.jumlah), 0);
+            document.getElementById('totalHariIni').textContent = totalToday.toLocaleString('id-ID');
+            
+            // Total per kategori
+            const totalHaris = semuaPengeluaran.filter(p => p.pemilik === 'haris').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            const totalAnita = semuaPengeluaran.filter(p => p.pemilik === 'anita').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            const totalBerdua = semuaPengeluaran.filter(p => p.pemilik === 'berdua').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            
+            document.getElementById('totalHaris').textContent = totalHaris.toLocaleString('id-ID');
+            document.getElementById('totalAnita').textContent = totalAnita.toLocaleString('id-ID');
+            document.getElementById('totalBerdua').textContent = totalBerdua.toLocaleString('id-ID');
+            
+            // Statistik hari ini
+            const statHaris = todayData.filter(p => p.pemilik === 'haris').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            const statAnita = todayData.filter(p => p.pemilik === 'anita').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            const statBerdua = todayData.filter(p => p.pemilik === 'berdua').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            
+            document.getElementById('statHaris').textContent = statHaris.toLocaleString('id-ID');
+            document.getElementById('statAnita').textContent = statAnita.toLocaleString('id-ID');
+            document.getElementById('statBerdua').textContent = statBerdua.toLocaleString('id-ID');
+            document.getElementById('statTotal').textContent = totalToday.toLocaleString('id-ID');
+        }
+
+        // Tambah pengeluaran
+        async function tambahPengeluaran() {
+            const nama = document.getElementById('inputNama').value.trim();
+            const jumlah = document.getElementById('inputJumlah').value;
+            const tanggal = document.getElementById('inputTanggal').value;
+            const kategori = document.getElementById('inputKategoriKeuangan').value;
+            const pemilik = document.getElementById('inputPemilikKeuangan').value;
+            const deskripsi = document.getElementById('inputDeskripsiKeuangan').value.trim();
+            const pesan = document.getElementById('pesanKeuangan');
+            
+            if (!nama || !jumlah || !tanggal) {
+                pesan.style.color = '#f5576c';
+                pesan.textContent = '⚠️ Nama, jumlah, dan tanggal wajib diisi!';
+                return;
+            }
+            
+            const data = {
+                nama,
+                jumlah: Number(jumlah),
+                tanggal,
+                kategori,
+                pemilik,
+                deskripsi,
+                ruangan: ruanganAktif
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/keuangan`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) throw new Error('Gagal tambah');
+                
+                pesan.style.color = '#48bb78';
+                pesan.textContent = '✅ Pengeluaran berhasil dicatat! 💕';
+                
+                document.getElementById('inputNama').value = '';
+                document.getElementById('inputJumlah').value = '';
+                document.getElementById('inputTanggal').value = '';
+                document.getElementById('inputDeskripsiKeuangan').value = '';
+                
+                await ambilPengeluaran();
+            } catch (error) {
+                console.error('Error:', error);
+                pesan.style.color = '#f5576c';
+                pesan.textContent = '❌ Gagal menambah pengeluaran!';
+            }
+        }
+
+        // Hapus pengeluaran
+        async function hapusPengeluaran(id) {
+            if (!confirm('Yakin mau hapus pengeluaran ini? 💔')) return;
+            
+            try {
+                await fetch(`${API_URL}/keuangan/${id}`, { method: 'DELETE' });
+                await ambilPengeluaran();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal hapus pengeluaran!');
+            }
+        }
+
+        // Cek tanggal lain
+        async function cekTanggal() {
+            const tanggal = document.getElementById('inputCekTanggal').value;
+            const hasil = document.getElementById('hasilCekTanggal');
+            
+            if (!tanggal) {
+                hasil.innerHTML = `<div class="detail" style="color:#f5576c;">⚠️ Pilih tanggal dulu!</div>`;
+                return;
+            }
+            
+            const data = semuaPengeluaran.filter(p => p.tanggal === tanggal);
+            const total = data.reduce((sum, p) => sum + Number(p.jumlah), 0);
+            const haris = data.filter(p => p.pemilik === 'haris').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            const anita = data.filter(p => p.pemilik === 'anita').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            const berdua = data.filter(p => p.pemilik === 'berdua').reduce((sum, p) => sum + Number(p.jumlah), 0);
+            
+            if (data.length === 0) {
+                hasil.innerHTML = `
+                    <div class="detail" style="color:#b5a5c4;">
+                        📅 ${tanggal} <br>
+                        Tidak ada pengeluaran di tanggal ini
+                    </div>
+                `;
+                return;
+            }
+            
+            hasil.innerHTML = `
+                <div class="detail">
+                    <div style="font-weight:700;font-size:16px;color:#2d1b3d;">📅 ${tanggal}</div>
+                    <div style="font-size:20px;font-weight:800;color:#2d1b3d;margin:6px 0;">Total: Rp ${total.toLocaleString('id-ID')}</div>
+                    <div>👨 Haris: <span class="h">Rp ${haris.toLocaleString('id-ID')}</span></div>
+                    <div>👩 Anita: <span class="a">Rp ${anita.toLocaleString('id-ID')}</span></div>
+                    <div>💑 Berdua: <span class="b">Rp ${berdua.toLocaleString('id-ID')}</span></div>
+                    <div style="font-size:12px;color:#7c6b8a;margin-top:4px;">📌 ${data.length} pengeluaran</div>
+                </div>
+            `;
+        }
+
+        // Animasi hati
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+
+        // Inisialisasi
+        window.onload = function() {
+            // Set tanggal hari ini di form
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('inputTanggal').value = today;
+            document.getElementById('inputCekTanggal').value = today;
+            
+            ambilPengeluaran();
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔖 Link Saver - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           LINK SAVER - STYLE
+           ============================================ */
+
+        .link-header {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-bottom: 2px dashed #f0e6f5;
+            margin-bottom: 20px;
+        }
+
+        .link-header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .link-header p {
+            color: #7c6b8a;
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* FORM TAMBAH LINK */
+        .link-form {
+            background: rgba(246, 240, 250, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px dashed #e8dff5;
+            margin-bottom: 24px;
+        }
+
+        .link-form .form-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .link-form .form-row > * {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .link-form input,
+        .link-form select,
+        .link-form textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e8dff5;
+            border-radius: 14px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .link-form input:focus,
+        .link-form select:focus,
+        .link-form textarea:focus {
+            outline: none;
+            border-color: #f093fb;
+            box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.12);
+        }
+
+        .link-form textarea {
+            resize: vertical;
+            min-height: 40px;
+        }
+
+        .btn-simpan {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-simpan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        /* FILTER */
+        .link-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .link-filter button {
+            padding: 6px 16px;
+            border: 2px solid #e8dff5;
+            border-radius: 20px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a3f5c;
+        }
+
+        .link-filter button:hover {
+            border-color: #f093fb;
+            background: rgba(240, 147, 251, 0.08);
+        }
+
+        .link-filter button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* DAFTAR LINK */
+        .link-item {
+            background: rgba(246, 240, 250, 0.4);
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid #f093fb;
+            transition: all 0.3s;
+        }
+
+        .link-item:hover {
+            transform: translateX(6px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .link-item .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .link-item .info .judul {
+            font-weight: 700;
+            color: #2d1b3d;
+            font-size: 16px;
+        }
+
+        .link-item .info .url {
+            font-size: 12px;
+            color: #7c6b8a;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .link-item .info .meta {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .link-item .info .meta span {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge-kategori-link {
+            background: #e8dff5;
+            color: #4a3f5c;
+        }
+
+        .badge-pemilik-link {
+            background: #d6eaf8;
+            color: #1a5276;
+        }
+
+        .link-item .aksi {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .link-item .aksi .btn {
+            font-size: 11px;
+            padding: 4px 12px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .link-form .form-row {
+                flex-direction: column;
+            }
+            .link-form .form-row > * {
+                min-width: unset;
+            }
+            .link-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .link-item .aksi {
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMASI HATI -->
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeDashboard()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LINK HEADER -->
+            <div class="link-header">
+                <h1>🔖 Link Saver</h1>
+                <p>"Simpan link penting, temukan kembali dengan mudah" 💕</p>
+            </div>
+
+            <!-- FORM TAMBAH LINK -->
+            <div class="link-form">
+                <div class="form-row">
+                    <input type="text" id="inputJudulLink" placeholder="📝 Judul link (contoh: Baju Couple)" />
+                    <select id="inputKategoriLink">
+                        <option value="Belanja">🛍️ Belanja</option>
+                        <option value="Hiburan">🎬 Hiburan</option>
+                        <option value="Makanan">🍔 Makanan</option>
+                        <option value="Inspirasi">💡 Inspirasi</option>
+                        <option value="Edukasi">📚 Edukasi</option>
+                        <option value="Lainnya">📌 Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="url" id="inputUrlLink" placeholder="🔗 URL (https://...)" />
+                </div>
+                <div class="form-row">
+                    <select id="inputPemilikLink">
+                        <option value="haris">👨 Haris</option>
+                        <option value="anita">👩 Anita</option>
+                        <option value="berdua">💑 Berdua</option>
+                    </select>
+                    <textarea id="inputDeskripsiLink" placeholder="📄 Catatan (opsional)..." rows="2"></textarea>
+                </div>
+                <button class="btn-simpan" onclick="tambahLink()">💾 Simpan Link</button>
+                <div id="pesanLink" style="margin-top:10px;text-align:center;font-size:13px;color:#7c6b8a;"></div>
+            </div>
+
+            <!-- FILTER -->
+            <div class="link-filter">
+                <button class="active" onclick="filterLink('semua', this)">📋 Semua</button>
+                <button onclick="filterLink('haris', this)">👨 Haris</button>
+                <button onclick="filterLink('anita', this)">👩 Anita</button>
+                <button onclick="filterLink('berdua', this)">💑 Berdua</button>
+            </div>
+
+            <!-- DAFTAR LINK -->
+            <div id="daftarLink">
+                <div class="kosong">
+                    <span>🔖</span>
+                    <p>Belum ada link tersimpan</p>
+                    <p class="sub">Simpan link pertama! 💕</p>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // ============================================
+        // LINK SAVER - LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+        ruanganAktif = ruangan;
+
+        let semuaLink = [];
+        let filterLinkAktif = 'semua';
+
+        function kembaliKeDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Ambil data link
+        async function ambilLink() {
+            try {
+                const response = await fetch(`${API_URL}/link?ruangan=${ruanganAktif}`);
+                if (!response.ok) throw new Error('Gagal mengambil data');
+                semuaLink = await response.json();
+                tampilkanLink();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('daftarLink').innerHTML = `
+                    <div class="kosong">
+                        <span>⚠️</span>
+                        <p>Gagal memuat link!</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Tampilkan link
+        function tampilkanLink() {
+            let filtered = [...semuaLink];
+            
+            if (filterLinkAktif !== 'semua') {
+                filtered = filtered.filter(l => l.pemilik === filterLinkAktif);
+            }
+            
+            filtered.sort((a, b) => new Date(b.dibuat) - new Date(a.dibuat));
+            
+            const container = document.getElementById('daftarLink');
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="kosong">
+                        <span>🔖</span>
+                        <p>${filterLinkAktif === 'semua' ? 'Belum ada link tersimpan' : 'Tidak ada link untuk filter ini'}</p>
+                        <p class="sub">${filterLinkAktif === 'semua' ? 'Simpan link pertama! 💕' : 'Coba filter lain ya!'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filtered.map(l => {
+                const badgePemilik = l.pemilik === 'haris' ? '👨 Haris' : l.pemilik === 'anita' ? '👩 Anita' : '💑 Berdua';
+                
+                return `
+                    <div class="link-item">
+                        <div class="info">
+                            <div class="judul">${l.judul}</div>
+                            <div class="url">🔗 ${l.url}</div>
+                            <div class="meta">
+                                <span class="badge-kategori-link">📂 ${l.kategori || 'Lainnya'}</span>
+                                <span class="badge-pemilik-link">${badgePemilik}</span>
+                                ${l.deskripsi ? `<span class="badge-kategori-link">📄 ${l.deskripsi}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="aksi">
+                            <a href="${l.url}" target="_blank" class="btn btn-small btn-primary">🔗 Buka</a>
+                            <button class="btn btn-small btn-danger" onclick="hapusLink('${l._id}')">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Tambah link
+        async function tambahLink() {
+            const judul = document.getElementById('inputJudulLink').value.trim();
+            const url = document.getElementById('inputUrlLink').value.trim();
+            const kategori = document.getElementById('inputKategoriLink').value;
+            const pemilik = document.getElementById('inputPemilikLink').value;
+            const deskripsi = document.getElementById('inputDeskripsiLink').value.trim();
+            const pesan = document.getElementById('pesanLink');
+            
+            if (!judul || !url) {
+                pesan.style.color = '#f5576c';
+                pesan.textContent = '⚠️ Judul dan URL wajib diisi!';
+                return;
+            }
+            
+            const data = {
+                judul,
+                url,
+                kategori,
+                pemilik,
+                deskripsi,
+                ruangan: ruanganAktif
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/link`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) throw new Error('Gagal tambah link');
+                
+                pesan.style.color = '#48bb78';
+                pesan.textContent = '✅ Link berhasil disimpan! 💕';
+                
+                document.getElementById('inputJudulLink').value = '';
+                document.getElementById('inputUrlLink').value = '';
+                document.getElementById('inputDeskripsiLink').value = '';
+                
+                await ambilLink();
+            } catch (error) {
+                console.error('Error:', error);
+                pesan.style.color = '#f5576c';
+                pesan.textContent = '❌ Gagal menyimpan link!';
+            }
+        }
+
+        // Hapus link
+        async function hapusLink(id) {
+            if (!confirm('Yakin mau hapus link ini? 💔')) return;
+            
+            try {
+                await fetch(`${API_URL}/link/${id}`, { method: 'DELETE' });
+                await ambilLink();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal hapus link!');
+            }
+        }
+
+        // Filter
+        function filterLink(filter, element) {
+            filterLinkAktif = filter;
+            document.querySelectorAll('.link-filter button').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+            tampilkanLink();
+        }
+
+        // Animasi hati
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+
+        // Inisialisasi
+        window.onload = function() {
+            ambilLink();
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Game Zone - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .game-header {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-bottom: 2px dashed #f0e6f5;
+            margin-bottom: 20px;
+        }
+
+        .game-header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .game-header p {
+            color: #7c6b8a;
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .game-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .game-menu {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 24px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0.08;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .game-card:nth-child(1)::before { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .game-card:nth-child(2)::before { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .game-card:nth-child(3)::before { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .game-card:nth-child(4)::before { background: linear-gradient(135deg, #fa709a, #fee140); }
+
+        .game-card .game-icon,
+        .game-card .game-title,
+        .game-card .game-desc {
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: #f093fb;
+        }
+
+        .game-card:hover::before {
+            opacity: 0.15;
+        }
+
+        .game-card .game-icon {
+            font-size: 42px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .game-card .game-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #2d1b3d;
+        }
+
+        .game-card .game-desc {
+            font-size: 12px;
+            color: #7c6b8a;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeDashboard()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-header">
+                <h1>🎮 Game Zone</h1>
+                <p>"Main bareng, ketawa bareng" 💕</p>
+            </div>
+
+            <div class="game-menu">
+                <div class="game-card" onclick="window.location.href='game-suit.html'">
+                    <span class="game-icon">✊</span>
+                    <div class="game-title">Suit</div>
+                    <div class="game-desc">Gunting, Batu, Kertas</div>
+                </div>
+                <div class="game-card" onclick="window.location.href='game-cepat.html'">
+                    <span class="game-icon">⚡</span>
+                    <div class="game-title">Cepat-Cepetan</div>
+                    <div class="game-desc">Jawab soal sebelum waktu habis</div>
+                </div>
+                <div class="game-card" onclick="window.location.href='game-kata.html'">
+                    <span class="game-icon">🔤</span>
+                    <div class="game-title">Sambung Kata</div>
+                    <div class="game-desc">Sambung kata terakhir</div>
+                </div>
+                <div class="game-card" onclick="window.location.href='game-balap.html'">
+                    <span class="game-icon">🏎️</span>
+                    <div class="game-title">Balap Mobil</div>
+                    <div class="game-desc">Balapan seru berdua</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        function kembaliKeDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+    </script>
+
+</body>
+</html>

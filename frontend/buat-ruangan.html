@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Buat Ruangan - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-buat-ruangan">
+        <div class="container-buat-ruangan">
+            
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <h1>Buat Ruangan Baru</h1>
+                <p class="subtitle-buat">Isi detail ruangan baru di bawah ini</p>
+            </div>
+
+            <div class="form-buat-ruangan">
+                <label>📛 Nama Ruangan</label>
+                <input type="text" id="inputNamaRuangan" placeholder="Masukkan Nama Ruangan Yang Ingin Dibuat" />
+                
+                <label>🔒 Kata Sandi (opsional)</label>
+                <input type="password" id="inputSandiRuangan" placeholder="Kosongkan jika tidak mau" />
+                
+                <label>📝 Deskripsi Ruangan</label>
+                <textarea id="inputDeskripsiRuangan" placeholder="Contoh: Ruangan tugas kita berdua 💕" rows="3"></textarea>
+                
+                <div class="btn-group-buat">
+                    <button class="btn btn-secondary" onclick="kembaliKeIndex()">⬅ Kembali</button>
+                    <button class="btn btn-primary" onclick="simpanRuanganBaru()">✅ Buat Ruangan</button>
+                </div>
+                
+                <div id="pesanBuatRuangan" class="pesan"></div>
+            </div>
+
+            <div class="quote-cinta-buat">
+                💌 "Cinta dan ilmu, dua hal yang tak pernah cukup dipelajari"
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi kembali ke index.html
+        function kembaliKeIndex() {
+            window.location.href = 'index.html';
+        }
+
+        // Fungsi simpan ruangan
+        function simpanRuanganBaru() {
+            const nama = document.getElementById('inputNamaRuangan').value.trim();
+            const sandi = document.getElementById('inputSandiRuangan').value.trim();
+            const deskripsi = document.getElementById('inputDeskripsiRuangan').value.trim();
+            const pesan = document.getElementById('pesanBuatRuangan');
+            
+            if (!nama) {
+                pesan.className = 'pesan error';
+                pesan.textContent = '⚠️ Nama ruangan wajib diisi!';
+                return;
+            }
+            
+            if (nama.length < 4) {
+                pesan.className = 'pesan error';
+                pesan.textContent = '⚠️ Nama ruangan minimal 4 karakter!';
+                return;
+            }
+            
+            const ruanganTersimpan = localStorage.getItem('daftarRuangan');
+            const daftarRuangan = ruanganTersimpan ? JSON.parse(ruanganTersimpan) : [];
+            
+            if (daftarRuangan.includes(nama)) {
+                pesan.className = 'pesan error';
+                pesan.textContent = `❌ Ruangan "${nama}" sudah pernah dibuat!`;
+                return;
+            }
+            
+            daftarRuangan.push(nama);
+            localStorage.setItem('daftarRuangan', JSON.stringify(daftarRuangan));
+            
+            pesan.className = 'pesan success';
+            pesan.textContent = `✅ Ruangan "${nama}" berhasil dibuat! 💕`;
+            
+            // Kembali ke index setelah 1.5 detik
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        }
+
+        // Animasi hati
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+    </script>
+</body>
+</html>

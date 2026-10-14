@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Lainnya - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <!-- HEADER ATAS -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeDashboard()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- MENU LAINNYA -->
+            <div class="lainnya-menu-section">
+
+                <div class="lainnya-grid">
+                    <!-- Menu Kado -->
+                    <div class="lainnya-card" onclick="window.location.href='kado.html'">
+                        <div class="lainnya-icon">🎁</div>
+                        <div class="lainnya-nama">Kado Rahasia</div>
+                        <div class="lainnya-desc">Buka kado kejutan</div>
+                    </div>
+
+                    <!-- Menu Perpustakaan -->
+                    <div class="lainnya-card" onclick="window.location.href='perpustakaan.html'">
+                        <div class="lainnya-icon">📚</div>
+                        <div class="lainnya-nama">Perpustakaan Cinta</div>
+                        <div class="lainnya-desc">Museum kenangan kita</div>
+                    </div>
+
+                    <!-- Menu Bioskop -->
+                    <div class="lainnya-card" onclick="window.location.href='bioskop.html'">
+                        <div class="lainnya-icon">🎬</div>
+                        <div class="lainnya-nama">HarisAnita Cinema</div>
+                        <div class="lainnya-desc">Nonton bareng berdua</div>
+                    </div>
+
+                    <!-- Menu Photobox -->
+                    <div class="lainnya-card" onclick="window.location.href='photobox.html'">
+                        <div class="lainnya-icon">📸</div>
+                        <div class="lainnya-nama">Love Photobox</div>
+                        <div class="lainnya-desc">Foto studio berdua</div>
+                    </div>
+
+                    
+
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        function kembaliKeDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Animasi hati
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = Math.random() > 0.7 ? '✨' : '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 500);
+    </script>
+
+</body>
+</html>

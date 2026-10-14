@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 HarisAnita Cinema - Kasir</title>
+    
+        <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           HARISANITA CINEMA - MERAH & EMAS
+           ============================================ */
+
+        body.bioskop-body {
+            background: linear-gradient(135deg, #2d1b1b 0%, #4a1f1f 50%, #1a0e0e 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .bioskop-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #fff8e7 0%, #f5e6d3 100%);
+            border-radius: 24px;
+            padding: 30px 24px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 0 60px rgba(255, 215, 0, 0.05);
+            border: 3px solid #d4af37;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HEADER */
+        .bioskop-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .bioskop-btn-back {
+            display: inline-block;
+            margin-bottom: 14px;
+            background: transparent;
+            border: 2px solid #b8860b;
+            color: #8b0000;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 8px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .bioskop-btn-back:hover {
+            background: #8b0000;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .bioskop-header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8b0000 0%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+        }
+
+        .bioskop-header p {
+            font-size: 13px;
+            color: #b8860b;
+            font-style: italic;
+        }
+
+        /* FOTO BERDUA */
+        .bioskop-foto-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .bioskop-foto-frame {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 6px solid #d4af37;
+            box-shadow: 
+                0 0 0 3px #8b0000,
+                0 10px 30px rgba(139, 0, 0, 0.4);
+            transition: all 0.4s;
+        }
+
+        .bioskop-foto-frame:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 
+                0 0 0 3px #8b0000,
+                0 15px 40px rgba(212, 175, 55, 0.6);
+        }
+
+        .bioskop-foto-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bioskop-foto-label {
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #8b0000, #d4af37);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* FORM */
+        .bioskop-form-section {
+            margin-bottom: 20px;
+        }
+
+        .bioskop-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #8b0000;
+            text-align: center;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .bioskop-sub {
+            font-size: 12px;
+            color: #b8860b;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .bioskop-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .bioskop-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bioskop-field label {
+            font-size: 13px;
+            font-weight: 800;
+            color: #8b0000;
+            letter-spacing: 0.5px;
+        }
+
+        .bioskop-field input {
+            padding: 12px 16px;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2d1b1b;
+            transition: all 0.3s;
+        }
+
+        .bioskop-field input:focus {
+            outline: none;
+            border-color: #8b0000;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+        }
+
+        /* PILIHAN GRID */
+        .bioskop-pilihan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+
+        .bioskop-pilihan {
+            padding: 12px 14px;
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            color: #8b0000;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .bioskop-pilihan:hover {
+            background: rgba(212, 175, 55, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .bioskop-pilihan.terpilih {
+            background: linear-gradient(135deg, #8b0000 0%, #d4af37 100%);
+            color: white;
+            border-color: #8b0000;
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+            transform: scale(1.03);
+        }
+
+        /* KURSI GRID */
+        .bioskop-kursi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            padding: 14px;
+            background: linear-gradient(135deg, #8b0000 0%, #5a0000 100%);
+            border-radius: 14px;
+            border: 2px solid #d4af37;
+        }
+
+        .kursi-btn {
+            padding: 10px 4px;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff8e7;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .kursi-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            transform: scale(1.1);
+        }
+
+        .kursi-btn.terpilih {
+            background: linear-gradient(135deg, #d4af37, #f5c542);
+            color: #8b0000;
+            border-color: white;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.6);
+            transform: scale(1.1);
+        }
+
+        /* SNACK GRID */
+        .bioskop-snack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+        }
+
+        .snack-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 8px;
+            border: 2px dashed #d4af37;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .snack-item:hover {
+            background: rgba(212, 175, 55, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .snack-item.terpilih {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(212, 175, 55, 0.2));
+            border-style: solid;
+            border-color: #8b0000;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+        }
+
+        .snack-icon {
+            font-size: 28px;
+        }
+
+        .snack-nama {
+            font-size: 11px;
+            font-weight: 800;
+            color: #8b0000;
+        }
+
+        /* TOMBOL MASUK */
+        .bioskop-btn-masuk {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #8b0000 0%, #d4af37 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 24px rgba(139, 0, 0, 0.4);
+            font-family: inherit;
+            margin-top: 10px;
+        }
+
+        .bioskop-btn-masuk:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.6);
+        }
+
+        .bioskop-btn-masuk:active {
+            transform: scale(0.98);
+        }
+
+        /* PESAN */
+        .bioskop-pesan {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #f5576c;
+            min-height: 20px;
+        }
+
+        /* FOOTER */
+        .bioskop-footer {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 2px dashed #d4af37;
+            font-size: 12px;
+            color: #b8860b;
+            font-style: italic;
+        }
+
+        .bioskop-footer p {
+            margin: 4px 0;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .bioskop-container {
+                padding: 20px 16px;
+            }
+
+            .bioskop-header h1 {
+                font-size: 20px;
+                letter-spacing: 2px;
+            }
+
+            .bioskop-foto-frame {
+                width: 140px;
+                height: 140px;
+                border-width: 4px;
+            }
+
+            .bioskop-title {
+                font-size: 15px;
+            }
+
+            .bioskop-pilihan-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bioskop-kursi-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+                padding: 10px;
+            }
+
+            .kursi-btn {
+                font-size: 11px;
+                padding: 8px 2px;
+            }
+
+            .bioskop-snack-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .snack-icon {
+                font-size: 22px;
+            }
+
+            .bioskop-btn-masuk {
+                font-size: 14px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body class="bioskop-body">
+
+    <div id="hatiContainer"></div>
+
+    <div class="bioskop-container">
+
+        <!-- HEADER -->
+        <div class="bioskop-header">
+            <button class="bioskop-btn-back" onclick="kembaliKeLainnya()">⬅ Kembali</button>
+            <h1>🎬 HARISANITA CINEMA</h1>
+            <p>"Nonton bareng, makin romantis" 💕</p>
+        </div>
+
+        <!-- FOTO BERDUA -->
+        <div class="bioskop-foto-section">
+            <div class="bioskop-foto-frame">
+                <img src="assets/images/foto-berdua.jpg" alt="Haris & Anita" />
+                <div class="bioskop-foto-label">👫 Haris & Anita</div>
+            </div>
+        </div>
+
+        <!-- FORM REGISTRASI -->
+        <div class="bioskop-form-section">
+            <div class="bioskop-title">🎟️ FORM REGISTRASI TIKET</div>
+            <p class="bioskop-sub">Isi data tiket untuk nonton berdua 💕</p>
+
+            <div class="bioskop-form">
+
+                <!-- Link YouTube -->
+                <div class="bioskop-field">
+                    <label>🎬 Link YouTube</label>
+                    <input type="url" id="inputLinkYT" placeholder="https://youtube.com/watch?v=..." />
+                </div>
+
+                <!-- Judul Film -->
+                <div class="bioskop-field">
+                    <label>📝 Judul Film</label>
+                    <input type="text" id="inputJudulFilm" placeholder="Contoh: Dilan 1990" maxlength="50" />
+                </div>
+
+                <!-- Tanggal -->
+                <div class="bioskop-field">
+                    <label>📅 Tanggal Nonton</label>
+                    <input type="date" id="inputTanggal" />
+                </div>
+
+                <!-- Durasi -->
+                <div class="bioskop-field">
+                    <label>⏱️ Durasi Nonton</label>
+                    <div class="bioskop-pilihan-grid" id="pilihanDurasi">
+                        <button type="button" class="bioskop-pilihan" onclick="pilihDurasi(30, this)">30 Menit</button>
+                        <button type="button" class="bioskop-pilihan" onclick="pilihDurasi(60, this)">1 Jam</button>
+                        <button type="button" class="bioskop-pilihan" onclick="pilihDurasi(120, this)">2 Jam</button>
+                        <button type="button" class="bioskop-pilihan" onclick="pilihDurasi(0, this)">Sepuasnya</button>
+                    </div>
+                </div>
+
+                <!-- Nama Penonton -->
+                <div class="bioskop-field">
+                    <label>👤 Nama Penonton</label>
+                    <div class="bioskop-pilihan-grid" id="pilihanNama">
+                        <button type="button" class="bioskop-pilihan" onclick="pilihNama('haris', this)">👨 Haris</button>
+                        <button type="button" class="bioskop-pilihan" onclick="pilihNama('anita', this)">👩 Anita</button>
+                        <button type="button" class="bioskop-pilihan" onclick="pilihNama('berdua', this)">💑 Berdua</button>
+                    </div>
+                </div>
+
+                <!-- Jumlah Penonton -->
+                <div class="bioskop-field">
+                    <label>🎫 Jumlah Penonton</label>
+                    <div class="bioskop-pilihan-grid" id="pilihanJumlah">
+                        <button type="button" class="bioskop-pilihan" onclick="pilihJumlah(1, this)">1 Orang (Sendiri)</button>
+                        <button type="button" class="bioskop-pilihan" onclick="pilihJumlah(2, this)">2 Orang (Mabar)</button>
+                    </div>
+                </div>
+
+                <!-- Pilih Kursi -->
+                <div class="bioskop-field">
+                    <label>🪑 Pilih Kursi</label>
+                    <div class="bioskop-kursi-grid" id="pilihanKursi">
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('A1', this)">A1</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('A2', this)">A2</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('A3', this)">A3</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('A4', this)">A4</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('A5', this)">A5</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('B1', this)">B1</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('B2', this)">B2</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('B3', this)">B3</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('B4', this)">B4</button>
+                        <button type="button" class="kursi-btn" onclick="pilihKursi('B5', this)">B5</button>
+                    </div>
+                </div>
+
+                <!-- Snack -->
+                <div class="bioskop-field">
+                    <label>🍿 Snack Virtual (Pilih Banyak)</label>
+                    <div class="bioskop-snack-grid" id="pilihanSnack">
+                        <div class="snack-item" onclick="toggleSnack(this)">
+                            <span class="snack-icon">🍿</span>
+                            <span class="snack-nama">Popcorn</span>
+                        </div>
+                        <div class="snack-item" onclick="toggleSnack(this)">
+                            <span class="snack-icon">🥤</span>
+                            <span class="snack-nama">Minuman</span>
+                        </div>
+                        <div class="snack-item" onclick="toggleSnack(this)">
+                            <span class="snack-icon">🍫</span>
+                            <span class="snack-nama">Coklat</span>
+                        </div>
+                        <div class="snack-item" onclick="toggleSnack(this)">
+                            <span class="snack-icon">🍦</span>
+                            <span class="snack-nama">Es Krim</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Masuk -->
+                <button class="bioskop-btn-masuk" onclick="masukBioskop()">
+                    🎫 BELI TIKET & MASUK BIOSKOP
+                </button>
+
+                <!-- Pesan -->
+                <div class="bioskop-pesan" id="pesanBioskop"></div>
+
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="bioskop-footer">
+            <p>🎬 HarisAnita Cinema</p>
+            <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+        </div>
+
+    </div>
+
+        <script src="script.js"></script>
+    <script>
+        // ============================================
+        // HARISANITA CINEMA - KASIR LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+
+        // ============================================
+        // VARIABEL
+        // ============================================
+
+        let tiketData = {
+            linkYT: '',
+            judulFilm: '',
+            tanggal: '',
+            durasi: 0,
+            nama: '',
+            jumlah: 1,
+            kursi: [],
+            snack: []
+        };
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+
+        function kembaliKeLainnya() {
+            window.location.href = 'lainnya.html';
+        }
+
+        // ============================================
+        // PILIH DURASI
+        // ============================================
+
+        function pilihDurasi(durasi, element) {
+            tiketData.durasi = durasi;
+            document.querySelectorAll('#pilihanDurasi .bioskop-pilihan').forEach(btn => btn.classList.remove('terpilih'));
+            element.classList.add('terpilih');
+        }
+
+        // ============================================
+        // PILIH NAMA PENONTON
+        // ============================================
+
+        function pilihNama(nama, element) {
+            tiketData.nama = nama;
+            document.querySelectorAll('#pilihanNama .bioskop-pilihan').forEach(btn => btn.classList.remove('terpilih'));
+            element.classList.add('terpilih');
+        }
+
+        // ============================================
+        // PILIH JUMLAH PENONTON
+        // ============================================
+
+        function pilihJumlah(jumlah, element) {
+            tiketData.jumlah = jumlah;
+            document.querySelectorAll('#pilihanJumlah .bioskop-pilihan').forEach(btn => btn.classList.remove('terpilih'));
+            element.classList.add('terpilih');
+        }
+
+        // ============================================
+        // PILIH KURSI
+        // ============================================
+
+        function pilihKursi(kursi, element) {
+            const index = tiketData.kursi.indexOf(kursi);
+            
+            if (index === -1) {
+                // Maksimal 2 kursi
+                if (tiketData.kursi.length >= 2) {
+                    alert('⚠️ Maksimal 2 kursi!');
+                    return;
+                }
+                tiketData.kursi.push(kursi);
+                element.classList.add('terpilih');
+            } else {
+                tiketData.kursi.splice(index, 1);
+                element.classList.remove('terpilih');
+            }
+        }
+
+        // ============================================
+        // TOGGLE SNACK
+        // ============================================
+
+        function toggleSnack(element) {
+            const nama = element.querySelector('.snack-nama').textContent;
+            const index = tiketData.snack.indexOf(nama);
+            
+            if (index === -1) {
+                tiketData.snack.push(nama);
+                element.classList.add('terpilih');
+            } else {
+                tiketData.snack.splice(index, 1);
+                element.classList.remove('terpilih');
+            }
+        }
+
+        // ============================================
+        // MASUK BIOSKOP
+        // ============================================
+
+        function masukBioskop() {
+            const pesan = document.getElementById('pesanBioskop');
+            
+            // Ambil data dari form
+            tiketData.linkYT = document.getElementById('inputLinkYT').value.trim();
+            tiketData.judulFilm = document.getElementById('inputJudulFilm').value.trim();
+            tiketData.tanggal = document.getElementById('inputTanggal').value;
+            
+            // Validasi
+            if (!tiketData.linkYT) {
+                pesan.textContent = '⚠️ Link YouTube wajib diisi!';
+                return;
+            }
+            
+            // Validasi link YouTube
+            if (!tiketData.linkYT.includes('youtube.com') && !tiketData.linkYT.includes('youtu.be')) {
+                pesan.textContent = '⚠️ Link harus dari YouTube!';
+                return;
+            }
+            
+            if (!tiketData.judulFilm) {
+                pesan.textContent = '⚠️ Judul film wajib diisi!';
+                return;
+            }
+            
+            if (!tiketData.tanggal) {
+                pesan.textContent = '⚠️ Tanggal wajib diisi!';
+                return;
+            }
+            
+            if (!tiketData.durasi && tiketData.durasi !== 0) {
+                pesan.textContent = '⚠️ Pilih durasi nonton!';
+                return;
+            }
+            
+            if (!tiketData.nama) {
+                pesan.textContent = '⚠️ Pilih nama penonton!';
+                return;
+            }
+            
+            if (tiketData.kursi.length === 0) {
+                pesan.textContent = '⚠️ Pilih minimal 1 kursi!';
+                return;
+            }
+            
+            // Simpan ke localStorage
+            localStorage.setItem('tiketBioskop', JSON.stringify(tiketData));
+            
+            pesan.style.color = '#43e97b';
+            pesan.textContent = '✅ Tiket berhasil! Membuka ruang bioskop... 🎬';
+            
+            // Redirect ke halaman bioskop
+            setTimeout(() => {
+                window.location.href = 'ruang-bioskop.html';
+            }, 1500);
+        }
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            const icons = ['❤️', '🎬', '🍿', '✨', '🎟️'];
+            hati.textContent = icons[Math.floor(Math.random() * icons.length)];
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 700);
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+
+        window.addEventListener('load', function() {
+            // Set tanggal default hari ini
+            const hariIni = new Date().toISOString().split('T')[0];
+            document.getElementById('inputTanggal').value = hariIni;
+        });
+    </script>
+</body>
+</html>

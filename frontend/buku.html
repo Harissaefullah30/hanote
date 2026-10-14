@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 Buku - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           BUKU TERBUKA - KREM & COKLAT
+           ============================================ */
+
+        body.buku-body {
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 50%, #d4a373 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .buku-container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* TOMBOL KEMBALI */
+        .buku-btn-back {
+            display: inline-block;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #d4a373;
+            color: #8b5a2b;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(139, 90, 43, 0.2);
+        }
+
+        .buku-btn-back:hover {
+            background: #d4a373;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* JUDUL BUKU */
+        .buku-judul {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #8b5a2b;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        /* BUKU TERBUKA */
+        .buku-terbuka {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: linear-gradient(135deg, #fff8f0 0%, #f5e6d3 100%);
+            border-radius: 10px;
+            box-shadow: 
+                0 20px 60px rgba(139, 90, 43, 0.4),
+                inset 0 0 60px rgba(212, 163, 115, 0.1);
+            border: 6px solid #8b5a2b;
+            position: relative;
+            min-height: 480px;
+            overflow: hidden;
+        }
+
+        /* GARIS TENGAH BUKU */
+        .buku-terbuka::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                #8b5a2b 0%, 
+                #d4a373 20%, 
+                #8b5a2b 50%, 
+                #d4a373 80%, 
+                #8b5a2b 100%);
+            box-shadow: 
+                -2px 0 6px rgba(0, 0, 0, 0.2),
+                2px 0 6px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        /* HALAMAN KIRI */
+        .buku-halaman-kiri {
+            padding: 30px 28px;
+            border-right: 1px solid rgba(139, 90, 43, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* HALAMAN KANAN */
+        .buku-halaman-kanan {
+            padding: 30px 28px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* NOMOR HALAMAN */
+        .buku-halaman-num {
+            position: absolute;
+            bottom: 14px;
+            font-size: 12px;
+            color: #a67c52;
+            font-style: italic;
+            font-family: Georgia, serif;
+        }
+
+        .buku-halaman-kiri .buku-halaman-num {
+            left: 28px;
+        }
+
+        .buku-halaman-kanan .buku-halaman-num {
+            right: 28px;
+        }
+
+        /* JUDUL HALAMAN */
+        .buku-halaman-judul {
+            font-size: 14px;
+            font-weight: 800;
+            color: #8b5a2b;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-family: Georgia, serif;
+            border-bottom: 1px dashed #d4a373;
+            padding-bottom: 10px;
+        }
+
+        /* ISI BACAAN (KIRI) */
+        .buku-isi-bacaan {
+            font-size: 16px;
+            color: #6b4423;
+            line-height: 1.8;
+            text-align: center;
+            font-family: Georgia, serif;
+            font-style: italic;
+            padding: 20px 10px;
+        }
+
+        .buku-isi-bacaan .quote-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 12px;
+            color: #d4a373;
+        }
+
+        /* HALAMAN KANAN - CATATAN */
+        .buku-catatan-label {
+            font-size: 12px;
+            font-weight: 800;
+            color: #8b5a2b;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .buku-catatan-input {
+            width: 100%;
+            min-height: 280px;
+            padding: 14px;
+            border: 2px dashed #d4a373;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: Georgia, serif;
+            color: #6b4423;
+            background: rgba(255, 255, 255, 0.6);
+            resize: vertical;
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+
+        .buku-catatan-input:focus {
+            outline: none;
+            border-color: #8b5a2b;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+        }
+
+        .buku-catatan-input::placeholder {
+            color: #b59579;
+            font-style: italic;
+        }
+
+        /* STATUS SIMPAN */
+        .buku-status {
+            font-size: 12px;
+            text-align: center;
+            margin-top: 8px;
+            min-height: 18px;
+            font-weight: 700;
+            color: #43e97b;
+            font-style: italic;
+        }
+
+        /* NAVIGASI */
+        .buku-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            gap: 12px;
+        }
+
+        .buku-nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #d4a373 0%, #8b5a2b 100%);
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(139, 90, 43, 0.3);
+        }
+
+        .buku-nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 90, 43, 0.5);
+        }
+
+        .buku-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .buku-nav-info {
+            font-size: 14px;
+            font-weight: 800;
+            color: #8b5a2b;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid #d4a373;
+        }
+
+        /* TOMBOL SIMPAN */
+        .buku-btn-simpan {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+        }
+
+        .buku-btn-simpan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 233, 123, 0.5);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 700px) {
+            body.buku-body {
+                padding: 12px;
+                align-items: flex-start;
+            }
+
+            .buku-judul {
+                font-size: 18px;
+                letter-spacing: 1px;
+                margin-bottom: 14px;
+            }
+
+            .buku-terbuka {
+                grid-template-columns: 1fr;
+                min-height: auto;
+                border-width: 4px;
+            }
+
+            .buku-terbuka::before {
+                display: none;
+            }
+
+            .buku-halaman-kiri {
+                border-right: none;
+                border-bottom: 2px solid rgba(139, 90, 43, 0.2);
+                padding: 20px 18px;
+            }
+
+            .buku-halaman-kanan {
+                padding: 20px 18px;
+            }
+
+            .buku-isi-bacaan {
+                font-size: 14px;
+                padding: 10px 4px;
+            }
+
+            .buku-catatan-input {
+                min-height: 180px;
+                font-size: 13px;
+            }
+
+            .buku-nav {
+                flex-wrap: wrap;
+            }
+
+            .buku-nav-btn {
+                padding: 10px 16px;
+                font-size: 12px;
+                flex: 1;
+            }
+
+            .buku-nav-info {
+                padding: 8px 14px;
+                font-size: 12px;
+                order: -1;
+                width: 100%;
+                text-align: center;
+            }
+
+            .buku-halaman-num {
+                position: static;
+                text-align: center;
+                margin-top: 12px;
+            }
+        }
+    </style>
+</head>
+<body class="buku-body">
+
+    <div id="hatiContainer"></div>
+
+    <div class="buku-container">
+
+        <!-- TOMBOL KEMBALI -->
+        <button class="buku-btn-back" onclick="kembaliKeRuangBelajar()">⬅ Kembali ke Ruang Belajar</button>
+
+        <!-- JUDUL BUKU -->
+        <div class="buku-judul" id="bukuJudul">📖 BUKU</div>
+
+        <!-- BUKU TERBUKA -->
+        <div class="buku-terbuka">
+
+            <!-- HALAMAN KIRI (BACAAN) -->
+            <div class="buku-halaman-kiri">
+                <div class="buku-halaman-judul">📖 HALAMAN BACAAN</div>
+                <div class="buku-isi-bacaan" id="bukuIsiBacaan">
+                    <span class="quote-icon">❝</span>
+                    Memuat...
+                </div>
+                <div class="buku-halaman-num" id="nomorKiri">- 1 -</div>
+            </div>
+
+            <!-- HALAMAN KANAN (CATATAN) -->
+            <div class="buku-halaman-kanan">
+                <div class="buku-halaman-judul">✏️ CATATANMU</div>
+                <label class="buku-catatan-label">💭 Tulis di sini:</label>
+                <textarea 
+                    class="buku-catatan-input" 
+                    id="catatanInput" 
+                    placeholder="Tulis catatan, perasaan, atau pesan untuk pasangan..."
+                ></textarea>
+                <button class="buku-btn-simpan" onclick="simpanCatatan()">💾 Simpan Catatan</button>
+                <div class="buku-status" id="statusSimpan"></div>
+                <div class="buku-halaman-num" id="nomorKanan">- 2 -</div>
+            </div>
+
+        </div>
+
+        <!-- NAVIGASI -->
+        <div class="buku-nav">
+            <button class="buku-nav-btn" id="btnSebelum" onclick="halamanSebelum()">⬅️ Sebelumnya</button>
+            <div class="buku-nav-info" id="infoHalaman">📄 1 / 20</div>
+            <button class="buku-nav-btn" id="btnBerikut" onclick="halamanBerikut()">Berikutnya ➡️</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // ============================================
+        // BUKU - LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+
+        // ============================================
+        // DATA BUKU
+        // ============================================
+
+        const dataBuku = {
+            cinta: {
+                judul: '💕 BUKU CINTA',
+                warna: '#f093fb',
+                halaman: [
+                    'Cinta sejati itu sabar dan ikhlas. Tidak menuntut, tapi memberi.',
+                    'Kamu adalah alasan aku tersenyum setiap hari.',
+                    'Setiap detik bersamamu terasa berharga.',
+                    'Cinta bukan tentang memiliki, tapi tentang menjaga.',
+                    'Kamu adalah rumah untuk hatiku.',
+                    'Bersamamu, hal biasa jadi luar biasa.',
+                    'Aku mencintaimu lebih dari kemarin, kurang dari esok.',
+                    'Cinta itu sederhana. Rumit hanya karena kita.',
+                    'Jangan cari yang sempurna, cari yang mau bertahan.',
+                    'Cinta yang tulus tidak perlu diuji, cukup dijalani.',
+                    'Kamu adalah bab terbaik dalam hidupku.',
+                    'Setiap pelukanmu adalah obat dari semua lelahku.',
+                    'Aku suka caramu membuatku merasa cukup.',
+                    'Cinta bukan soal seberapa lama, tapi seberapa dalam.',
+                    'Terima kasih sudah memilihku setiap hari.',
+                    'Kamu adalah doa yang aku tidak pernah sadar aku minta.',
+                    'Bersamamu, aku belajar arti kata "rumah".',
+                    'Cinta itu bukan perasaan. Cinta itu pilihan. Dan aku memilihmu.',
+                    'Setiap hari bersamamu adalah hadiah kecil.',
+                    'Cinta kita bukan cerita pendek. Ini novel panjang tanpa akhir.'
+                ]
+            },
+            mimpi: {
+                judul: '🌟 BUKU MIMPI',
+                warna: '#4facfe',
+                halaman: [
+                    'Mimpi itu gratis. Yang mahal adalah berani mewujudkannya.',
+                    'Jangan takut bermimpi besar. Kamu punya aku di sini.',
+                    'Setiap langkah kecil adalah awal dari perjalanan besar.',
+                    'Bermimpi bersamamu terasa lebih nyata dari kenyataan.',
+                    'Kita tidak harus sempurna untuk bermimpi besar.',
+                    'Mimpi kita mungkin berbeda, tapi tujuan kita sama.',
+                    'Percaya pada proses. Hasil akan mengikuti.',
+                    'Jangan bandingkan proses kita dengan orang lain.',
+                    'Mimpi itu bukan tempat tujuan, tapi arah perjalanan.',
+                    'Bersamamu, semua mimpi terasa mungkin.',
+                    'Setiap kegagalan adalah pelajaran untuk mimpi berikutnya.',
+                    'Bermimpi bersama itu lebih menyenangkan dari bermimpi sendiri.',
+                    'Ayo raih mimpi, satu langkah setiap hari.',
+                    'Mimpi itu seperti bintang. Jauh, tapi bercahaya.',
+                    'Kamu adalah mimpi yang aku tidak pernah tahu aku punya.',
+                    'Jangan lelah bermimpi, karena mimpi yang membuat kita hidup.',
+                    'Masa depan kita dimulai dari mimpi hari ini.',
+                    'Bersama, kita bisa raih mimpi yang lebih tinggi.',
+                    'Percaya. Berusaha. Berdoa. Ulangi.',
+                    'Mimpi kita akan jadi kenyataan. Aamiin.'
+                ]
+            },
+            kenangan: {
+                judul: '📖 BUKU KENANGAN',
+                warna: '#43e97b',
+                halaman: [
+                    'Pertemuan pertama kita adalah awal cerita ini.',
+                    'Senyum pertamamu itu masih aku ingat sampai sekarang.',
+                    'Chat pertama kita berisi "hai" yang sederhana.',
+                    'Kencan pertama kita ke tempat biasa, tapi terasa spesial.',
+                    'Aku masih ingat cara kamu ketawa saat itu.',
+                    'Setiap foto kita menyimpan cerita yang berbeda.',
+                    'Kamu ingat gak, waktu kita hujan-hujanan?',
+                    'Momen paling lucu: saat kamu jatuh dari motor.',
+                    'Tanggal jadian kita adalah tanggal favoritku.',
+                    'Perjalanan pertama kita mengajarkan banyak hal.',
+                    'Kamu pernah masak untukku, dan itu enak.',
+                    'Momen paling romantis: saat kita lihat bintang.',
+                    'Setiap anniversary kita selalu punya cerita.',
+                    'Kamu selalu ingat hal-hal kecil tentangku.',
+                    'Setiap perjalanan bareng selalu jadi kenangan.',
+                    'Aku suka cara kita bertengkar, lucu dan cepat selesai.',
+                    'Kita pernah ketawa sampai nangis bareng.',
+                    'Momen paling menegangkan: saat ketemu ortu.',
+                    'Setiap kenangan adalah puzzle dari cerita kita.',
+                    'Dan cerita ini masih terus berlanjut...'
+                ]
+            },
+            lucu: {
+                judul: '😆 BUKU LUCU',
+                warna: '#f9d423',
+                halaman: [
+                    'Kenapa cinta gak pernah salah? Karena selalu ke kamu 😆',
+                    'Kamu tahu gak, kenapa aku suka kamu? Karena kamu... ya kamu.',
+                    'Jokes: Aku gak butuh kopi, aku butuh kamu. Tapi kamu gak bisa diminum.',
+                    'Kamu itu seperti WiFi. Tanpamu, aku lemah sinyal.',
+                    'Aku gak pernah bosan sama kamu. Kecuali kamu ngambek.',
+                    'Kamu itu seperti hujan. Bikin rindu, tapi bikin basah.',
+                    'Aku suka kamu lebih dari aku suka rebahan. Serius.',
+                    'Kamu tahu gak kenapa bintang di langit? Karena kamu di bumi.',
+                    'Kamu itu seperti permen. Manis, tapi bikin ketagihan.',
+                    'Aku gak butuh google. Aku butuh kamu, karena kamu segalanya.',
+                    'Kamu itu seperti gajah. Gak, gajah itu besar. Kamu... cantik.',
+                    'Kalau kamu jadi lagu, kamu lagu favoritku.',
+                    'Kamu itu seperti buku. Menarik untuk dibaca setiap hari.',
+                    'Aku suka kamu lebih dari aku suka gorengan. Jarang kan.',
+                    'Kamu itu seperti hujan pertama. Bikin hati adem.',
+                    'Aku gak butuh filter. Kamu udah sempurna.',
+                    'Kamu itu seperti mie instan. Cepat, murah, tapi bikin bahagia.',
+                    'Kalau kamu jadi bunga, kamu bunga paling wangi.',
+                    'Aku suka kamu lebih dari aku suka libur. Serius deh.',
+                    'Kamu itu seperti lagu galau. Bikin baper, tapi enak didengar.'
+                ]
+            },
+            doa: {
+                judul: '🙏 BUKU DOA',
+                warna: '#a18cd1',
+                halaman: [
+                    'Ya Tuhan, terima kasih sudah mempertemukan kami.',
+                    'Semoga cinta kami selalu dalam lindungan-Mu.',
+                    'Berkahi setiap langkah kami, ya Tuhan.',
+                    'Jadikan kami pasangan yang saling menguatkan.',
+                    'Semoga kami selalu sabar dalam menghadapi ujian.',
+                    'Berkahi rezeki kami, ya Tuhan.',
+                    'Jadikan kami pasangan yang saling mencintai karena-Mu.',
+                    'Semoga keluarga kami selalu dalam lindungan-Mu.',
+                    'Berkahi masa depan kami berdua.',
+                    'Jadikan kami orang yang selalu bersyukur.',
+                    'Semoga setiap doa kami dikabulkan.',
+                    'Berkahi kesehatan kami, ya Tuhan.',
+                    'Jadikan kami pasangan yang saling mengerti.',
+                    'Semoga kami selalu bersama, sampai akhir.',
+                    'Berkahi setiap perjalanan kami.',
+                    'Jadikan kami pasangan yang penuh cinta.',
+                    'Semoga kami selalu dalam kebaikan.',
+                    'Berkahi setiap impian kami.',
+                    'Jadikan kami pasangan yang saling mengingatkan.',
+                    'Aamiin ya Rabbal Alamin.'
+                ]
+            },
+            masadepan: {
+                judul: '🏠 BUKU MASA DEPAN',
+                warna: '#fa709a',
+                halaman: [
+                    'Rumah kecil dengan halaman hijau, ada kursi goyang.',
+                    'Pagi-pagi masak bareng, sarapan sambil ngobrol.',
+                    'Sore-sore jalan kaki di taman dekat rumah.',
+                    'Punya kucing yang kita beri nama lucu.',
+                    'Rak buku besar di ruang tamu, penuh buku favorit.',
+                    'Liburan ke pantai, lihat sunset bareng.',
+                    'Punya usaha kecil yang kita kelola bareng.',
+                    'Kumpul keluarga besar setiap lebaran.',
+                    'Nonton film setiap malam minggu, sambil ngemil.',
+                    'Punya anak yang lucu, yang kita sayang.',
+                    'Taman kecil di belakang rumah, penuh bunga.',
+                    'Kopi pagi berdua, sebelum aktivitas.',
+                    'Makan malam romantis setiap anniversary.',
+                    'Nabung bareng buat liburan ke luar negeri.',
+                    'Rumah selalu penuh tawa & kehangatan.',
+                    'Tua bareng, sambil cerita masa muda.',
+                    'Duduk di teras, lihat cucu bermain.',
+                    'Setiap hari adalah petualangan baru.',
+                    'Selalu ada cerita untuk dikenang.',
+                    'Dan yang paling penting: bersama kamu.'
+                ]
+            },
+            puisi: {
+                judul: '✍️ BUKU PUISI',
+                warna: '#ff9a56',
+                halaman: [
+                    'Kamu adalah puisi yang tak pernah selesai aku tulis.',
+                    'Dalam senyap, namamu selalu jadi doa.',
+                    'Kamu adalah rindu yang tak pernah selesai.',
+                    'Setiap detik bersamamu adalah bait terindah.',
+                    'Hatiku adalah rumah, dan kamu pintunya.',
+                    'Kamu adalah warna dalam hitam putih hidupku.',
+                    'Cinta kita bukan puisi pendek, ini epik panjang.',
+                    'Aku ingin tua bersamamu, sambil baca puisi.',
+                    'Kamu adalah lirik yang selalu aku nyanyikan.',
+                    'Setiap kata cinta, selalu berujung padamu.',
+                    'Kamu adalah bait favoritku.',
+                    'Cinta itu seperti puisi. Singkat, tapi mendalam.',
+                    'Dalam setiap helaan napas, ada namamu.',
+                    'Kamu adalah inspirasi setiap tulisanku.',
+                    'Puisi ini tidak akan cukup menggambarkan kamu.',
+                    'Kamu adalah metafora paling indah.',
+                    'Aku menulis puisi, karena kamu ada.',
+                    'Setiap rindu, adalah puisi yang belum selesai.',
+                    'Kamu adalah sajak yang tak pernah basi.',
+                    'Dan puisi ini, aku tujukan untukmu.'
+                ]
+            },
+            quotes: {
+                judul: '💬 BUKU QUOTES',
+                warna: '#38f9d7',
+                halaman: [
+                    '"Cinta bukan tentang menemukan yang sempurna, tapi tentang menerima yang tidak sempurna."',
+                    '"Kamu tidak perlu jadi sempurna untuk dicintai."',
+                    '"Cinta sejati itu bertumbuh, bukan ditemukan."',
+                    '"Setiap orang punya cerita. Cerita kita adalah favoritku."',
+                    '"Cinta bukan soal seberapa lama, tapi seberapa dalam."',
+                    '"Kebahagiaan itu sederhana. Bersamamu, sederhana itu cukup."',
+                    '"Hidup itu berat, tapi bersamamu terasa ringan."',
+                    '"Kamu adalah alasan aku percaya cinta itu ada."',
+                    '"Setiap hari adalah kesempatan untuk mencintaimu lagi."',
+                    '"Cinta itu tidak butuh kata-kata. Cukup kehadiran."',
+                    '"Kamu adalah tempat pulang favoritku."',
+                    '"Bersamamu, aku belajar arti kata cukup."',
+                    '"Cinta itu pilihan, bukan sekadar perasaan."',
+                    '"Setiap momen bersamamu adalah hadiah."',
+                    '"Kamu adalah bab favoritku dalam hidup ini."',
+                    '"Cinta bukan kompetisi. Ini kolaborasi."',
+                    '"Bersamamu, aku jadi versi terbaik diriku."',
+                    '"Kamu adalah alasan aku tetap semangat."',
+                    '"Cinta itu sabar, tidak pernah bosan."',
+                    '"Dan aku akan terus memilihmu, setiap hari."'
+                ]
+            },
+            tantangan: {
+                judul: '🎯 BUKU TANTANGAN',
+                warna: '#f5576c',
+                halaman: [
+                    '🎯 Tantangan 1: Peluk pasangan 30 detik tanpa bicara.',
+                    '🎯 Tantangan 2: Kirim voice note romantis.',
+                    '🎯 Tantangan 3: Foto selfie berdua dengan pose random.',
+                    '🎯 Tantangan 4: Tulis pesan cinta 3 baris.',
+                    '🎯 Tantangan 5: Pegang tangan pasangan 5 menit.',
+                    '🎯 Tantangan 6: Belikan minuman favorit pasangan.',
+                    '🎯 Tantangan 7: Ceritakan 3 hal yang kamu suka dari pasangan.',
+                    '🎯 Tantangan 8: Masak bareng sesuatu yang simple.',
+                    '🎯 Tantangan 9: Nonton film romantis bareng.',
+                    '🎯 Tantangan 10: Jalan-jalan ke tempat favorit pasangan.',
+                    '🎯 Tantangan 11: Buat playlist lagu untuk pasangan.',
+                    '🎯 Tantangan 12: Tulis puisi pendek untuk pasangan.',
+                    '🎯 Tantangan 13: Telepon pasangan hanya untuk bilang "aku sayang kamu".',
+                    '🎯 Tantangan 14: Kirim foto kenangan lama ke pasangan.',
+                    '🎯 Tantangan 15: Tanyakan "apa yang bisa aku lakukan untukmu hari ini?"',
+                    '🎯 Tantangan 16: Buat kejutan kecil (kado, surat, dll).',
+                    '🎯 Tantangan 17: Habiskan waktu tanpa HP selama 1 jam.',
+                    '🎯 Tantangan 18: Ceritakan momen favorit bersamamu.',
+                    '🎯 Tantangan 19: Buat bucket list berdua.',
+                    '🎯 Tantangan 20: Ucapkan terima kasih untuk hal-hal kecil.'
+                ]
+            },
+            rahasia: {
+                judul: '🔒 BUKU RAHASIA',
+                warna: '#c084fc',
+                halaman: [
+                    '🔒 "Aku suka cara kamu menatapku saat aku tidak lihat."',
+                    '🔒 "Kamu adalah hal pertama yang aku pikirkan saat bangun."',
+                    '🔒 "Aku diam-diam suka saat kamu ngambek, karena lucu."',
+                    '🔒 "Aku menyimpan semua chat kita."',
+                    '🔒 "Kamu adalah alasan aku suka lagu romantis."',
+                    '🔒 "Aku sering lihat foto kamu diam-diam."',
+                    '🔒 "Kamu membuatku percaya cinta pada pandangan pertama."',
+                    '🔒 "Setiap kali kamu ketawa, hatiku meleleh."',
+                    '🔒 "Aku suka cara kamu peduli pada hal-hal kecil."',
+                    '🔒 "Aku sering berkhayal tentang masa depan kita."',
+                    '🔒 "Kamu adalah orang pertama yang aku ceritakan semuanya."',
+                    '🔒 "Aku suka saat kamu peluk aku tanpa alasan."',
+                    '🔒 "Aku menyimpan kenangan pertama kita baik-baik."',
+                    '🔒 "Kamu adalah satu-satunya orang yang bisa bikin aku baper."',
+                    '🔒 "Aku ingin jadi orang pertama yang kamu cari saat sedih."',
+                    '🔒 "Kamu adalah hadiah terbaik yang pernah aku terima."',
+                    '🔒 "Aku suka cara kamu menyebut namaku."',
+                    '🔒 "Aku berharap kita selalu bersama."',
+                    '🔒 "Kamu adalah cinta pertama dan terakhirku."',
+                    '🔒 "Aku akan selalu mencintaimu, selamanya."'
+                ]
+            }
+        };
+
+        // ============================================
+        // VARIABEL
+        // ============================================
+
+        let jenisBuku = 'cinta';
+        let halamanSekarang = 0;
+        let dataBukuAktif = null;
+        let totalHalaman = 20;
+
+        // ============================================
+        // AMBIL JENIS BUKU DARI URL
+        // ============================================
+
+        function ambilJenisBuku() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const jenis = urlParams.get('jenis');
+            if (jenis && dataBuku[jenis]) {
+                jenisBuku = jenis;
+            }
+            dataBukuAktif = dataBuku[jenisBuku];
+            totalHalaman = dataBukuAktif.halaman.length;
+        }
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+
+        function kembaliKeRuangBelajar() {
+            window.location.href = 'ruang-belajar.html';
+        }
+
+        function halamanSebelum() {
+            if (halamanSekarang > 0) {
+                halamanSekarang--;
+                tampilkanHalaman();
+            }
+        }
+
+        function halamanBerikut() {
+            if (halamanSekarang < totalHalaman - 1) {
+                halamanSekarang++;
+                tampilkanHalaman();
+            }
+        }
+
+        // ============================================
+        // TAMPILKAN HALAMAN
+        // ============================================
+
+        function tampilkanHalaman() {
+            // Update judul
+            document.getElementById('bukuJudul').textContent = dataBukuAktif.judul;
+
+            // Update isi bacaan
+            const isi = dataBukuAktif.halaman[halamanSekarang];
+            document.getElementById('bukuIsiBacaan').innerHTML = 
+                '<span class="quote-icon">❝</span>' + isi;
+
+            // Update nomor halaman
+            document.getElementById('nomorKiri').textContent = '- ' + (halamanSekarang * 2 + 1) + ' -';
+            document.getElementById('nomorKanan').textContent = '- ' + (halamanSekarang * 2 + 2) + ' -';
+
+            // Update info halaman
+            document.getElementById('infoHalaman').textContent = 
+                '📄 ' + (halamanSekarang + 1) + ' / ' + totalHalaman;
+
+            // Update tombol
+            document.getElementById('btnSebelum').disabled = (halamanSekarang === 0);
+            document.getElementById('btnBerikut').disabled = (halamanSekarang === totalHalaman - 1);
+
+            // Load catatan
+            loadCatatan();
+        }
+
+        // ============================================
+        // CATATAN
+        // ============================================
+
+        function getKeyCatatan() {
+            return 'catatanBuku_' + jenisBuku + '_hal' + halamanSekarang;
+        }
+
+        function loadCatatan() {
+            const catatan = localStorage.getItem(getKeyCatatan()) || '';
+            document.getElementById('catatanInput').value = catatan;
+            document.getElementById('statusSimpan').textContent = '';
+        }
+
+        function simpanCatatan() {
+            const catatan = document.getElementById('catatanInput').value;
+            localStorage.setItem(getKeyCatatan(), catatan);
+            
+            const status = document.getElementById('statusSimpan');
+            status.textContent = '✅ Catatan tersimpan!';
+            
+            setTimeout(() => {
+                status.textContent = '';
+            }, 2000);
+        }
+
+        // Auto-save saat menulis (setiap 1 detik)
+        let autoSaveTimer = null;
+        document.getElementById('catatanInput').addEventListener('input', function() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                localStorage.setItem(getKeyCatatan(), this.value);
+            }, 1000);
+        });
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            const icons = ['❤️', '📖', '✨', '💌'];
+            hati.textContent = icons[Math.floor(Math.random() * icons.length)];
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 700);
+
+        // ============================================
+        // KEYBOARD NAVIGASI
+        // ============================================
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') halamanSebelum();
+            if (e.key === 'ArrowRight') halamanBerikut();
+        });
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+
+        window.addEventListener('load', function() {
+            ambilJenisBuku();
+            tampilkanHalaman();
+        });
+    </script>
+
+</body>
+</html>

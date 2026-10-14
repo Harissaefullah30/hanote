@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Cepat-Cepetan - Hanote Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .game-header { text-align: center; padding: 20px 0 10px; border-bottom: 2px dashed #f0e6f5; margin-bottom: 20px; }
+        .game-header h1 { font-size: 32px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; letter-spacing: 2px; }
+        .game-header p { color: #7c6b8a; font-style: italic; font-size: 14px; margin-top: 4px; }
+        .kesulitan-pilihan, .durasi-pilihan { display: flex; gap: 12px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+        .kesulitan-pilihan button, .durasi-pilihan button { padding: 10px 24px; border-radius: 14px; border: 2px solid #e8dff5; background: rgba(255, 255, 255, 0.8); font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.3s; color: #4a3f5c; }
+        .kesulitan-pilihan button.active, .durasi-pilihan button.active { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-color: transparent; }
+        .label-pilihan { text-align: center; font-size: 13px; color: #7c6b8a; font-weight: 600; margin-bottom: 8px; }
+        .game-area { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-radius: 24px; padding: 30px 24px; border: 2px solid rgba(255, 255, 255, 0.4); text-align: center; }
+        .waktu-total { font-size: 18px; font-weight: 800; color: #2d1b3d; padding: 12px; background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.15)); border-radius: 14px; margin-bottom: 15px; text-align: center; }
+        .waktu-total.merah { background: rgba(245, 87, 108, 0.2); color: #742a2a; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        .skor-area { display: flex; justify-content: space-around; margin-bottom: 20px; padding: 16px; background: rgba(246, 240, 250, 0.5); border-radius: 16px; }
+        .skor-item { text-align: center; }
+        .skor-item .label { font-size: 13px; color: #7c6b8a; font-weight: 600; }
+        .skor-item .nilai { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .soal-box { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; border-radius: 20px; margin-bottom: 20px; font-size: 28px; font-weight: 800; min-height: 100px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(240, 147, 251, 0.3); }
+        .jawaban-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .jawaban-btn { padding: 20px; border-radius: 16px; border: 3px solid #e8dff5; background: rgba(255, 255, 255, 0.8); font-size: 22px; font-weight: 800; cursor: pointer; transition: all 0.3s; color: #4a3f5c; }
+        .jawaban-btn:hover { border-color: #f093fb; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3); }
+        .jawaban-btn:active { transform: scale(0.95); }
+        .jawaban-btn.benar { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; border-color: transparent; }
+        .jawaban-btn.salah { background: linear-gradient(135deg, #ff9a9e 0%, #f5576c 100%); color: white; border-color: transparent; }
+        .timer-bar { width: 100%; height: 16px; background: rgba(232, 223, 245, 0.5); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .timer-fill { height: 100%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); transition: width 1s linear; border-radius: 10px; }
+        .timer-text { font-size: 14px; color: #7c6b8a; font-weight: 600; margin-bottom: 8px; }
+        .status-game { font-size: 18px; font-weight: 700; color: #2d1b3d; padding: 12px; background: rgba(240, 147, 251, 0.1); border-radius: 14px; margin-bottom: 20px; min-height: 50px; display: flex; align-items: center; justify-content: center; }
+        .btn-mulai { padding: 14px 36px; border: none; border-radius: 16px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin: 10px 5px; }
+        .btn-mulai:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240, 147, 251, 0.4); }
+        .info-tantangan { text-align: center; font-size: 15px; color: #7c6b8a; font-weight: 600; margin-bottom: 20px; }
+        .modal-hasil { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        .modal-hasil.show { display: flex; }
+        .modal-content { background: white; border-radius: 24px; padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-content h2 { font-size: 28px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; margin-bottom: 20px; }
+        .modal-stat { font-size: 18px; color: #2d1b3d; margin-bottom: 10px; font-weight: 600; }
+        .modal-stat span { font-weight: 800; color: #f5576c; }
+        .modal-skor { font-size: 42px; font-weight: 800; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 15px 0; }
+        @media (max-width: 600px) {
+            .game-header h1 { font-size: 24px; }
+            .soal-box { font-size: 22px; padding: 20px; }
+            .jawaban-btn { padding: 16px; font-size: 18px; }
+            .skor-item .nilai { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeGames()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-header">
+                <h1>⚡ Cepat-Cepetan</h1>
+                <p>"Jawab secepat mungkin sebelum waktu habis!" 💕</p>
+            </div>
+
+            <div class="info-tantangan">
+                🎯 Tantang dirimu sendiri! Kumpulkan poin sebanyak mungkin!
+            </div>
+
+            <div class="label-pilihan">🎯 Pilih Tingkat Kesulitan:</div>
+            <div class="kesulitan-pilihan" id="kesulitanArea">
+                <button class="active" onclick="pilihKesulitan('mudah', this)">🟢 Mudah</button>
+                <button onclick="pilihKesulitan('sedang', this)">🟡 Sedang</button>
+                <button onclick="pilihKesulitan('sulit', this)">🔴 Sulit</button>
+            </div>
+
+            <div class="label-pilihan">⏱️ Pilih Durasi Permainan:</div>
+            <div class="durasi-pilihan" id="durasiArea">
+                <button onclick="pilihDurasi(30, this)">30 detik</button>
+                <button class="active" onclick="pilihDurasi(60, this)">60 detik</button>
+                <button onclick="pilihDurasi(90, this)">90 detik</button>
+                <button onclick="pilihDurasi(120, this)">120 detik</button>
+            </div>
+
+            <div class="game-area">
+
+                <div class="waktu-total" id="waktuTotal">⏱️ Waktu Permainan: 60 detik</div>
+
+                <div class="skor-area">
+                    <div class="skor-item">
+                        <div class="label">✅ Benar</div>
+                        <div class="nilai" id="skorBenar">0</div>
+                    </div>
+                    <div class="skor-item">
+                        <div class="label">❌ Salah</div>
+                        <div class="nilai" id="skorSalah">0</div>
+                    </div>
+                    <div class="skor-item">
+                        <div class="label">🎯 Skor</div>
+                        <div class="nilai" id="skorTotal">0</div>
+                    </div>
+                </div>
+
+                <div class="timer-text" id="timerText">⏱️ Waktu soal: 10 detik</div>
+                <div class="timer-bar">
+                    <div class="timer-fill" id="timerFill" style="width: 100%;"></div>
+                </div>
+
+                <div class="soal-box" id="soalBox">
+                    Klik "Mulai" untuk bermain!
+                </div>
+
+                <div class="jawaban-buttons" id="jawabanButtons">
+                    <button class="jawaban-btn" onclick="jawab(0)" id="btn0">-</button>
+                    <button class="jawaban-btn" onclick="jawab(1)" id="btn1">-</button>
+                    <button class="jawaban-btn" onclick="jawab(2)" id="btn2">-</button>
+                    <button class="jawaban-btn" onclick="jawab(3)" id="btn3">-</button>
+                </div>
+
+                <div class="status-game" id="statusGame">Tekan Mulai untuk memulai permainan!</div>
+
+                <button class="btn-mulai" onclick="mulaiGame()">🎮 MULAI</button>
+                <button class="btn-mulai" onclick="resetGame()" style="background: #e8dff5; color: #4a3f5c;">🔄 Reset</button>
+
+            </div>
+
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-hasil" id="modalHasil">
+        <div class="modal-content">
+            <h2>🏁 Permainan Selesai!</h2>
+            <div class="modal-stat">✅ Benar: <span id="hasilBenar">0</span></div>
+            <div class="modal-stat">❌ Salah: <span id="hasilSalah">0</span></div>
+            <div class="modal-skor">🎯 Skor Akhir: <span id="hasilSkor">0</span></div>
+            <div class="modal-stat">🏆 Highscore: <span id="hasilHighscore">0</span></div>
+            <button class="btn-mulai" onclick="tutupModalHasil()" style="margin-top: 20px;">✅ OK</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // GAME CEPAT-CEPETAN - LOGIC (1 PEMAIN)
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        let kesulitanAktif = 'mudah';
+        let durasiTotal = 60;
+        let skor = { benar: 0, salah: 0, total: 0 };
+        let soalAktif = null;
+        let timerSoal = null;
+        let timerTotal = null;
+        let waktuSoalTersisa = 10;
+        let waktuTotalTersisa = 60;
+        let sedangMain = false;
+        let soalTerakhir = -1;
+
+        const soalMudah = [
+            { soal: '5 + 3 = ?', jawaban: [7, 8, 9, 6], benar: 1 },
+            { soal: '10 - 4 = ?', jawaban: [5, 6, 7, 8], benar: 1 },
+            { soal: '2 × 3 = ?', jawaban: [5, 6, 7, 8], benar: 1 },
+            { soal: '12 + 8 = ?', jawaban: [18, 20, 22, 19], benar: 1 },
+            { soal: '15 - 7 = ?', jawaban: [7, 8, 9, 6], benar: 1 },
+            { soal: '4 × 5 = ?', jawaban: [18, 20, 22, 24], benar: 1 },
+            { soal: '20 + 15 = ?', jawaban: [30, 35, 40, 33], benar: 1 },
+            { soal: '50 - 25 = ?', jawaban: [20, 25, 30, 15], benar: 1 },
+            { soal: '6 × 6 = ?', jawaban: [30, 36, 42, 32], benar: 1 },
+            { soal: '100 + 50 = ?', jawaban: [140, 150, 160, 145], benar: 1 },
+            { soal: 'Warna langit cerah?', jawaban: ['Merah', 'Biru', 'Hijau', 'Kuning'], benar: 1 },
+            { soal: 'Hewan berkaki 4?', jawaban: ['Ayam', 'Kucing', 'Burung', 'Ikan'], benar: 1 },
+            { soal: 'Ibu kota Indonesia?', jawaban: ['Bandung', 'Jakarta', 'Surabaya', 'Medan'], benar: 1 },
+            { soal: '1 minggu = ? hari', jawaban: [5, 7, 6, 8], benar: 1 },
+            { soal: 'Matahari terbit dari?', jawaban: ['Barat', 'Timur', 'Utara', 'Selatan'], benar: 1 },
+            { soal: 'Hewan yang bisa terbang?', jawaban: ['Kucing', 'Burung', 'Anjing', 'Sapi'], benar: 1 },
+            { soal: 'Buah berwarna kuning?', jawaban: ['Apel', 'Pisang', 'Anggur', 'Semangka'], benar: 1 },
+            { soal: 'Alat untuk menulis?', jawaban: ['Sapu', 'Pulpen', 'Pisau', 'Sendok'], benar: 1 },
+            { soal: 'Kaki manusia ada?', jawaban: [1, 2, 3, 4], benar: 1 },
+            { soal: 'Jari tangan ada?', jawaban: [3, 5, 7, 10], benar: 1 }
+        ];
+
+        const soalSedang = [
+            { soal: '15 + 27 = ?', jawaban: [40, 42, 43, 41], benar: 1 },
+            { soal: '12 × 4 = ?', jawaban: [44, 48, 52, 46], benar: 1 },
+            { soal: '100 ÷ 4 = ?', jawaban: [20, 25, 30, 15], benar: 1 },
+            { soal: '7 × 9 = ?', jawaban: [56, 63, 72, 60], benar: 1 },
+            { soal: '144 ÷ 12 = ?', jawaban: [10, 12, 14, 11], benar: 1 },
+            { soal: '11 × 11 = ?', jawaban: [111, 121, 131, 101], benar: 1 },
+            { soal: 'Ibu kota Jepang?', jawaban: ['Osaka', 'Tokyo', 'Kyoto', 'Nagoya'], benar: 1 },
+            { soal: 'Planet terdekat matahari?', jawaban: ['Venus', 'Merkurius', 'Bumi', 'Mars'], benar: 1 },
+            { soal: 'Lambang kimia air?', jawaban: ['CO2', 'H2O', 'O2', 'NaCl'], benar: 1 },
+            { soal: 'Berapa sisi segitiga?', jawaban: [2, 3, 4, 5], benar: 1 },
+            { soal: 'Ibu kota Malaysia?', jawaban: ['Bangkok', 'Kuala Lumpur', 'Jakarta', 'Manila'], benar: 1 },
+            { soal: 'Hewan tercepat di darat?', jawaban: ['Singa', 'Cheetah', 'Harimau', 'Kuda'], benar: 1 },
+            { soal: 'Lambang kimia emas?', jawaban: ['Ag', 'Au', 'Fe', 'Cu'], benar: 1 },
+            { soal: 'Jumlah warna pelangi?', jawaban: [5, 7, 6, 8], benar: 1 },
+            { soal: 'Benua terbesar?', jawaban: ['Afrika', 'Asia', 'Eropa', 'Amerika'], benar: 1 },
+            { soal: 'Laut terluas?', jawaban: ['Atlantik', 'Pasifik', 'Hindia', 'Arktik'], benar: 1 },
+            { soal: 'Mata uang Jepang?', jawaban: ['Won', 'Yen', 'Ringgit', 'Baht'], benar: 1 },
+            { soal: 'Presiden pertama RI?', jawaban: ['Soeharto', 'Soekarno', 'Habibie', 'SBY'], benar: 1 },
+            { soal: 'Ibu kota Prancis?', jawaban: ['London', 'Paris', 'Berlin', 'Roma'], benar: 1 },
+            { soal: 'Jumlah pemain sepak bola?', jawaban: [9, 11, 10, 12], benar: 1 }
+        ];
+
+        const soalSulit = [
+            { soal: '17 × 13 = ?', jawaban: [221, 231, 211, 241], benar: 0 },
+            { soal: 'Akar 144 = ?', jawaban: [11, 12, 13, 14], benar: 1 },
+            { soal: '15 × 15 = ?', jawaban: [215, 225, 235, 245], benar: 1 },
+            { soal: '256 ÷ 16 = ?', jawaban: [14, 16, 18, 15], benar: 1 },
+            { soal: 'Akar 225 = ?', jawaban: [13, 15, 17, 14], benar: 1 },
+            { soal: '14 × 14 = ?', jawaban: [186, 196, 206, 190], benar: 1 },
+            { soal: 'Ibu kota Australia?', jawaban: ['Sydney', 'Canberra', 'Melbourne', 'Perth'], benar: 1 },
+            { soal: 'Unsur kimia Fe?', jawaban: ['Tembaga', 'Besi', 'Emas', 'Perak'], benar: 1 },
+            { soal: 'Jumlah provinsi Indonesia?', jawaban: [34, 38, 36, 40], benar: 1 },
+            { soal: 'Tahun Indonesia merdeka?', jawaban: [1944, 1945, 1946, 1947], benar: 1 },
+            { soal: 'Ibu kota Kanada?', jawaban: ['Toronto', 'Ottawa', 'Vancouver', 'Montreal'], benar: 1 },
+            { soal: 'Lambang kimia tembaga?', jawaban: ['Co', 'Cu', 'Ca', 'C'], benar: 1 },
+            { soal: 'Planet terbesar?', jawaban: ['Saturnus', 'Jupiter', 'Neptunus', 'Uranus'], benar: 1 },
+            { soal: 'Sungai terpanjang dunia?', jawaban: ['Amazon', 'Nil', 'Yangtze', 'Mississippi'], benar: 1 },
+            { soal: 'Ibu kota Turki?', jawaban: ['Istanbul', 'Ankara', 'Izmir', 'Bursa'], benar: 1 },
+            { soal: 'Ibu kota Rusia?', jawaban: ['St. Petersburg', 'Moscow', 'Kazan', 'Sochi'], benar: 1 },
+            { soal: 'Penemu lampu?', jawaban: ['Einstein', 'Edison', 'Newton', 'Tesla'], benar: 1 },
+            { soal: 'Pulau terbesar dunia?', jawaban: ['Kalimantan', 'Greenland', 'Sumatera', 'Madagaskar'], benar: 1 },
+            { soal: 'Tahun PD II berakhir?', jawaban: [1943, 1945, 1947, 1944], benar: 1 },
+            { soal: 'Penemu teori relativitas?', jawaban: ['Newton', 'Einstein', 'Tesla', 'Edison'], benar: 1 }
+        ];
+
+        function kembaliKeGames() {
+            window.location.href = 'games.html';
+        }
+
+        function pilihKesulitan(level, element) {
+            if (sedangMain) return;
+            kesulitanAktif = level;
+            document.querySelectorAll('.kesulitan-pilihan button').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+        }
+
+        function pilihDurasi(durasi, element) {
+            if (sedangMain) return;
+            durasiTotal = durasi;
+            document.querySelectorAll('.durasi-pilihan button').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+            document.getElementById('waktuTotal').textContent = '⏱️ Waktu Permainan: ' + durasi + ' detik';
+            waktuTotalTersisa = durasi;
+        }
+
+        function ambilSoal() {
+            let bank;
+            if (kesulitanAktif === 'mudah') bank = soalMudah;
+            else if (kesulitanAktif === 'sedang') bank = soalSedang;
+            else bank = soalSulit;
+
+            let random;
+            do {
+                random = Math.floor(Math.random() * bank.length);
+            } while (random === soalTerakhir && bank.length > 1);
+
+            soalTerakhir = random;
+            return bank[random];
+        }
+
+        function mulaiGame() {
+            if (sedangMain) return;
+            sedangMain = true;
+            skor = { benar: 0, salah: 0, total: 0 };
+            updateSkor();
+
+            waktuTotalTersisa = durasiTotal;
+            updateWaktuTotal();
+
+            document.getElementById('statusGame').textContent = '⚡ Jawab secepat mungkin!';
+
+            if (timerTotal) clearInterval(timerTotal);
+            timerTotal = setInterval(() => {
+                waktuTotalTersisa--;
+                updateWaktuTotal();
+
+                if (waktuTotalTersisa <= 0) {
+                    clearInterval(timerTotal);
+                    selesaiGame();
+                }
+            }, 1000);
+
+            nextSoal();
+        }
+
+        function updateWaktuTotal() {
+            const el = document.getElementById('waktuTotal');
+            el.textContent = '⏱️ Waktu Permainan: ' + waktuTotalTersisa + ' detik';
+
+            if (waktuTotalTersisa <= 10) {
+                el.classList.add('merah');
+            } else {
+                el.classList.remove('merah');
+            }
+        }
+
+        function nextSoal() {
+            if (!sedangMain) return;
+
+            soalAktif = ambilSoal();
+
+            document.getElementById('soalBox').textContent = soalAktif.soal;
+
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById('btn' + i);
+                btn.textContent = soalAktif.jawaban[i];
+                btn.className = 'jawaban-btn';
+                btn.disabled = false;
+            }
+
+            waktuSoalTersisa = 10;
+            updateTimerSoal();
+
+            if (timerSoal) clearInterval(timerSoal);
+            timerSoal = setInterval(() => {
+                waktuSoalTersisa--;
+                updateTimerSoal();
+
+                if (waktuSoalTersisa <= 0) {
+                    clearInterval(timerSoal);
+                    waktuHabis();
+                }
+            }, 1000);
+        }
+
+        function updateTimerSoal() {
+            const persen = (waktuSoalTersisa / 10) * 100;
+            document.getElementById('timerFill').style.width = persen + '%';
+            document.getElementById('timerText').textContent = '⏱️ Waktu soal: ' + waktuSoalTersisa + ' detik';
+        }
+
+        function waktuHabis() {
+            document.getElementById('btn' + soalAktif.benar).classList.add('benar');
+
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('btn' + i).disabled = true;
+            }
+
+            skor.salah++;
+            updateSkor();
+
+            document.getElementById('statusGame').textContent = '⏰ Waktu habis! Jawaban: ' + soalAktif.jawaban[soalAktif.benar];
+
+            setTimeout(() => {
+                if (sedangMain) nextSoal();
+            }, 1000);
+        }
+
+        function jawab(index) {
+            if (!sedangMain || !soalAktif) return;
+
+            if (timerSoal) clearInterval(timerSoal);
+
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('btn' + i).disabled = true;
+            }
+
+            if (index === soalAktif.benar) {
+                document.getElementById('btn' + index).classList.add('benar');
+                skor.benar++;
+                skor.total += 10;
+                document.getElementById('statusGame').textContent = '✅ Benar! +10 poin';
+            } else {
+                document.getElementById('btn' + index).classList.add('salah');
+                document.getElementById('btn' + soalAktif.benar).classList.add('benar');
+                skor.salah++;
+                document.getElementById('statusGame').textContent = '❌ Salah! Jawaban: ' + soalAktif.jawaban[soalAktif.benar];
+            }
+
+            updateSkor();
+
+            setTimeout(() => {
+                if (sedangMain) nextSoal();
+            }, 1000);
+        }
+
+        function updateSkor() {
+            document.getElementById('skorBenar').textContent = skor.benar;
+            document.getElementById('skorSalah').textContent = skor.salah;
+            document.getElementById('skorTotal').textContent = skor.total;
+        }
+
+        function selesaiGame() {
+            sedangMain = false;
+            if (timerSoal) clearInterval(timerSoal);
+            if (timerTotal) clearInterval(timerTotal);
+
+            let highscore = parseInt(localStorage.getItem('highscoreCepat') || '0');
+            if (skor.total > highscore) {
+                highscore = skor.total;
+                localStorage.setItem('highscoreCepat', skor.total);
+            }
+
+            document.getElementById('hasilBenar').textContent = skor.benar;
+            document.getElementById('hasilSalah').textContent = skor.salah;
+            document.getElementById('hasilSkor').textContent = skor.total;
+            document.getElementById('hasilHighscore').textContent = highscore;
+            document.getElementById('modalHasil').classList.add('show');
+        }
+
+        function tutupModalHasil() {
+            document.getElementById('modalHasil').classList.remove('show');
+            resetGame();
+        }
+
+        function resetGame() {
+            if (timerSoal) clearInterval(timerSoal);
+            if (timerTotal) clearInterval(timerTotal);
+            sedangMain = false;
+            soalAktif = null;
+            skor = { benar: 0, salah: 0, total: 0 };
+            updateSkor();
+
+            waktuTotalTersisa = durasiTotal;
+            updateWaktuTotal();
+
+            document.getElementById('soalBox').textContent = 'Klik "Mulai" untuk bermain!';
+            document.getElementById('statusGame').textContent = 'Tekan Mulai untuk memulai permainan!';
+            document.getElementById('timerFill').style.width = '100%';
+            document.getElementById('timerText').textContent = '⏱️ Waktu soal: 10 detik';
+
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById('btn' + i);
+                btn.textContent = '-';
+                btn.className = 'jawaban-btn';
+                btn.disabled = false;
+            }
+        }
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+
+    </script>
+
+</body>
+</html>

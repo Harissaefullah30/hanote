@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏎️ Balap Mobil - Hanote Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .game-header { text-align: center; padding: 20px 0 10px; border-bottom: 2px dashed #f0e6f5; margin-bottom: 20px; }
+        .game-header h1 { font-size: 32px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; letter-spacing: 2px; }
+        .game-header p { color: #7c6b8a; font-style: italic; font-size: 14px; margin-top: 4px; }
+
+        /* STEP SECTION */
+        .step-section { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px; border: 2px solid rgba(255, 255, 255, 0.4); margin-bottom: 20px; }
+        .step-title { font-size: 18px; font-weight: 800; color: #2d1b3d; margin-bottom: 14px; }
+
+        /* MODE PILIHAN */
+        .mode-pilihan { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .mode-card { background: rgba(255, 255, 255, 0.8); border: 3px solid #e8dff5; border-radius: 20px; padding: 24px 16px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .mode-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3); }
+        .mode-card.terpilih { border-color: #f093fb; background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.15)); transform: scale(1.03); }
+        .mode-card .mode-icon { font-size: 48px; display: block; margin-bottom: 10px; }
+        .mode-card .mode-nama { font-size: 16px; font-weight: 800; color: #2d1b3d; margin-bottom: 4px; }
+        .mode-card .mode-desc { font-size: 12px; color: #7c6b8a; }
+
+        /* MOBIL GRID */
+        .mobil-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; }
+        .mobil-card { background: rgba(255, 255, 255, 0.8); border: 3px solid #e8dff5; border-radius: 14px; padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .mobil-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(240, 147, 251, 0.3); }
+        .mobil-card.terpilih { border-color: #f093fb; background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.15)); transform: scale(1.05); }
+        .mobil-icon { font-size: 32px; display: block; margin-bottom: 4px; }
+        .mobil-nama { font-size: 10px; font-weight: 800; color: #2d1b3d; line-height: 1.2; }
+
+        /* WARNA GRID */
+        .warna-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 10px; }
+        .warna-card { border: 3px solid #e8dff5; border-radius: 12px; padding: 8px 4px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: white; }
+        .warna-card:hover { transform: scale(1.08); }
+        .warna-card.terpilih { border-color: #f093fb; transform: scale(1.1); box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4); }
+        .warna-lingkaran { width: 32px; height: 32px; border-radius: 50%; margin: 0 auto 4px; border: 2px solid white; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); }
+        .warna-nama { font-size: 10px; font-weight: 700; color: #4a3f5c; }
+
+        /* INPUT NAMA */
+        .input-nama label { display: block; font-size: 13px; font-weight: 700; color: #4a3f5c; margin-bottom: 6px; }
+        .input-nama input { width: 100%; padding: 12px 16px; border: 2px solid #e8dff5; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: inherit; color: #2d1b3d; background: white; box-sizing: border-box; }
+        .input-nama input:focus { outline: none; border-color: #f093fb; box-shadow: 0 0 0 4px rgba(240, 147, 251, 0.15); }
+
+        /* PREVIEW */
+        .preview { background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.15)); border-radius: 16px; padding: 20px; text-align: center; margin-top: 16px; border: 2px dashed #f093fb; }
+        .preview .label { font-size: 11px; color: #7c6b8a; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
+        .preview .tampil { font-size: 52px; margin-bottom: 6px; }
+        .preview .nama-tampil { font-size: 16px; font-weight: 800; color: #2d1b3d; padding: 6px 16px; background: white; border-radius: 20px; display: inline-block; }
+
+        /* TOMBOL */
+        .btn-lanjut { width: 100%; padding: 16px; border: none; border-radius: 16px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; font-size: 17px; font-weight: 800; cursor: pointer; transition: all 0.3s; letter-spacing: 1px; margin-top: 16px; }
+        .btn-lanjut:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240, 147, 251, 0.4); }
+        .btn-lanjut:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-balik-step { width: 100%; padding: 12px; border: none; border-radius: 14px; background: #e8dff5; color: #4a3f5c; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .pesan { text-align: center; font-size: 13px; min-height: 20px; margin-top: 10px; font-weight: 600; }
+        .pesan.error { color: #f5576c; }
+        .pesan.success { color: #48bb78; }
+
+        /* SIRKUIT */
+        .sirkuit-section { display: none; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px; border: 2px solid rgba(255, 255, 255, 0.4); }
+        .sirkuit-section.show { display: block; }
+        .sirkuit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 10px 16px; background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.15)); border-radius: 14px; flex-wrap: wrap; gap: 8px; }
+        .sirkuit-header .info { font-size: 13px; font-weight: 800; color: #2d1b3d; }
+        .sirkuit-header .info span { color: #f5576c; }
+        .track-wrapper { width: 100%; height: 400px; overflow-y: auto; overflow-x: hidden; border-radius: 20px; border: 4px solid #1a1a2e; background: #2d2d3a; position: relative; box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5); }
+        .track-canvas { position: relative; width: 100%; height: 3000px; background: #2d2d3a; }
+        .track-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .track-jalan { fill: none; stroke: #4a4a5a; stroke-width: 70; stroke-linecap: round; stroke-linejoin: round; }
+        .track-garis { fill: none; stroke: white; stroke-width: 3; stroke-dasharray: 15, 15; opacity: 0.5; stroke-linecap: round; }
+        .mobil-user { position: absolute; font-size: 32px; z-index: 10; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8)); transition: all 0.05s linear; }
+        .mobil-user .nama-di-atas { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 800; color: white; background: linear-gradient(135deg, #f093fb, #f5576c); padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+        .mobil-ai { position: absolute; font-size: 28px; z-index: 9; transition: all 0.05s linear; }
+        .mobil-ai .nama-di-atas { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 800; color: white; background: rgba(0, 0, 0, 0.6); padding: 2px 6px; border-radius: 8px; white-space: nowrap; }
+        .finish-marker { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 5; }
+        .finish-marker .papan { background: repeating-linear-gradient(45deg, white 0px, white 10px, black 10px, black 20px); width: 200px; height: 20px; border-radius: 4px; border: 2px solid white; }
+        .finish-marker .text { color: white; font-weight: 800; font-size: 14px; margin-bottom: 4px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+
+        /* KONTROL */
+        .kontrol-wrapper { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-top: 16px; }
+        .kontrol-kiri { display: flex; flex-direction: row; gap: 10px; flex: 1; }
+        .kontrol-kanan { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .kontrol-btn { padding: 16px 12px; border: none; border-radius: 16px; font-size: 14px; font-weight: 800; color: white; cursor: pointer; transition: all 0.2s; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; flex: 1; }
+        .kontrol-btn:active { transform: scale(0.95); }
+        .btn-gas { background: linear-gradient(135deg, #43e97b, #38f9d7); padding: 24px 16px; font-size: 17px; }
+        .btn-rem { background: linear-gradient(135deg, #ff9a9e, #f5576c); }
+        .btn-nitro { background: linear-gradient(135deg, #f9d423, #ff9a56); }
+        .btn-kiri { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .btn-kanan { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+        .status-game { text-align: center; font-size: 15px; font-weight: 800; color: #2d1b3d; padding: 12px; background: rgba(240, 147, 251, 0.1); border-radius: 14px; margin-bottom: 12px; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+        .btn-balik { width: 100%; padding: 12px; border: none; border-radius: 14px; background: #e8dff5; color: #4a3f5c; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px; }
+
+        /* MODAL FINISH */
+        .modal-finish { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        .modal-finish.show { display: flex; }
+        .modal-finish-content { background: white; border-radius: 24px; padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-finish-content h2 { font-size: 32px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; margin-bottom: 10px; }
+        .modal-finish-content .sub { font-size: 14px; color: #7c6b8a; margin-bottom: 20px; }
+        .modal-stat { font-size: 16px; color: #2d1b3d; margin-bottom: 10px; font-weight: 600; }
+        .modal-stat span { font-weight: 800; color: #f5576c; }
+        .btn-modal { width: 100%; padding: 14px; border: none; border-radius: 14px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+        .btn-modal.lanjut { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .btn-modal.selesai { background: #e8dff5; color: #4a3f5c; }
+        .btn-modal:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3); }
+
+        @media (max-width: 600px) {
+            .game-header h1 { font-size: 24px; }
+            .mode-pilihan { grid-template-columns: 1fr; }
+            .mobil-grid { grid-template-columns: repeat(5, 1fr); }
+            .mobil-icon { font-size: 26px; }
+            .mobil-nama { font-size: 9px; }
+            .track-wrapper { height: 350px; }
+            .kontrol-btn { padding: 12px; font-size: 12px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeGames()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-header" id="gameHeader">
+                <h1>🏎️ Balap Mobil</h1>
+                <p>"Pilih mode, mobil, dan balapan seru menanti!" 💕</p>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- STEP 1: PILIH MODE                         -->
+            <!-- ========================================== -->
+            <div id="stepMode">
+                <div class="step-section">
+                    <div class="step-title">1️⃣ Pilih Mode Permainan</div>
+                    <div class="mode-pilihan">
+                        <div class="mode-card" onclick="pilihMode('komputer', this)">
+                            <span class="mode-icon">🤖</span>
+                            <div class="mode-nama">Vs Komputer</div>
+                            <div class="mode-desc">Lawan 7-9 AI</div>
+                        </div>
+                        <div class="mode-card" onclick="pilihMode('pemain2', this)">
+                            <span class="mode-icon">📱</span>
+                            <div class="mode-nama">Vs Pemain (2 Device)</div>
+                            <div class="mode-desc">Main berdua</div>
+                        </div>
+                    </div>
+                    <button class="btn-lanjut" onclick="lanjutKePilihMobil()" id="btnLanjutMode" disabled>➡️ LANJUT PILIH MOBIL</button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- STEP 2: PILIH MOBIL                        -->
+            <!-- ========================================== -->
+            <div id="stepMobil" style="display:none;">
+                <div class="step-section">
+                    <div class="step-title">2️⃣ Pilih Mobilmu (10 Pilihan)</div>
+                    <div class="mobil-grid" id="mobilGrid"></div>
+                </div>
+
+                <div class="step-section">
+                    <div class="step-title">3️⃣ Pilih Warna Mobil</div>
+                    <div class="warna-grid" id="warnaGrid"></div>
+                </div>
+
+                <div class="step-section">
+                    <div class="step-title">4️⃣ Kasih Nama Mobilmu</div>
+                    <div class="input-nama">
+                        <label>📝 Nama Mobil (untuk pembeda di sirkuit):</label>
+                        <input type="text" id="inputNamaMobil" placeholder="Contoh: Cinta Haris" maxlength="20" />
+                    </div>
+                    <div class="preview">
+                        <div class="label">PREVIEW MOBILMU</div>
+                        <div class="tampil" id="previewMobil">🚗</div>
+                        <div class="nama-tampil" id="previewNama">Belum ada nama</div>
+                    </div>
+                    <button class="btn-lanjut" onclick="lanjutKeSirkuit()">🏁 MULAI BALAPAN</button>
+                    <div class="pesan" id="pesanLanjut"></div>
+                    <button class="btn-balik-step" onclick="kembaliKePilihMode()">⬅️ Kembali Pilih Mode</button>
+                </div>
+            </div>
+
+                        <!-- ========================================== -->
+            <!-- STEP 2.5: ROOM (Untuk 2 Device)            -->
+            <!-- ========================================== -->
+            <div id="stepRoom" style="display:none;">
+                <div class="step-section">
+                    <div class="step-title">🔗 Room Multiplayer</div>
+
+                    <div id="roomPilihan">
+                        <button class="btn-lanjut" onclick="buatRoomBalap()" style="margin-bottom:10px;">🎮 Buat Room Baru</button>
+                        <button class="btn-lanjut" onclick="joinRoomBalap()" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">🔗 Join Room</button>
+                    </div>
+
+                    <div id="roomInfo" style="display:none; margin-top:20px; text-align:center;">
+                        <div style="font-size:14px; color:#7c6b8a; font-weight:600; margin-bottom:8px;">Kode Room:</div>
+                        <div style="font-size:28px; font-weight:800; color:#2d1b3d; background: rgba(240,147,251,0.15); padding: 12px 24px; border-radius: 12px; display:inline-block;" id="kodeRoomText">-</div>
+                        <div style="font-size:13px; color:#7c6b8a; margin-top:12px;" id="statusRoomText">Menunggu pemain lain join...</div>
+                        <button class="btn-lanjut" onclick="mulaiBalapanMultiplayer()" id="btnMulaiMultiplayer" style="display:none; margin-top:16px;">🏁 MULAI BALAPAN</button>
+                    </div>
+
+                    <button class="btn-balik-step" onclick="kembaliKePilihMobil()" style="margin-top:16px;">⬅️ Kembali Pilih Mobil</button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- STEP 3: SIRKUIT                            -->
+            <!-- ========================================== -->
+            <div class="sirkuit-section" id="sirkuitSection">
+
+                <div class="sirkuit-header">
+                    <div class="info">🏁 LAP: <span id="lapSekarang">1</span>/3</div>
+                    <div class="info">⏱️ <span id="timerBalap">00:00</span></div>
+                    <div class="info">⚡ <span id="kecepatanMobil">0</span> km/h</div>
+                </div>
+
+                <div class="status-game" id="statusBalap">Tekan 🟢 GAS untuk mulai balapan!</div>
+
+                <div class="track-wrapper" id="trackWrapper">
+                    <div class="track-canvas" id="trackCanvas">
+                        <svg class="track-svg" id="trackSvg" viewBox="0 0 400 3000" preserveAspectRatio="none">
+                            <path class="track-jalan" id="trackJalan" d="" />
+                            <path class="track-garis" id="trackGaris" d="" />
+                        </svg>
+
+                        <div class="finish-marker">
+                            <div class="text">🏁 FINISH 🏁</div>
+                            <div class="papan"></div>
+                        </div>
+
+                        <div class="mobil-user" id="mobilUser">
+                            <div class="nama-di-atas">Kamu</div>
+                            🚗
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kontrol-wrapper">
+                    <div class="kontrol-kiri">
+                        <button class="kontrol-btn btn-kiri" onmousedown="kiriTekan()" onmouseup="kiriLepas()" onmouseleave="kiriLepas()" ontouchstart="kiriTekan()" ontouchend="kiriLepas()">⬅️ KIRI</button>
+                        <button class="kontrol-btn btn-kanan" onmousedown="kananTekan()" onmouseup="kananLepas()" onmouseleave="kananLepas()" ontouchstart="kananTekan()" ontouchend="kananLepas()">➡️ KANAN</button>
+                    </div>
+                    <div class="kontrol-kanan">
+                        <button class="kontrol-btn btn-gas" id="btnGas" onmousedown="gasTekan()" onmouseup="gasLepas()" onmouseleave="gasLepas()" ontouchstart="gasTekan()" ontouchend="gasLepas()">🟢 GAS</button>
+                        <button class="kontrol-btn btn-rem" onclick="remMobil()">🔴 REM</button>
+                        <button class="kontrol-btn btn-nitro" onclick="nitroMobil()">⚡ NITRO</button>
+                    </div>
+                </div>
+
+                <button class="btn-balik" onclick="kembaliKePilihMobil()">⬅️ Kembali Pilih Mobil</button>
+
+            </div>
+
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL FINISH -->
+    <div class="modal-finish" id="modalFinish">
+        <div class="modal-finish-content">
+            <h2>🏆 FINISH! 🏆</h2>
+            <div class="sub">Kamu berhasil menyelesaikan balapan!</div>
+            <div class="modal-stat">🏁 Total Lap: <span>3 Lap</span></div>
+            <div class="modal-stat">⏱️ Waktu: <span id="hasilWaktu">00:00</span></div>
+            <div class="modal-stat">⚡ Kecepatan Max: <span id="hasilKecepatan">0</span> km/h</div>
+            <button class="btn-modal lanjut" onclick="lanjutBalapan()">🔁 Lanjut Balapan</button>
+            <button class="btn-modal selesai" onclick="selesaiBalapanModal()">🏠 Selesai & Kembali</button>
+        </div>
+    </div>
+
+        <script>
+        // ============================================
+        // GAME BALAP MOBIL
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        const daftarMobil = [
+            { id: 1, nama: 'Cinta Sejati', icon: '🚗' },
+            { id: 2, nama: 'Bucin Mobile', icon: '🚙' },
+            { id: 3, nama: 'Sayang Express', icon: '🏎️' },
+            { id: 4, nama: 'Love Rider', icon: '🚕' },
+            { id: 5, nama: 'Sweet Heart', icon: '🚓' },
+            { id: 6, nama: 'Cupid Car', icon: '🚐' },
+            { id: 7, nama: 'Heartbeat', icon: '🚌' },
+            { id: 8, nama: 'Kiss Mobile', icon: '🚛' },
+            { id: 9, nama: 'Honey Car', icon: '🚜' },
+            { id: 10, nama: 'Forever Us', icon: '🛻' }
+        ];
+
+        const daftarWarna = [
+            { id: 1, nama: 'Merah', hex: '#e74c3c' },
+            { id: 2, nama: 'Pink', hex: '#f093fb' },
+            { id: 3, nama: 'Ungu', hex: '#a18cd1' },
+            { id: 4, nama: 'Biru', hex: '#4facfe' },
+            { id: 5, nama: 'Hijau', hex: '#43e97b' },
+            { id: 6, nama: 'Kuning', hex: '#f9d423' },
+            { id: 7, nama: 'Oranye', hex: '#ff9a56' },
+            { id: 8, nama: 'Hitam', hex: '#2d2d3a' }
+        ];
+
+        const daftarAI = [
+            { nama: 'Si Cepat', icon: '🏎️', warna: '#e74c3c', kecepatan: 1.2 },
+            { nama: 'Bucin Sejati', icon: '🚗', warna: '#f093fb', kecepatan: 1.0 },
+            { nama: 'Raja Jalan', icon: '🚙', warna: '#4facfe', kecepatan: 1.3 },
+            { nama: 'Speed King', icon: '🚕', warna: '#43e97b', kecepatan: 1.1 },
+            { nama: 'Love Racer', icon: '🚓', warna: '#a18cd1', kecepatan: 0.9 },
+            { nama: 'Tuan Cepat', icon: '🚐', warna: '#f9d423', kecepatan: 1.4 },
+            { nama: 'Petir Cinta', icon: '🚌', warna: '#ff9a56', kecepatan: 1.0 },
+            { nama: 'Cupid Turbo', icon: '🚛', warna: '#f5576c', kecepatan: 1.2 },
+            { nama: 'Heart Speed', icon: '🚜', warna: '#2d2d3a', kecepatan: 0.8 }
+        ];
+
+        const jalurSirkuit = [
+            { x: 200, y: 2950 }, { x: 200, y: 2750 }, { x: 100, y: 2650 }, { x: 100, y: 2450 },
+            { x: 300, y: 2350 }, { x: 300, y: 2150 }, { x: 150, y: 2050 }, { x: 150, y: 1850 },
+            { x: 320, y: 1750 }, { x: 320, y: 1550 }, { x: 100, y: 1450 }, { x: 100, y: 1250 },
+            { x: 250, y: 1150 }, { x: 250, y: 950 }, { x: 120, y: 850 }, { x: 120, y: 650 },
+            { x: 280, y: 550 }, { x: 280, y: 350 }, { x: 200, y: 250 }, { x: 200, y: 100 }
+        ];
+
+        let modeAktif = null;
+        let mobilTerpilih = null;
+        let warnaTerpilih = null;
+
+        let posisiMobilX = 200;
+        let posisiMobilY = 2950;
+        let kecepatan = 0;
+        let kecepatanMax = 0;
+        let sedangGas = false;
+        let sedangKiri = false;
+        let sedangKanan = false;
+        let nitroTersedia = 3;
+        let nitroAktif = false;
+        let lapSekarang = 1;
+        let totalLap = 3;
+        let balapanAktif = false;
+        let timerInterval = null;
+        let gameLoopInterval = null;
+        let waktuMulai = 0;
+        let namaMobilGlobal = '';
+        let daftarAIAktif = [];
+
+        function kembaliKeGames() {
+            window.location.href = 'games.html';
+        }
+
+        // ============================================
+        // STEP 1: PILIH MODE
+        // ============================================
+
+        function pilihMode(mode, element) {
+            modeAktif = mode;
+            document.querySelectorAll('.mode-card').forEach(card => card.classList.remove('terpilih'));
+            element.classList.add('terpilih');
+            document.getElementById('btnLanjutMode').disabled = false;
+        }
+
+        function lanjutKePilihMobil() {
+            if (!modeAktif) return;
+            document.getElementById('stepMode').style.display = 'none';
+            document.getElementById('stepMobil').style.display = 'block';
+        }
+
+        function kembaliKePilihMode() {
+            document.getElementById('stepMode').style.display = 'block';
+            document.getElementById('stepMobil').style.display = 'none';
+        }
+
+        // ============================================
+        // STEP 2: PILIH MOBIL & WARNA
+        // ============================================
+
+        function renderMobil() {
+            const grid = document.getElementById('mobilGrid');
+            grid.innerHTML = daftarMobil.map(m => `
+                <div class="mobil-card" onclick="pilihMobil(${m.id})" id="mobil-${m.id}">
+                    <span class="mobil-icon">${m.icon}</span>
+                    <div class="mobil-nama">${m.nama}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderWarna() {
+            const grid = document.getElementById('warnaGrid');
+            grid.innerHTML = daftarWarna.map(w => `
+                <div class="warna-card" onclick="pilihWarna(${w.id})" id="warna-${w.id}">
+                    <div class="warna-lingkaran" style="background: ${w.hex};"></div>
+                    <div class="warna-nama">${w.nama}</div>
+                </div>
+            `).join('');
+        }
+
+        function pilihMobil(id) {
+            mobilTerpilih = daftarMobil.find(m => m.id === id);
+            document.querySelectorAll('.mobil-card').forEach(card => card.classList.remove('terpilih'));
+            document.getElementById('mobil-' + id).classList.add('terpilih');
+            updatePreview();
+        }
+
+        function pilihWarna(id) {
+            warnaTerpilih = daftarWarna.find(w => w.id === id);
+            document.querySelectorAll('.warna-card').forEach(card => card.classList.remove('terpilih'));
+            document.getElementById('warna-' + id).classList.add('terpilih');
+            updatePreview();
+        }
+
+        function updatePreview() {
+            if (mobilTerpilih) {
+                const el = document.getElementById('previewMobil');
+                el.textContent = mobilTerpilih.icon;
+                if (warnaTerpilih) {
+                    el.style.textShadow = `0 0 20px ${warnaTerpilih.hex}, 0 0 40px ${warnaTerpilih.hex}`;
+                }
+            }
+        }
+
+        document.getElementById('inputNamaMobil').addEventListener('input', function() {
+            const nama = this.value.trim();
+            document.getElementById('previewNama').textContent = nama || 'Belum ada nama';
+        });
+
+                function lanjutKeSirkuit() {
+            const pesan = document.getElementById('pesanLanjut');
+            const namaMobil = document.getElementById('inputNamaMobil').value.trim();
+
+            if (!mobilTerpilih) { pesan.className = 'pesan error'; pesan.textContent = '⚠️ Pilih mobil dulu!'; return; }
+            if (!warnaTerpilih) { pesan.className = 'pesan error'; pesan.textContent = '⚠️ Pilih warna mobil dulu!'; return; }
+            if (!namaMobil) { pesan.className = 'pesan error'; pesan.textContent = '⚠️ Kasih nama mobilmu dulu!'; return; }
+
+            namaMobilGlobal = namaMobil;
+            localStorage.setItem('namaMobil', namaMobil);
+
+            // Kalau mode komputer → langsung ke sirkuit
+            if (modeAktif === 'komputer') {
+                document.getElementById('stepMobil').style.display = 'none';
+                document.getElementById('sirkuitSection').classList.add('show');
+                document.getElementById('gameHeader').style.display = 'none';
+                setupSirkuit(namaMobil);
+            } 
+            // Kalau mode 2 device → ke step room dulu
+            else if (modeAktif === 'pemain2') {
+                document.getElementById('stepMobil').style.display = 'none';
+                document.getElementById('stepRoom').style.display = 'block';
+            }
+        }
+
+        function setupSirkuit(namaMobil) {
+            const dJalan = jalurSirkuit.map((p, i) => (i === 0 ? 'M' : 'L') + ' ' + p.x + ' ' + p.y).join(' ');
+            document.getElementById('trackJalan').setAttribute('d', dJalan);
+            document.getElementById('trackGaris').setAttribute('d', dJalan);
+
+            posisiMobilX = jalurSirkuit[0].x;
+            posisiMobilY = jalurSirkuit[0].y;
+            kecepatan = 0;
+            kecepatanMax = 0;
+            lapSekarang = 1;
+            nitroTersedia = 3;
+            balapanAktif = true;
+            waktuMulai = Date.now();
+
+            document.getElementById('lapSekarang').textContent = lapSekarang;
+            document.getElementById('statusBalap').textContent = 'Tekan 🟢 GAS untuk mulai!';
+            document.getElementById('kecepatanMobil').textContent = '0';
+
+            const mobilEl = document.getElementById('mobilUser');
+            mobilEl.innerHTML = `<div class="nama-di-atas">${namaMobil}</div>${mobilTerpilih.icon}`;
+            mobilEl.style.fontSize = '30px';
+            updatePosisiMobil();
+
+            // Buat AI kalau mode komputer
+            if (modeAktif === 'komputer') {
+                buatAILawan();
+            }
+
+            setTimeout(() => {
+                document.getElementById('trackWrapper').scrollTop = 2500;
+            }, 100);
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 100);
+
+            if (gameLoopInterval) clearInterval(gameLoopInterval);
+            gameLoopInterval = setInterval(gameLoop, 50);
+        }
+
+        // ============================================
+        // AI LAWAN
+        // ============================================
+
+        function buatAILawan() {
+            const jumlahAI = 7 + Math.floor(Math.random() * 3);
+            const aiRandom = [...daftarAI].sort(() => Math.random() - 0.5).slice(0, jumlahAI);
+
+            document.querySelectorAll('.mobil-ai').forEach(el => el.remove());
+            daftarAIAktif = [];
+
+            const track = document.getElementById('trackCanvas');
+
+            aiRandom.forEach((ai, index) => {
+                const startY = 2700 + (index * 80);
+                const startX = 50 + Math.random() * 300;
+
+                const aiEl = document.createElement('div');
+                aiEl.className = 'mobil-ai';
+                aiEl.innerHTML = `
+                    <div class="nama-di-atas">${ai.nama}</div>
+                    ${ai.icon}
+                `;
+                aiEl.style.filter = `drop-shadow(0 2px 6px ${ai.warna})`;
+                track.appendChild(aiEl);
+
+                daftarAIAktif.push({
+                    el: aiEl,
+                    x: startX,
+                    y: startY,
+                    kecepatan: ai.kecepatan,
+                    nama: ai.nama,
+                    warna: ai.warna
+                });
+            });
+
+            updatePosisiAI();
+        }
+
+        function updatePosisiAI() {
+            const canvasWidth = document.getElementById('trackCanvas').clientWidth;
+            const skalaX = canvasWidth / 400;
+
+            daftarAIAktif.forEach(ai => {
+                ai.el.style.left = (ai.x * skalaX - 15) + 'px';
+                ai.el.style.top = (ai.y - 15) + 'px';
+            });
+        }
+
+        function gerakkanAI() {
+            if (!balapanAktif) return;
+
+            daftarAIAktif.forEach(ai => {
+                const kec = ai.kecepatan * (0.5 + Math.random() * 0.5);
+                ai.y -= kec;
+                ai.x += (Math.random() - 0.5) * 2;
+
+                if (ai.x < 50) ai.x = 50;
+                if (ai.x > 350) ai.x = 350;
+
+                if (ai.y <= 50) {
+                    ai.y = 2950;
+                    ai.x = 50 + Math.random() * 300;
+                }
+            });
+
+            updatePosisiAI();
+        }
+
+        // ============================================
+        // GAME LOOP
+        // ============================================
+
+        function updatePosisiMobil() {
+            const mobilEl = document.getElementById('mobilUser');
+            if (!mobilEl) return;
+            const canvasWidth = document.getElementById('trackCanvas').clientWidth;
+            const skalaX = canvasWidth / 400;
+            mobilEl.style.left = (posisiMobilX * skalaX - 15) + 'px';
+            mobilEl.style.top = (posisiMobilY - 15) + 'px';
+        }
+
+        function gameLoop() {
+            if (!balapanAktif) return;
+
+            if (sedangGas) kecepatan += 0.5;
+            else kecepatan -= 0.3;
+            if (nitroAktif) kecepatan += 2;
+
+            if (kecepatan < 0) kecepatan = 0;
+            if (kecepatan > 100) kecepatan = 100;
+            if (kecepatan > kecepatanMax) kecepatanMax = kecepatan;
+
+            document.getElementById('kecepatanMobil').textContent = Math.round(kecepatan);
+
+            if (sedangKiri) posisiMobilX -= 1.5;
+            if (sedangKanan) posisiMobilX += 1.5;
+
+            if (posisiMobilX < 50) posisiMobilX = 50;
+            if (posisiMobilX > 350) posisiMobilX = 350;
+
+            if (kecepatan > 0) {
+                posisiMobilY -= kecepatan * 0.15;
+
+                if (posisiMobilY <= 50) {
+                    if (lapSekarang < totalLap) {
+                        lapSekarang++;
+                        posisiMobilY = 2950;
+                        posisiMobilX = 200;
+                        document.getElementById('lapSekarang').textContent = lapSekarang;
+                        document.getElementById('statusBalap').textContent = '🏁 Lap ' + lapSekarang + '!';
+                        document.getElementById('trackWrapper').scrollTop = 2500;
+
+                        // Reset AI juga
+                        daftarAIAktif.forEach((ai, i) => {
+                            ai.y = 2700 + (i * 80);
+                            ai.x = 50 + Math.random() * 300;
+                        });
+                    } else {
+                        selesaiBalapan();
+                        return;
+                    }
+                }
+            }
+
+            gerakkanAI();
+            updatePosisiMobil();
+
+            const wrapper = document.getElementById('trackWrapper');
+            wrapper.scrollTop = posisiMobilY - 250;
+        }
+
+        function updateTimer() {
+            if (!balapanAktif) return;
+            const elapsed = Math.floor((Date.now() - waktuMulai) / 1000);
+            const menit = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            const detik = String(elapsed % 60).padStart(2, '0');
+            document.getElementById('timerBalap').textContent = menit + ':' + detik;
+        }
+
+        // Kontrol
+        function gasTekan() { if (balapanAktif) { sedangGas = true; document.getElementById('statusBalap').textContent = '⚡ Mobil melaju!'; } }
+        function gasLepas() { sedangGas = false; }
+        function remMobil() { if (balapanAktif) { kecepatan = 0; sedangGas = false; document.getElementById('statusBalap').textContent = '🛑 Mobil berhenti!'; } }
+
+        function nitroMobil() {
+            if (!balapanAktif) return;
+            if (nitroTersedia <= 0) { document.getElementById('statusBalap').textContent = '⚠️ Nitro habis!'; return; }
+            nitroTersedia--;
+            nitroAktif = true;
+            document.getElementById('statusBalap').textContent = '⚡ NITRO! (Sisa: ' + nitroTersedia + ')';
+            setTimeout(() => { nitroAktif = false; }, 2000);
+        }
+
+        function kiriTekan() { sedangKiri = true; }
+        function kiriLepas() { sedangKiri = false; }
+        function kananTekan() { sedangKanan = true; }
+        function kananLepas() { sedangKanan = false; }
+
+        function selesaiBalapan() {
+            balapanAktif = false;
+            if (gameLoopInterval) clearInterval(gameLoopInterval);
+            if (timerInterval) clearInterval(timerInterval);
+
+            const elapsed = Math.floor((Date.now() - waktuMulai) / 1000);
+            const menit = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            const detik = String(elapsed % 60).padStart(2, '0');
+
+            document.getElementById('statusBalap').textContent = '🏆 FINISH! Waktu: ' + menit + ':' + detik;
+
+            document.getElementById('hasilWaktu').textContent = menit + ':' + detik;
+            document.getElementById('hasilKecepatan').textContent = Math.round(kecepatanMax);
+            document.getElementById('modalFinish').classList.add('show');
+        }
+
+        function lanjutBalapan() {
+            document.getElementById('modalFinish').classList.remove('show');
+            setupSirkuit(namaMobilGlobal);
+        }
+
+        function selesaiBalapanModal() {
+            document.getElementById('modalFinish').classList.remove('show');
+            window.location.href = 'games.html';
+        }
+
+        function kembaliKePilihMobil() {
+            balapanAktif = false;
+            if (gameLoopInterval) clearInterval(gameLoopInterval);
+            if (timerInterval) clearInterval(timerInterval);
+
+            // Hapus AI
+            document.querySelectorAll('.mobil-ai').forEach(el => el.remove());
+            daftarAIAktif = [];
+
+            document.getElementById('stepMobil').style.display = 'block';
+            document.getElementById('sirkuitSection').classList.remove('show');
+            document.getElementById('gameHeader').style.display = 'block';
+        }
+
+        // ============================================
+        // ANTI NYANGKUT
+        // ============================================
+
+        window.addEventListener('mouseup', function() {
+            sedangGas = false;
+            sedangKiri = false;
+            sedangKanan = false;
+        });
+
+        window.addEventListener('touchend', function() {
+            sedangGas = false;
+            sedangKiri = false;
+            sedangKanan = false;
+        });
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+
+                // ============================================
+        // MULTIPLAYER 2 DEVICE
+        // ============================================
+
+        const API_URL = 'http://localhost:3000/api';
+        let kodeRoomBalap = null;
+        let pollingBalapInterval = null;
+        let pemainSayaBalap = 'pemain1';
+
+        async function buatRoomBalap() {
+            try {
+                const response = await fetch(`${API_URL}/game/balap/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ruangan: ruangan,
+                        pemain: 'Haris',
+                        mobil: mobilTerpilih.icon,
+                        warna: warnaTerpilih.hex,
+                        nama: document.getElementById('inputNamaMobil').value.trim()
+                    })
+                });
+
+                const data = await response.json();
+                kodeRoomBalap = data.kodeRoom;
+                pemainSayaBalap = 'pemain1';
+
+                document.getElementById('roomPilihan').style.display = 'none';
+                document.getElementById('roomInfo').style.display = 'block';
+                document.getElementById('kodeRoomText').textContent = kodeRoomBalap;
+                document.getElementById('statusRoomText').textContent = 'Menunggu pemain lain join...';
+
+                mulaiPollingBalap();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal buat room! Pastikan server backend jalan.');
+            }
+        }
+
+        async function joinRoomBalap() {
+            const kode = prompt('Masukkan kode room:');
+            if (!kode) return;
+
+            try {
+                const response = await fetch(`${API_URL}/game/balap/join`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        kodeRoom: kode.toUpperCase(),
+                        pemain: 'Anita',
+                        mobil: mobilTerpilih.icon,
+                        warna: warnaTerpilih.hex,
+                        nama: document.getElementById('inputNamaMobil').value.trim()
+                    })
+                });
+
+                if (!response.ok) throw new Error('Gagal join');
+
+                const data = await response.json();
+                kodeRoomBalap = data.kodeRoom;
+                pemainSayaBalap = 'pemain2';
+
+                document.getElementById('roomPilihan').style.display = 'none';
+                document.getElementById('roomInfo').style.display = 'block';
+                document.getElementById('kodeRoomText').textContent = kodeRoomBalap;
+                document.getElementById('statusRoomText').textContent = '✅ Terhubung! Menunggu host memulai...';
+
+                mulaiPollingBalap();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal join room! Cek kode room.');
+            }
+        }
+
+        function mulaiPollingBalap() {
+            if (pollingBalapInterval) clearInterval(pollingBalapInterval);
+
+            pollingBalapInterval = setInterval(async () => {
+                if (!kodeRoomBalap) return;
+
+                try {
+                    const response = await fetch(`${API_URL}/game/balap/room/${kodeRoomBalap}`);
+                    const room = await response.json();
+
+                    // Kalau sudah ada 2 pemain dan pemain1 = saya, tampilkan tombol mulai
+                    if (room.pemain2 && room.status === 'siap' && pemainSayaBalap === 'pemain1') {
+                        document.getElementById('statusRoomText').textContent = '✅ Pemain 2 sudah join! Siap mulai!';
+                        document.getElementById('btnMulaiMultiplayer').style.display = 'block';
+                    }
+
+                    if (room.pemain2 && room.status === 'siap' && pemainSayaBalap === 'pemain2') {
+                        document.getElementById('statusRoomText').textContent = '✅ Terhubung! Menunggu host memulai...';
+                    }
+
+                    // Kalau status berjalan, mulai balapan
+                    if (room.status === 'berjalan') {
+                        clearInterval(pollingBalapInterval);
+                        mulaiBalapanSirkuit(room);
+                    }
+
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 1500);
+        }
+
+        async function mulaiBalapanMultiplayer() {
+            try {
+                await fetch(`${API_URL}/game/balap/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ kodeRoom: kodeRoomBalap })
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function mulaiBalapanSirkuit(room) {
+            document.getElementById('stepRoom').style.display = 'none';
+            document.getElementById('sirkuitSection').classList.add('show');
+            document.getElementById('gameHeader').style.display = 'none';
+
+            setupSirkuitMultiplayer(room);
+        }
+
+        function setupSirkuitMultiplayer(room) {
+            const dJalan = jalurSirkuit.map((p, i) => (i === 0 ? 'M' : 'L') + ' ' + p.x + ' ' + p.y).join(' ');
+            document.getElementById('trackJalan').setAttribute('d', dJalan);
+            document.getElementById('trackGaris').setAttribute('d', dJalan);
+
+            posisiMobilX = 200;
+            posisiMobilY = 2950;
+            kecepatan = 0;
+            kecepatanMax = 0;
+            lapSekarang = 1;
+            nitroTersedia = 3;
+            balapanAktif = true;
+            waktuMulai = Date.now();
+
+            document.getElementById('lapSekarang').textContent = lapSekarang;
+            document.getElementById('statusBalap').textContent = 'Tekan 🟢 GAS untuk mulai!';
+            document.getElementById('kecepatanMobil').textContent = '0';
+
+            // Tampilkan mobil saya
+            const mobilEl = document.getElementById('mobilUser');
+            const dataSaya = room[pemainSayaBalap];
+            mobilEl.innerHTML = `<div class="nama-di-atas">${dataSaya.namaMobil}</div>${dataSaya.mobil}`;
+            mobilEl.style.fontSize = '30px';
+            updatePosisiMobil();
+
+            // Hapus AI lama
+            document.querySelectorAll('.mobil-ai').forEach(el => el.remove());
+            daftarAIAktif = [];
+
+            // Buat mobil lawan
+            const lawanKey = pemainSayaBalap === 'pemain1' ? 'pemain2' : 'pemain1';
+            const dataLawan = room[lawanKey];
+            const track = document.getElementById('trackCanvas');
+
+            const lawanEl = document.createElement('div');
+            lawanEl.className = 'mobil-ai';
+            lawanEl.id = 'mobilLawan';
+            lawanEl.innerHTML = `
+                <div class="nama-di-atas">${dataLawan.namaMobil}</div>
+                ${dataLawan.mobil}
+            `;
+            lawanEl.style.filter = `drop-shadow(0 2px 6px ${dataLawan.warna})`;
+            track.appendChild(lawanEl);
+
+            daftarAIAktif.push({
+                el: lawanEl,
+                x: dataLawan.posisiX,
+                y: dataLawan.posisiY,
+                kecepatan: 0,
+                nama: dataLawan.namaMobil,
+                warna: dataLawan.warna
+            });
+
+            setTimeout(() => {
+                document.getElementById('trackWrapper').scrollTop = 2500;
+            }, 100);
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 100);
+
+            if (gameLoopInterval) clearInterval(gameLoopInterval);
+            gameLoopInterval = setInterval(gameLoopMultiplayer, 50);
+        }
+
+        function gameLoopMultiplayer() {
+            if (!balapanAktif) return;
+
+            // Logika sama seperti gameLoop biasa
+            if (sedangGas) kecepatan += 0.5;
+            else kecepatan -= 0.3;
+            if (nitroAktif) kecepatan += 2;
+
+            if (kecepatan < 0) kecepatan = 0;
+            if (kecepatan > 100) kecepatan = 100;
+            if (kecepatan > kecepatanMax) kecepatanMax = kecepatan;
+
+            document.getElementById('kecepatanMobil').textContent = Math.round(kecepatan);
+
+            if (sedangKiri) posisiMobilX -= 1.5;
+            if (sedangKanan) posisiMobilX += 1.5;
+            if (posisiMobilX < 50) posisiMobilX = 50;
+            if (posisiMobilX > 350) posisiMobilX = 350;
+
+            if (kecepatan > 0) {
+                posisiMobilY -= kecepatan * 0.15;
+
+                if (posisiMobilY <= 50) {
+                    if (lapSekarang < totalLap) {
+                        lapSekarang++;
+                        posisiMobilY = 2950;
+                        posisiMobilX = 200;
+                        document.getElementById('lapSekarang').textContent = lapSekarang;
+                        document.getElementById('statusBalap').textContent = '🏁 Lap ' + lapSekarang + '!';
+                    } else {
+                        selesaiBalapanMultiplayer();
+                        return;
+                    }
+                }
+            }
+
+            updatePosisiMobil();
+            updatePosisiLawan();
+
+            const wrapper = document.getElementById('trackWrapper');
+            wrapper.scrollTop = posisiMobilY - 250;
+        }
+
+        async function updatePosisiLawan() {
+            if (!kodeRoomBalap) return;
+
+            try {
+                // Kirim posisi saya
+                await fetch(`${API_URL}/game/balap/update`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        kodeRoom: kodeRoomBalap,
+                        pemain: pemainSayaBalap,
+                        posisiX: posisiMobilX,
+                        posisiY: posisiMobilY,
+                        lap: lapSekarang,
+                        kecepatan: kecepatan
+                    })
+                });
+            } catch (error) {
+                // ignore
+            }
+        }
+
+        async function selesaiBalapanMultiplayer() {
+            balapanAktif = false;
+            if (gameLoopInterval) clearInterval(gameLoopInterval);
+            if (timerInterval) clearInterval(timerInterval);
+
+            const elapsed = Math.floor((Date.now() - waktuMulai) / 1000);
+            const menit = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            const detik = String(elapsed % 60).padStart(2, '0');
+            const waktuStr = menit + ':' + detik;
+
+            try {
+                await fetch(`${API_URL}/game/balap/finish`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        kodeRoom: kodeRoomBalap,
+                        pemain: pemainSayaBalap,
+                        waktu: waktuStr
+                    })
+                });
+            } catch (error) {
+                // ignore
+            }
+
+            document.getElementById('statusBalap').textContent = '🏆 FINISH! Waktu: ' + waktuStr;
+            document.getElementById('hasilWaktu').textContent = waktuStr;
+            document.getElementById('hasilKecepatan').textContent = Math.round(kecepatanMax);
+            document.getElementById('modalFinish').classList.add('show');
+        }
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+
+        window.onload = function() {
+            renderMobil();
+            renderWarna();
+        };
+    </script>
+
+</body>
+</html>

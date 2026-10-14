@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Kado Rahasia - Hanote</title>
+        <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           KADO RAHASIA - PINK & EMAS
+           ============================================ */
+
+        /* HERO KADO */
+        .kado-hero {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5c542 100%);
+            box-shadow: 0 20px 60px rgba(240, 147, 251, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .kado-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 60%);
+            animation: shimmerKado 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmerKado {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translate(20%, 20%) rotate(180deg); opacity: 0.7; }
+        }
+
+        .kado-hero-konten {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .kado-hero-icon {
+            font-size: 64px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+            animation: floatKado 3s ease-in-out infinite;
+        }
+
+        @keyframes floatKado {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        .kado-hero h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: 6px;
+        }
+
+        .kado-hero p {
+            font-size: 14px;
+            font-style: italic;
+            opacity: 0.95;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* INFO KADO */
+        .kado-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 2px solid rgba(240, 147, 251, 0.3);
+            box-shadow: 0 4px 16px rgba(240, 147, 251, 0.15);
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateY(-4px);
+            border-color: #f5c542;
+            box-shadow: 0 8px 24px rgba(245, 197, 66, 0.3);
+        }
+
+        .info-icon {
+            font-size: 26px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #7c6b8a;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .info-nilai {
+            font-size: 16px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #f5c542 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* PROGRESS BAR */
+        .kado-progress {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            border: 2px solid rgba(240, 147, 251, 0.2);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #4a3f5c;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-kado {
+            width: 100%;
+            height: 14px;
+            background: rgba(240, 147, 251, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill-kado {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb 0%, #f5c542 100%);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            box-shadow: 0 0 12px rgba(245, 197, 66, 0.5);
+        }
+
+        /* SECTION TITLE */
+        .kado-section-title {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #f5c542 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 14px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* GRID KADO */
+        .kado-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .kado-card {
+            position: relative;
+            aspect-ratio: 1/1;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5c542 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 24px rgba(240, 147, 251, 0.35);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+
+        .kado-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 60%);
+            animation: shimmerKado 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .kado-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 16px 40px rgba(245, 197, 66, 0.5);
+            border-color: white;
+        }
+
+        .kado-card.dibuka {
+            background: rgba(200, 200, 200, 0.3);
+            border-color: rgba(200, 200, 200, 0.3);
+            cursor: not-allowed;
+            opacity: 0.5;
+            box-shadow: none;
+        }
+
+        .kado-card.dibuka::before {
+            display: none;
+        }
+
+        .kado-card .kado-icon {
+            font-size: 52px;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+            animation: floatKado 3s ease-in-out infinite;
+        }
+
+        .kado-card .kado-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            margin-top: 6px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .kado-card .kado-rarity-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+            margin-top: 2px;
+        }
+
+        .kado-card.dibuka .kado-icon {
+            filter: grayscale(1);
+            animation: none;
+        }
+
+        /* ACHIEVEMENT */
+        .achievement-grid-kado {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .achievement-card-kado {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(200, 200, 200, 0.3);
+            border-radius: 14px;
+            padding: 12px 8px;
+            text-align: center;
+            transition: all 0.3s;
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .achievement-card-kado.tercapai {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 197, 66, 0.15));
+            border-color: #f5c542;
+            opacity: 1;
+            filter: grayscale(0);
+            box-shadow: 0 4px 16px rgba(245, 197, 66, 0.25);
+        }
+
+        .achievement-card-kado .ach-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .achievement-card-kado .ach-nama {
+            font-size: 11px;
+            font-weight: 800;
+            color: #2d1b3d;
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+
+        .achievement-card-kado .ach-syarat {
+            font-size: 9px;
+            color: #7c6b8a;
+            font-weight: 600;
+        }
+
+        /* RIWAYAT */
+        .riwayat-kado {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .kosong-riwayat {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b5a5c4;
+        }
+
+        .kosong-riwayat span {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .kosong-riwayat .sub {
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        .riwayat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border-left: 5px solid #f093fb;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .riwayat-item:hover {
+            transform: translateX(6px);
+        }
+
+        .riwayat-item.biasa { border-left-color: #a0aec0; }
+        .riwayat-item.bagus { border-left-color: #43e97b; }
+        .riwayat-item.langka { border-left-color: #4facfe; }
+        .riwayat-item.epik { border-left-color: #a18cd1; }
+        .riwayat-item.legendaris { border-left-color: #f5c542; }
+
+        .riwayat-item .riwayat-icon {
+            font-size: 28px;
+        }
+
+        .riwayat-item .riwayat-info {
+            flex: 1;
+        }
+
+        .riwayat-item .riwayat-rarity {
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .riwayat-item .riwayat-rarity.biasa { color: #a0aec0; }
+        .riwayat-item .riwayat-rarity.bagus { color: #43e97b; }
+        .riwayat-item .riwayat-rarity.langka { color: #4facfe; }
+        .riwayat-item .riwayat-rarity.epik { color: #a18cd1; }
+        .riwayat-item .riwayat-rarity.legendaris { color: #f5c542; }
+
+        .riwayat-item .riwayat-isi {
+            font-size: 13px;
+            color: #2d1b3d;
+            font-weight: 600;
+        }
+
+        .riwayat-item .riwayat-tanggal {
+            font-size: 11px;
+            color: #7c6b8a;
+            margin-top: 2px;
+        }
+
+        /* MODAL KADO */
+        .modal-kado {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            padding: 20px;
+        }
+
+        .modal-kado.show {
+            display: flex;
+        }
+
+        .modal-kado-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 24px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: popInKado 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes popInKado {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            70% { transform: scale(1.05) rotate(3deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* ANIMASI KADO TERBUKA */
+        .kado-terbuka-anim {
+            animation: kadoShake 0.6s ease-in-out;
+        }
+
+        @keyframes kadoShake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            20% { transform: translateX(-15px) rotate(-10deg); }
+            40% { transform: translateX(15px) rotate(10deg); }
+            60% { transform: translateX(-10px) rotate(-5deg); }
+            80% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        .modal-kado-icon {
+            font-size: 80px;
+            display: block;
+            margin-bottom: 12px;
+            animation: bounceModal 1s ease-in-out infinite;
+        }
+
+        @keyframes bounceModal {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .modal-kado-rarity {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: white;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-kado-rarity.biasa { background: linear-gradient(135deg, #a0aec0, #718096); }
+        .modal-kado-rarity.bagus { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .modal-kado-rarity.langka { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .modal-kado-rarity.epik { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+        .modal-kado-rarity.legendaris {
+            background: linear-gradient(135deg, #f5c542, #f093fb);
+            box-shadow: 0 0 30px rgba(245, 197, 66, 0.6);
+            animation: glowLegend 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glowLegend {
+            0%, 100% { box-shadow: 0 0 30px rgba(245, 197, 66, 0.6); }
+            50% { box-shadow: 0 0 50px rgba(245, 197, 66, 0.9); }
+        }
+
+        .modal-kado-isi {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d1b3d;
+            line-height: 1.5;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 197, 66, 0.1));
+            border-radius: 16px;
+            border: 2px dashed rgba(240, 147, 251, 0.3);
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-kado-pesan {
+            font-size: 13px;
+            color: #7c6b8a;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn-group button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-tutup-modal {
+            background: linear-gradient(135deg, #f093fb 0%, #f5c542 100%);
+            color: white;
+        }
+
+        .btn-tutup-modal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(240, 147, 251, 0.4);
+        }
+
+        /* CONFETTI */
+        .confetti-kado {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 999999;
+            pointer-events: none;
+            animation: confettiFall 2.5s linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .kado-hero { height: 200px; }
+            .kado-hero h1 { font-size: 24px; letter-spacing: 1px; }
+            .kado-hero p { font-size: 12px; }
+            .kado-hero-icon { font-size: 48px; }
+            .kado-info { grid-template-columns: 1fr; gap: 8px; }
+            .info-item { padding: 10px 14px; }
+            .kado-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .achievement-grid-kado { grid-template-columns: repeat(2, 1fr); }
+            .modal-kado-content { padding: 24px 18px; }
+            .modal-kado-icon { font-size: 60px; }
+            .modal-kado-isi { font-size: 15px; padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <!-- HEADER ATAS -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeLainnya()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HERO KADO -->
+            <div class="kado-hero">
+                <div class="kado-hero-konten">
+                    <div class="kado-hero-icon">🎁</div>
+                    <h1>KADO RAHASIA</h1>
+                    <p>"Setiap kado adalah kejutan untuk Haris & Anita" 💕</p>
+                </div>
+            </div>
+
+            <!-- INFO KADO -->
+            <div class="kado-info">
+                <div class="info-item">
+                    <div class="info-icon">📅</div>
+                    <div class="info-text">
+                        <div class="info-label">Kado Hari Ini</div>
+                        <div class="info-nilai" id="kadoHariIni">0/2</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">⏰</div>
+                    <div class="info-text">
+                        <div class="info-label">Reset Dalam</div>
+                        <div class="info-nilai" id="countdownReset">00:00:00</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">💝</div>
+                    <div class="info-text">
+                        <div class="info-label">Total Dibuka</div>
+                        <div class="info-nilai" id="totalDibuka">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="kado-progress">
+                <div class="progress-info">
+                    <span>📊 Progress Kado Hari Ini</span>
+                    <span id="progressPersen">0%</span>
+                </div>
+                <div class="progress-bar-kado">
+                    <div class="progress-fill-kado" id="progressFill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- GRID KADO -->
+            <div class="kado-section-title">
+                🎁 Pilih Kado Rahasia
+            </div>
+            <div class="kado-grid" id="kadoGrid">
+                <!-- Diisi oleh JavaScript -->
+            </div>
+
+            <!-- ACHIEVEMENT -->
+            <div class="kado-section-title">
+                🏆 Achievement
+            </div>
+            <div class="achievement-grid-kado" id="achievementGrid">
+                <!-- Diisi oleh JavaScript -->
+            </div>
+
+            <!-- RIWAYAT KADO -->
+            <div class="kado-section-title">
+                📜 Riwayat Kado
+            </div>
+            <div class="riwayat-kado" id="riwayatKado">
+                <div class="kosong-riwayat">
+                    <span>📭</span>
+                    <p>Belum ada kado yang dibuka</p>
+                    <p class="sub">Buka kado pertama kalian! 💕</p>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>🎁 Kado Rahasia Haris & Anita</p>
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL KADO -->
+    <div class="modal-kado" id="modalKado">
+        <div class="modal-kado-content" id="modalKadoContent">
+            <!-- Diisi oleh JavaScript -->
+        </div>
+    </div>
+
+            <script>
+        // ============================================
+        // KADO RAHASIA - LOGIC (VERSI FINAL)
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+        const API_URL = 'http://localhost:3000/api';
+
+        // ============================================
+        // DATA KADO
+        // ============================================
+
+        const rarityInfo = {
+            biasa: { label: '⚪ BIASA', color: '#a0aec0', icon: '⚪' },
+            bagus: { label: '🟢 BAGUS', color: '#43e97b', icon: '🟢' },
+            langka: { label: '🔵 LANGKA', color: '#4facfe', icon: '🔵' },
+            epik: { label: '🟣 EPIK', color: '#a18cd1', icon: '🟣' },
+            legendaris: { label: '🟡 LEGENDARIS', color: '#f5c542', icon: '🟡' }
+        };
+
+        const achievementKado = [
+            { level: 1, nama: 'Pembuka Pertama', icon: '🎁', syarat: 1 },
+            { level: 2, nama: 'Pemburu Kado', icon: '🔍', syarat: 5 },
+            { level: 3, nama: 'Kolektor Kado', icon: '📦', syarat: 10 },
+            { level: 4, nama: 'Ahli Kado', icon: '🎁', syarat: 20 },
+            { level: 5, nama: 'Master Kado', icon: '🌟', syarat: 30 },
+            { level: 6, nama: 'Legenda Kado', icon: '👑', syarat: 50 },
+            { level: 7, nama: 'Raja Kado', icon: '💎', syarat: 75 },
+            { level: 8, nama: 'Dewa Kado', icon: '🏆', syarat: 100 },
+            { level: 9, nama: 'Kolektor Legendaris', icon: '🟡', syarat: 150 },
+            { level: 10, nama: 'Kado Abadi', icon: '💝', syarat: 200 }
+        ];
+
+        let totalDibuka = 0;
+        let kadoHariIni = 0;
+        let kadoTerbuka = [];
+        let riwayat = [];
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+
+                       function kembaliKeLainnya() {
+            window.location.href = 'lainnya.html';
+        }
+
+        // ============================================
+        // AMBIL DATA KADO DARI SERVER
+        // ============================================
+
+        async function ambilKadoDariServer() {
+            try {
+                const response = await fetch(`${API_URL}/kado?ruangan=${ruangan}`);
+                const data = await response.json();
+                
+                totalDibuka = data.totalDibuka || 0;
+                kadoHariIni = data.kadoHariIni || 0;
+                kadoTerbuka = data.kadoTerbuka || [];
+                riwayat = data.riwayat || [];
+                
+                updateInfoKado();
+                renderKado();
+                renderRiwayat();
+                renderAchievement();
+            } catch (error) {
+                console.error('Error ambil kado:', error);
+                // Fallback: tetap render kado kosong
+                renderKado();
+                renderAchievement();
+            }
+        }
+
+        // ============================================
+        // UPDATE INFO KADO
+        // ============================================
+
+        function updateInfoKado() {
+            document.getElementById('kadoHariIni').textContent = `${kadoHariIni}/2`;
+            document.getElementById('totalDibuka').textContent = totalDibuka;
+            
+            const persen = (kadoHariIni / 2) * 100;
+            document.getElementById('progressFill').style.width = persen + '%';
+            document.getElementById('progressPersen').textContent = Math.round(persen) + '%';
+        }
+
+        // ============================================
+        // COUNTDOWN RESET
+        // ============================================
+
+        function updateCountdown() {
+            const sekarang = new Date();
+            const besok = new Date(sekarang);
+            besok.setHours(24, 0, 0, 0);
+            
+            const selisih = besok - sekarang;
+            const jam = String(Math.floor(selisih / (1000 * 60 * 60))).padStart(2, '0');
+            const menit = String(Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            const detik = String(Math.floor((selisih % (1000 * 60)) / 1000)).padStart(2, '0');
+            
+            document.getElementById('countdownReset').textContent = `${jam}:${menit}:${detik}`;
+        }
+        setInterval(updateCountdown, 1000);
+
+        // ============================================
+        // RENDER KADO
+        // ============================================
+
+        function renderKado() {
+            const container = document.getElementById('kadoGrid');
+            if (!container) return;
+            
+            let html = '';
+            
+            for (let i = 0; i < 7; i++) {
+                const sudahDibuka = kadoTerbuka.includes(i);
+                html += `
+                    <div class="kado-card ${sudahDibuka ? 'dibuka' : ''}" onclick="bukaKado(${i})">
+                        <div class="kado-icon">${sudahDibuka ? '✅' : '🎁'}</div>
+                        <div class="kado-label">${sudahDibuka ? 'SUDAH' : 'RAHASIA'}</div>
+                        <div class="kado-rarity-label">${sudahDibuka ? '✔️ Terbuka' : '❓ ???'}</div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // BUKA KADO
+        // ============================================
+
+        async function bukaKado(index) {
+            if (kadoTerbuka.includes(index)) {
+                alert('⚠️ Kado ini sudah dibuka!');
+                return;
+            }
+            
+            if (kadoHariIni >= 2) {
+                alert('⚠️ Kado hari ini sudah habis!\n\nKembali lagi besok ya 💕');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/kado/buka`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ index, ruangan })
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    alert('⚠️ ' + result.error);
+                    return;
+                }
+                
+                const kado = result.kado;
+                const info = rarityInfo[kado.rarity];
+                
+                // Update data lokal
+                kadoTerbuka.push(index);
+                kadoHariIni = result.kadoHariIni;
+                totalDibuka = result.totalDibuka;
+                riwayat.unshift(kado);
+                
+                // Tampilkan modal
+                tampilkanModalKado(kado.rarity, kado.isi, info);
+                
+                // Confetti untuk rarity tinggi
+                if (kado.rarity === 'epik' || kado.rarity === 'legendaris') {
+                    tampilkanConfettiKado();
+                }
+                
+                // Update tampilan
+                updateInfoKado();
+                renderKado();
+                renderRiwayat();
+                renderAchievement();
+                
+            } catch (error) {
+                console.error('Error buka kado:', error);
+                alert('❌ Gagal buka kado! Pastikan server jalan.');
+            }
+        }
+
+        // ============================================
+        // MODAL KADO
+        // ============================================
+
+        function tampilkanModalKado(rarity, isi, info) {
+            const modal = document.getElementById('modalKado');
+            const content = document.getElementById('modalKadoContent');
+            
+            let iconKado = '🎁';
+            if (rarity === 'legendaris') iconKado = '👑';
+            else if (rarity === 'epik') iconKado = '💎';
+            else if (rarity === 'langka') iconKado = '🔵';
+            else if (rarity === 'bagus') iconKado = '🟢';
+            else iconKado = '⚪';
+            
+            content.innerHTML = `
+                <span class="modal-kado-icon">${iconKado}</span>
+                <div class="modal-kado-rarity ${rarity}">${info.label}</div>
+                <div class="modal-kado-isi">${isi}</div>
+                <div class="modal-kado-pesan">✨ Kado berhasil dibuka! ✨</div>
+                <div class="modal-btn-group">
+                    <button class="btn-tutup-modal" onclick="tutupModalKado()">🎉 Mantap!</button>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        function tutupModalKado() {
+            document.getElementById('modalKado').classList.remove('show');
+        }
+
+        // ============================================
+        // CONFETTI
+        // ============================================
+
+        function tampilkanConfettiKado() {
+            const colors = ['#f093fb', '#f5c542', '#4facfe', '#43e97b', '#a18cd1', '#f5576c'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-kado';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        // ============================================
+        // RIWAYAT
+        // ============================================
+
+        function renderRiwayat() {
+            const container = document.getElementById('riwayatKado');
+            if (!container) return;
+            
+            if (riwayat.length === 0) {
+                container.innerHTML = `
+                    <div class="kosong-riwayat">
+                        <span>📭</span>
+                        <p>Belum ada kado yang dibuka</p>
+                        <p class="sub">Buka kado pertama kalian! 💕</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = riwayat.map(r => {
+                const info = rarityInfo[r.rarity];
+                let icon = r.rarity === 'legendaris' ? '👑' : r.rarity === 'epik' ? '💎' : r.rarity === 'langka' ? '🔵' : r.rarity === 'bagus' ? '🟢' : '⚪';
+                
+                return `
+                    <div class="riwayat-item ${r.rarity}">
+                        <div class="riwayat-icon">${icon}</div>
+                        <div class="riwayat-info">
+                            <div class="riwayat-rarity ${r.rarity}">${info.label}</div>
+                            <div class="riwayat-isi">${r.isi}</div>
+                            <div class="riwayat-tanggal">📅 ${r.tanggal}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // ACHIEVEMENT
+        // ============================================
+
+        function renderAchievement() {
+            const container = document.getElementById('achievementGrid');
+            if (!container) return;
+            
+            container.innerHTML = achievementKado.map(a => {
+                const tercapai = totalDibuka >= a.syarat;
+                return `
+                    <div class="achievement-card-kado ${tercapai ? 'tercapai' : ''}">
+                        <span class="ach-icon">${a.icon}</span>
+                        <div class="ach-nama">${a.nama}</div>
+                        <div class="ach-syarat">${a.syarat} kado</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            const icons = ['❤️', '🎁', '✨', '💝'];
+            hati.textContent = icons[Math.floor(Math.random() * icons.length)];
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 500);
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+
+        window.addEventListener('load', function() {
+            ambilKadoDariServer();
+            updateCountdown();
+            renderAchievement();
+        });
+    </script>
+</body>
+</html>
+</body>
+</html>

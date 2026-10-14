@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 Ruang Photobox - Love Photobox HarisAnita</title>
+        <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           RUANG PHOTOBOX - TEMA HITAM STUDIO
+           ============================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body.ruang-photobox-body {
+            background: radial-gradient(ellipse at center top, #1a1a2e 0%, #0a0a15 50%, #000000 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* LAMPU STUDIO */
+        body.ruang-photobox-body::before {
+            content: '';
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(240, 147, 251, 0.15) 0%, transparent 70%);
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+            animation: lampuPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes lampuPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .rphoto-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* HEADER */
+        .rphoto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.1));
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 2px solid rgba(240, 147, 251, 0.3);
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .rphoto-btn-back {
+            padding: 8px 16px;
+            background: transparent;
+            border: 2px solid #f093fb;
+            color: #f093fb;
+            font-weight: 800;
+            font-size: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .rphoto-btn-back:hover {
+            background: #f093fb;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .rphoto-header-tengah {
+            flex: 1;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .rphoto-header-tengah h1 {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .rphoto-info-layout {
+            font-size: 12px;
+            color: #c16ed4;
+            font-weight: 700;
+        }
+
+        .rphoto-timer {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: #f093fb;
+            font-size: 14px;
+            font-weight: 800;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            border: 2px solid rgba(240, 147, 251, 0.5);
+            box-shadow: inset 0 0 10px rgba(240, 147, 251, 0.2);
+        }
+
+        /* AREA KAMERA */
+        .rphoto-kamera-area {
+            margin-bottom: 24px;
+        }
+
+        .rphoto-kamera-frame {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 16px;
+            aspect-ratio: 16 / 9;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+            border: 4px solid #f093fb;
+            box-shadow: 
+                0 0 60px rgba(240, 147, 251, 0.4),
+                0 20px 60px rgba(0, 0, 0, 0.8),
+                inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #videoKamera {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scaleX(-1); /* Mirror untuk webcam */
+        }
+
+        /* COUNTDOWN OVERLAY */
+        .rphoto-countdown {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .countdown-angka {
+            font-size: 160px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 
+                0 0 30px rgba(240, 147, 251, 1),
+                0 0 60px rgba(240, 147, 251, 0.8);
+            animation: countdownZoom 1s ease-in-out;
+        }
+
+        @keyframes countdownZoom {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* FLASH OVERLAY */
+        .rphoto-flash {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .rphoto-flash.aktif {
+            animation: flashEffect 0.4s ease;
+        }
+
+        @keyframes flashEffect {
+            0% { opacity: 0; }
+            30% { opacity: 0.9; }
+            100% { opacity: 0; }
+        }
+
+        /* INFO SLOT */
+        .rphoto-slot-info {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            border-radius: 20px;
+            z-index: 5;
+            box-shadow: 0 4px 16px rgba(240, 147, 251, 0.6);
+            letter-spacing: 1px;
+        }
+
+        /* TOMBOL KONTROL */
+        .rphoto-kontrol {
+            text-align: center;
+        }
+
+        .rphoto-btn-jepret {
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+            box-shadow: 
+                0 10px 30px rgba(67, 233, 123, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            font-family: inherit;
+        }
+
+        .rphoto-btn-jepret:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(67, 233, 123, 0.7);
+        }
+
+        .rphoto-btn-jepret:active {
+            transform: scale(0.97);
+        }
+
+        .rphoto-btn-jepret:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* PREVIEW AREA */
+        .rphoto-preview-area {
+            background: linear-gradient(135deg, rgba(30, 20, 40, 0.9), rgba(20, 10, 30, 0.9));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            border: 2px solid rgba(240, 147, 251, 0.4);
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .rphoto-preview-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #f093fb;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-preview-frame {
+            max-width: 500px;
+            margin: 0 auto 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 4px solid #f093fb;
+            box-shadow: 0 0 40px rgba(240, 147, 251, 0.5);
+        }
+
+        .rphoto-preview-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .rphoto-preview-btn {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .rphoto-btn-ok,
+        .rphoto-btn-ulang {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-btn-ok {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.5);
+        }
+
+        .rphoto-btn-ok:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(67, 233, 123, 0.7);
+        }
+
+        .rphoto-btn-ulang {
+            background: linear-gradient(135deg, #ff9a9e 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.5);
+        }
+
+        .rphoto-btn-ulang:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(245, 87, 108, 0.7);
+        }
+
+        /* SLOT GRID */
+        .rphoto-slot-area {
+            background: linear-gradient(135deg, rgba(30, 20, 40, 0.9), rgba(20, 10, 30, 0.9));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid rgba(240, 147, 251, 0.3);
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .rphoto-slot-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #f093fb;
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-slot-grid {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        /* Grid 1x1 */
+        .rphoto-slot-grid.grid-1x1 {
+            grid-template-columns: repeat(1, 1fr);
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        /* Grid 2x1 (2 horizontal) */
+        .rphoto-slot-grid.grid-2x1 {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Grid 1x2 (2 vertikal) */
+        .rphoto-slot-grid.grid-1x2 {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Grid 1x3 (3 vertikal) */
+        .rphoto-slot-grid.grid-1x3 {
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Grid 3x1 (3 horizontal) */
+        .rphoto-slot-grid.grid-3x1 {
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Grid 2x2 (4 grid) */
+        .rphoto-slot-grid.grid-2x2 {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Grid 4x1 (4 strip) */
+        .rphoto-slot-grid.grid-4x1 {
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Grid 3x2 (6 grid) */
+        .rphoto-slot-grid.grid-3x2 {
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .rphoto-slot-item {
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(240, 147, 251, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .rphoto-slot-item.aktif {
+            border-color: #f093fb;
+            border-style: solid;
+            box-shadow: 0 0 30px rgba(240, 147, 251, 0.6);
+            animation: slotPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes slotPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(240, 147, 251, 0.6); }
+            50% { box-shadow: 0 0 50px rgba(240, 147, 251, 1); }
+        }
+
+        .rphoto-slot-item.terisi {
+            border: 2px solid #43e97b;
+            border-style: solid;
+        }
+
+        .rphoto-slot-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .rphoto-slot-num {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            padding: 2px 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #f093fb;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 10px;
+            z-index: 2;
+        }
+
+        .rphoto-slot-icon {
+            font-size: 32px;
+            color: rgba(240, 147, 251, 0.4);
+        }
+
+        .rphoto-slot-item.terisi .rphoto-slot-icon {
+            display: none;
+        }
+
+        .rphoto-slot-hapus {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e, #f5576c);
+            color: white;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            transition: all 0.3s;
+        }
+
+        .rphoto-slot-item.terisi:hover .rphoto-slot-hapus {
+            display: flex;
+        }
+
+        .rphoto-slot-hapus:hover {
+            transform: scale(1.15);
+        }
+
+        /* SELESAI AREA */
+        .rphoto-selesai-area {
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.15), rgba(56, 249, 215, 0.1));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            border: 3px solid rgba(67, 233, 123, 0.5);
+            margin-bottom: 24px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(67, 233, 123, 0.3);
+        }
+
+        .rphoto-selesai-info {
+            font-size: 18px;
+            font-weight: 800;
+            color: #43e97b;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-selesai-btn {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .rphoto-btn-lanjut,
+        .rphoto-btn-selesai {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-btn-lanjut {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(79, 172, 254, 0.5);
+        }
+
+        .rphoto-btn-lanjut:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(79, 172, 254, 0.7);
+        }
+
+        .rphoto-btn-selesai {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(240, 147, 251, 0.5);
+        }
+
+        .rphoto-btn-selesai:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(240, 147, 251, 0.7);
+        }
+
+        /* FOOTER */
+        .rphoto-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px dashed rgba(240, 147, 251, 0.3);
+            font-size: 12px;
+            color: #c16ed4;
+            font-style: italic;
+        }
+
+        .rphoto-footer p {
+            margin: 4px 0;
+        }
+
+        /* MODAL HASIL */
+        .rphoto-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .rphoto-modal.show {
+            display: flex;
+        }
+
+        .rphoto-modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #0a0a15);
+            border: 3px solid #f093fb;
+            border-radius: 24px;
+            padding: 24px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(240, 147, 251, 0.5);
+            animation: popIn 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .rphoto-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed rgba(240, 147, 251, 0.3);
+        }
+
+        .rphoto-modal-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #f093fb;
+        }
+
+        .rphoto-modal-close {
+            background: transparent;
+            border: 2px solid #f093fb;
+            color: #f093fb;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .rphoto-modal-close:hover {
+            background: #f093fb;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .rphoto-hasil-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .rphoto-hasil-item {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #f093fb;
+            aspect-ratio: 1/1;
+        }
+
+        .rphoto-hasil-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .rphoto-download-section {
+            background: rgba(240, 147, 251, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px dashed rgba(240, 147, 251, 0.3);
+            margin-bottom: 16px;
+        }
+
+        .rphoto-download-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: #f093fb;
+            margin-bottom: 10px;
+        }
+
+        .rphoto-download-format {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .rphoto-download-format select {
+            flex: 1;
+            min-width: 130px;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(240, 147, 251, 0.4);
+            border-radius: 10px;
+            color: #f093fb;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .rphoto-download-format select:focus {
+            outline: none;
+            border-color: #f093fb;
+        }
+
+        .rphoto-btn-download {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.5);
+        }
+
+        .rphoto-modal-footer {
+            text-align: center;
+        }
+
+        .rphoto-btn-selesai-modal {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-btn-selesai-modal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(240, 147, 251, 0.6);
+        }
+
+                /* ============================================
+           MODAL HASIL - PREVIEW PER FOTO
+           ============================================ */
+
+        .rphoto-preview-navigasi {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .rphoto-nav-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(240, 147, 251, 0.5);
+        }
+
+        .rphoto-nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(240, 147, 251, 0.7);
+        }
+
+        .rphoto-nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .rphoto-preview-besar {
+            flex: 1;
+            max-width: 400px;
+            aspect-ratio: 3/4;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid #f093fb;
+            box-shadow: 0 0 40px rgba(240, 147, 251, 0.5);
+            background: #000;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rphoto-preview-besar canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .rphoto-info-foto {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #f093fb;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* TOMBOL UTAMA */
+        .rphoto-btn-utama {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .rphoto-btn-download-besar,
+        .rphoto-btn-edit-frame,
+        .rphoto-btn-selesai-besar {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: 1px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .rphoto-btn-download-besar {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.5);
+        }
+
+        .rphoto-btn-download-besar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(67, 233, 123, 0.7);
+        }
+
+        .rphoto-btn-edit-frame {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(79, 172, 254, 0.5);
+        }
+
+        .rphoto-btn-edit-frame:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(79, 172, 254, 0.7);
+        }
+
+        .rphoto-btn-selesai-besar {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(240, 147, 251, 0.5);
+        }
+
+        .rphoto-btn-selesai-besar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(240, 147, 251, 0.7);
+        }
+
+        /* ============================================
+           PANEL (DOWNLOAD & EDIT FRAME)
+           ============================================ */
+
+        .rphoto-panel {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .rphoto-panel.show {
+            display: flex;
+        }
+
+        .rphoto-panel-content {
+            background: linear-gradient(135deg, #1a1a2e, #0a0a15);
+            border: 3px solid #f093fb;
+            border-radius: 24px;
+            padding: 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(240, 147, 251, 0.5);
+            animation: popIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .rphoto-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed rgba(240, 147, 251, 0.3);
+        }
+
+        .rphoto-panel-header h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #f093fb;
+            letter-spacing: 1px;
+        }
+
+        .rphoto-panel-close {
+            background: transparent;
+            border: 2px solid #f093fb;
+            color: #f093fb;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .rphoto-panel-close:hover {
+            background: #f093fb;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .rphoto-panel-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rphoto-panel-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #c16ed4;
+            margin-top: 6px;
+        }
+
+        .rphoto-panel-select,
+        .rphoto-panel-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(240, 147, 251, 0.4);
+            border-radius: 12px;
+            color: #f093fb;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: inherit;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .rphoto-panel-input {
+            color: white;
+            cursor: text;
+        }
+
+        .rphoto-panel-select:focus,
+        .rphoto-panel-input:focus {
+            outline: none;
+            border-color: #f093fb;
+            box-shadow: 0 0 0 3px rgba(240, 147, 251, 0.2);
+        }
+
+        .rphoto-panel-input::placeholder {
+            color: rgba(240, 147, 251, 0.4);
+        }
+
+        /* WARNA PILIHAN */
+        .rphoto-warna-pilihan {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .warna-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .warna-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .warna-btn.terpilih {
+            border-color: #f093fb;
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(240, 147, 251, 0.8);
+        }
+
+        .rphoto-panel-color {
+            width: 100%;
+            height: 44px;
+            border: 2px solid rgba(240, 147, 251, 0.4);
+            border-radius: 12px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        /* UPLOAD LOGO */
+        .rphoto-upload-logo {
+            padding: 14px;
+            background: rgba(240, 147, 251, 0.1);
+            border: 2px dashed #f093fb;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #f093fb;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .rphoto-upload-logo:hover {
+            background: rgba(240, 147, 251, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .rphoto-logo-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+        }
+
+        .rphoto-logo-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: contain;
+            background: white;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .rphoto-logo-hapus {
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #ff9a9e, #f5576c);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* TOMBOL PANEL */
+        .rphoto-panel-btn-ok {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .rphoto-panel-btn-ok:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.5);
+        }
+
+        .rphoto-panel-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .rphoto-panel-btn-batal {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff9a9e, #f5576c);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .rphoto-panel-btn-batal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.5);
+        }
+
+        .rphoto-panel-btn-group .rphoto-panel-btn-ok {
+            flex: 1;
+            margin-top: 0;
+        }
+
+        @media (max-width: 600px) {
+            .rphoto-preview-besar {
+                max-width: 250px;
+            }
+            .rphoto-nav-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+            .rphoto-btn-utama {
+                flex-direction: column;
+            }
+            .rphoto-btn-download-besar,
+            .rphoto-btn-edit-frame,
+            .rphoto-btn-selesai-besar {
+                width: 100%;
+            }
+            .rphoto-panel-content {
+                padding: 18px;
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            body.ruang-photobox-body {
+                padding: 10px;
+            }
+
+            .rphoto-header {
+                padding: 10px 12px;
+            }
+
+            .rphoto-header-tengah h1 {
+                font-size: 13px;
+            }
+
+            .rphoto-info-layout,
+            .rphoto-timer {
+                font-size: 11px;
+            }
+
+            .rphoto-btn-back {
+                font-size: 10px;
+                padding: 6px 12px;
+            }
+
+            .rphoto-kamera-frame {
+                border-width: 3px;
+            }
+
+            .countdown-angka {
+                font-size: 100px;
+            }
+
+            .rphoto-btn-jepret {
+                font-size: 14px;
+                padding: 14px 28px;
+            }
+
+            .rphoto-slot-area {
+                padding: 14px;
+            }
+
+            .rphoto-slot-icon {
+                font-size: 24px;
+            }
+
+            .rphoto-btn-lanjut,
+            .rphoto-btn-selesai,
+            .rphoto-btn-ok,
+            .rphoto-btn-ulang {
+                font-size: 12px;
+                padding: 12px 20px;
+                flex: 1;
+            }
+
+            .rphoto-selesai-btn,
+            .rphoto-preview-btn {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="ruang-photobox-body">
+
+    <div id="hatiContainer"></div>
+
+    <div class="rphoto-wrapper">
+
+        <!-- HEADER -->
+        <div class="rphoto-header">
+            <button class="rphoto-btn-back" onclick="keluarSesi()">⬅ Keluar</button>
+            <div class="rphoto-header-tengah">
+                <h1>📸 RUANG PHOTOBOX</h1>
+                <div class="rphoto-info-layout" id="infoLayout">🎬 Tata Letak: -</div>
+            </div>
+            <div class="rphoto-header-kanan">
+                <span class="rphoto-timer" id="timerSesi">⏱️ --:--</span>
+            </div>
+        </div>
+
+        <!-- AREA KAMERA -->
+        <div class="rphoto-kamera-area">
+            <div class="rphoto-kamera-frame" id="kameraFrame">
+                <!-- Video Kamera -->
+                <video id="videoKamera" autoplay playsinline muted></video>
+                
+                <!-- Canvas untuk capture -->
+                <canvas id="canvasFoto" style="display: none;"></canvas>
+                
+                <!-- Overlay Countdown -->
+                <div class="rphoto-countdown" id="countdownOverlay" style="display: none;">
+                    <div class="countdown-angka" id="countdownAngka">5</div>
+                </div>
+
+                <!-- Overlay Flash -->
+                <div class="rphoto-flash" id="flashOverlay"></div>
+                
+                <!-- Info Slot Aktif -->
+                <div class="rphoto-slot-info" id="slotInfo">Slot 1</div>
+            </div>
+
+            <!-- Tombol Kontrol Kamera -->
+            <div class="rphoto-kontrol">
+                <button class="rphoto-btn-jepret" id="btnJepret" onclick="mulaiCountdown()">
+                    📸 JEPRET SLOT <span id="slotAktifText">1</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- PREVIEW FOTO (SETELAH CAPTURE) -->
+        <div class="rphoto-preview-area" id="previewArea" style="display: none;">
+            <div class="rphoto-preview-title">📸 Preview Foto Slot <span id="previewSlotNum">1</span></div>
+            <div class="rphoto-preview-frame">
+                <img id="previewFoto" src="" alt="Preview" />
+            </div>
+            <div class="rphoto-preview-btn">
+                <button class="rphoto-btn-ok" onclick="okPreview()">✅ OK, Lanjut!</button>
+                <button class="rphoto-btn-ulang" onclick="jepretUlang()">🔄 Jepret Ulang</button>
+            </div>
+        </div>
+
+        <!-- SLOT GRID -->
+        <div class="rphoto-slot-area">
+            <div class="rphoto-slot-title">📋 Slot Foto Tata Letak</div>
+            <div class="rphoto-slot-grid" id="slotGrid">
+                <!-- Di-generate oleh JS -->
+            </div>
+        </div>
+
+        <!-- TOMBOL SETELAH SEMUA SLOT TERISI -->
+        <div class="rphoto-selesai-area" id="selesaiArea" style="display: none;">
+            <div class="rphoto-selesai-info">🎉 Semua slot sudah terisi!</div>
+            <div class="rphoto-selesai-btn">
+                <button class="rphoto-btn-lanjut" onclick="lanjutTataLetak()">➡️ Lanjut Tata Letak Berikutnya</button>
+                <button class="rphoto-btn-selesai" onclick="selesaikanSesi()">✅ Selesai Sesi Foto</button>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="rphoto-footer">
+            <p>📸 Love Photobox HarisAnita</p>
+            <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+        </div>
+
+    </div>
+
+        <!-- MODAL HASIL AKHIR -->
+    <div class="rphoto-modal" id="modalHasil">
+        <div class="rphoto-modal-content">
+            
+            <!-- HEADER -->
+            <div class="rphoto-modal-header">
+                <h2>🎉 Sesi Foto Selesai!</h2>
+                <button class="rphoto-modal-close" onclick="tutupModalHasil()">✕</button>
+            </div>
+
+            <!-- BODY -->
+            <div class="rphoto-modal-body">
+
+                <!-- PREVIEW PER FOTO -->
+                <div class="rphoto-preview-navigasi">
+                    <button class="rphoto-nav-btn" onclick="fotoSebelumnya()">⬅️</button>
+                    <div class="rphoto-preview-besar" id="previewBesar">
+                        <!-- Foto + frame akan di-render di sini -->
+                    </div>
+                    <button class="rphoto-nav-btn" onclick="fotoBerikutnya()">➡️</button>
+                </div>
+
+                <!-- INFO FOTO -->
+                <div class="rphoto-info-foto" id="infoFoto">
+                    📸 Foto 1 dari 4
+                </div>
+
+                <!-- TOMBOL UTAMA -->
+                <div class="rphoto-btn-utama">
+                    <button class="rphoto-btn-download-besar" onclick="bukaPanelDownload()">
+                        📥 Download
+                    </button>
+                    <button class="rphoto-btn-edit-frame" onclick="bukaPanelEditFrame()">
+                        ✏️ Edit Frame
+                    </button>
+                    <button class="rphoto-btn-selesai-besar" onclick="selesaiSemua()">
+                        🏠 Selesai
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PANEL DOWNLOAD -->
+    <div class="rphoto-panel" id="panelDownload">
+        <div class="rphoto-panel-content">
+            <div class="rphoto-panel-header">
+                <h3>📥 Download Foto</h3>
+                <button class="rphoto-panel-close" onclick="tutupPanel('panelDownload')">✕</button>
+            </div>
+            <div class="rphoto-panel-body">
+                <label class="rphoto-panel-label">🎨 Format File:</label>
+                <select id="formatDownload" class="rphoto-panel-select">
+                    <option value="png">PNG (Kualitas Tinggi)</option>
+                    <option value="jpg">JPG (Ukuran Kecil)</option>
+                    <option value="webp">WebP (Modern)</option>
+                    <option value="pdf">PDF (Siap Print)</option>
+                </select>
+
+                <label class="rphoto-panel-label">📐 Kualitas:</label>
+                <select id="kualitasDownload" class="rphoto-panel-select">
+                    <option value="standar">Standar</option>
+                    <option value="hd" selected>HD</option>
+                    <option value="fullhd">Full HD</option>
+                    <option value="ultrahd">Ultra HD (4K)</option>
+                </select>
+
+                <label class="rphoto-panel-label">📦 Jumlah Download:</label>
+                <select id="pilihDownload" class="rphoto-panel-select">
+                    <option value="semua" selected>Semua Foto</option>
+                    <option value="ini">Foto Ini Saja</option>
+                </select>
+
+                <button class="rphoto-panel-btn-ok" onclick="konfirmasiDownload()">
+                    📥 Download Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL EDIT FRAME -->
+    <div class="rphoto-panel" id="panelEditFrame">
+        <div class="rphoto-panel-content">
+            <div class="rphoto-panel-header">
+                <h3>✏️ Edit Frame</h3>
+                <button class="rphoto-panel-close" onclick="tutupPanel('panelEditFrame')">✕</button>
+            </div>
+            <div class="rphoto-panel-body">
+
+                <label class="rphoto-panel-label">📝 Tulisan Header:</label>
+                <input type="text" id="editHeader" class="rphoto-panel-input" 
+                       placeholder="HARISANITA PHOTOBOX" maxlength="30" />
+
+                <label class="rphoto-panel-label">📝 Tulisan Footer:</label>
+                <input type="text" id="editFooter" class="rphoto-panel-input" 
+                       placeholder="PHOTO PLACE" maxlength="30" />
+
+                <label class="rphoto-panel-label">🎨 Warna Frame:</label>
+                <div class="rphoto-warna-pilihan" id="warnaFramePilihan">
+                    <button class="warna-btn" data-warna="#000000" style="background: #000000;" onclick="pilihWarnaFrame('#000000', this)"></button>
+                    <button class="warna-btn" data-warna="#ffffff" style="background: #ffffff;" onclick="pilihWarnaFrame('#ffffff', this)"></button>
+                    <button class="warna-btn" data-warna="#f093fb" style="background: #f093fb;" onclick="pilihWarnaFrame('#f093fb', this)"></button>
+                    <button class="warna-btn" data-warna="#a03bb5" style="background: #a03bb5;" onclick="pilihWarnaFrame('#a03bb5', this)"></button>
+                    <button class="warna-btn" data-warna="#f5576c" style="background: #f5576c;" onclick="pilihWarnaFrame('#f5576c', this)"></button>
+                    <button class="warna-btn" data-warna="#4facfe" style="background: #4facfe;" onclick="pilihWarnaFrame('#4facfe', this)"></button>
+                </div>
+                <input type="color" id="editWarnaFrame" class="rphoto-panel-color" 
+                       value="#000000" onchange="pilihWarnaFrame(this.value, null)" />
+
+                <label class="rphoto-panel-label">📤 Upload Logo (PNG):</label>
+                <div class="rphoto-upload-logo" onclick="document.getElementById('uploadLogoFrame').click()">
+                    📤 Pilih Logo
+                    <input type="file" id="uploadLogoFrame" accept="image/png" 
+                           style="display:none;" onchange="handleUploadLogo(event)" />
+                </div>
+                <div class="rphoto-logo-preview" id="logoPreview" style="display:none;">
+                    <img id="logoPreviewImg" src="" alt="Logo" />
+                    <button class="rphoto-logo-hapus" onclick="hapusLogo()">✕ Hapus Logo</button>
+                </div>
+
+                <div class="rphoto-panel-btn-group">
+                    <button class="rphoto-panel-btn-batal" onclick="tutupPanel('panelEditFrame')">❌ Batal</button>
+                    <button class="rphoto-panel-btn-ok" onclick="konfirmasiEditFrame()">✅ Simpan & Preview</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+        <script src="script.js"></script>
+    <script>
+        // ============================================
+        // RUANG PHOTOBOX - LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+
+        // ============================================
+        // DATA TATA LETAK (8 pilihan)
+        // ============================================
+
+        const tataLetakMap = {
+            '1foto': { nama: '1 Foto', grid: '1x1', jumlah: 1 },
+            '2fotoh': { nama: '2 Foto H', grid: '2x1', jumlah: 2 },
+            '2fotov': { nama: '2 Foto V', grid: '1x2', jumlah: 2 },
+            '3fotov': { nama: '3 Foto V', grid: '1x3', jumlah: 3 },
+            '3fotoh': { nama: '3 Foto H', grid: '3x1', jumlah: 3 },
+            '4fotogrid': { nama: '4 Foto Grid', grid: '2x2', jumlah: 4 },
+            '4fotostrip': { nama: '4 Foto Strip', grid: '4x1', jumlah: 4 },
+            '6fotogrid': { nama: '6 Foto Grid', grid: '3x2', jumlah: 6 }
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+
+        let tiket = null;
+        let tataLetakAktif = null;
+        let slotAktif = 0;
+        let slotFoto = []; // Array of data URL atau null
+        let semuaHasilFoto = []; // Kumpulan hasil foto tiap tata letak
+        let countdownTimer = null;
+        let timerSesiInterval = null;
+        let waktuSesiTersisa = 0;
+        let waktuSesiMulai = 0;
+        let streamKamera = null;
+        let fotoSementara = null; // Foto yang lagi di-preview
+                let indexPreview = 0; // Index foto yang lagi di-preview di modal hasil
+        let semuaFotoArray = []; // Array flat semua foto
+        let frameData = {
+            header: 'HARISANITA PHOTOBOX',
+            footer: 'PHOTO PLACE',
+            warna: '#000000',
+            logo: null // Data URL logo PNG
+        };
+
+        // ============================================
+        // AMBIL TIKET
+        // ============================================
+
+        function ambilTiket() {
+            const tiketStr = localStorage.getItem('tiketPhotobox');
+            if (!tiketStr) {
+                alert('⚠️ Tiket tidak ditemukan! Silakan isi registrasi dulu.');
+                window.location.href = 'photobox.html';
+                return null;
+            }
+            return JSON.parse(tiketStr);
+        }
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+
+        function keluarSesi() {
+            if (confirm('🚪 Yakin mau keluar dari sesi foto?\n\nSemua foto yang belum di-download akan hilang.')) {
+                matikanKamera();
+                if (countdownTimer) clearInterval(countdownTimer);
+                if (timerSesiInterval) clearInterval(timerSesiInterval);
+                localStorage.removeItem('tiketPhotobox');
+                window.location.href = 'photobox.html';
+            }
+        }
+
+        // ============================================
+        // KAMERA
+        // ============================================
+
+        async function nyalakanKamera() {
+            try {
+                streamKamera = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: 'user'
+                    },
+                    audio: false
+                });
+                document.getElementById('videoKamera').srcObject = streamKamera;
+            } catch (error) {
+                console.error('Kamera error:', error);
+                alert('❌ Tidak bisa mengakses kamera!\n\nPastikan:\n1. Kamera tidak dipakai aplikasi lain\n2. Izin kamera diizinkan di browser\n3. Pakai HTTPS atau localhost');
+            }
+        }
+
+        function matikanKamera() {
+            if (streamKamera) {
+                streamKamera.getTracks().forEach(track => track.stop());
+                streamKamera = null;
+            }
+        }
+
+        // ============================================
+        // TIMER SESI
+        // ============================================
+
+        function mulaiTimerSesi() {
+            // Durasi dalam detik
+            let durasiDetik = tiket.durasi;
+            if (tiket.durasi === 'custom') {
+                durasiDetik = tiket.durasiCustom;
+            } else {
+                durasiDetik = parseInt(tiket.durasi);
+            }
+
+            // Kalau sepuasnya (tidak ada)
+            if (!durasiDetik || durasiDetik <= 0) {
+                document.getElementById('timerSesi').textContent = '⏱️ ∞';
+                return;
+            }
+
+            waktuSesiTersisa = durasiDetik;
+            updateTimerDisplay();
+
+            timerSesiInterval = setInterval(() => {
+                waktuSesiTersisa--;
+                updateTimerDisplay();
+
+                if (waktuSesiTersisa <= 0) {
+                    clearInterval(timerSesiInterval);
+                    document.getElementById('timerSesi').textContent = '⏱️ Selesai!';
+                    alert('⏰ Waktu sesi foto sudah habis!\n\nHasil foto bisa di-download sekarang.');
+                    tampilkanModalHasil();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const menit = Math.floor(waktuSesiTersisa / 60);
+            const detik = waktuSesiTersisa % 60;
+            const menitStr = String(menit).padStart(2, '0');
+            const detikStr = String(detik).padStart(2, '0');
+            document.getElementById('timerSesi').textContent = '⏱️ ' + menitStr + ':' + detikStr;
+        }
+
+        // ============================================
+        // SETUP TATA LETAK
+        // ============================================
+
+        function setupTataLetak() {
+            tataLetakAktif = tataLetakMap[tiket.tataLetak];
+            
+            if (!tataLetakAktif) {
+                alert('⚠️ Tata letak tidak valid!');
+                window.location.href = 'photobox.html';
+                return;
+            }
+
+            // Reset slot
+            slotAktif = 0;
+            slotFoto = new Array(tataLetakAktif.jumlah).fill(null);
+
+            // Update info layout
+            document.getElementById('infoLayout').textContent = 
+                '🎬 Tata Letak: ' + tataLetakAktif.nama + ' (' + tataLetakAktif.jumlah + ' foto)';
+
+            // Update slot info
+            document.getElementById('slotInfo').textContent = 'Slot ' + (slotAktif + 1) + ' dari ' + tataLetakAktif.jumlah;
+            document.getElementById('slotAktifText').textContent = (slotAktif + 1);
+
+            // Generate slot grid
+            generateSlotGrid();
+        }
+
+        // ============================================
+        // GENERATE SLOT GRID
+        // ============================================
+
+        function generateSlotGrid() {
+            const grid = document.getElementById('slotGrid');
+            grid.className = 'rphoto-slot-grid grid-' + tataLetakAktif.grid;
+            
+            let html = '';
+            for (let i = 0; i < tataLetakAktif.jumlah; i++) {
+                const isAktif = i === slotAktif;
+                const isTerisi = slotFoto[i] !== null;
+                const kelas = 'rphoto-slot-item' + 
+                    (isAktif ? ' aktif' : '') + 
+                    (isTerisi ? ' terisi' : '');
+                
+                html += '<div class="' + kelas + '" data-slot="' + i + '">';
+                html += '<div class="rphoto-slot-num">' + (i + 1) + '</div>';
+                
+                if (isTerisi) {
+                    html += '<img src="' + slotFoto[i] + '" alt="Slot ' + (i + 1) + '" />';
+                    html += '<button class="rphoto-slot-hapus" onclick="hapusSlot(' + i + ')">✕</button>';
+                } else {
+                    html += '<div class="rphoto-slot-icon">📸</div>';
+                }
+                
+                html += '</div>';
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        // ============================================
+        // COUNTDOWN & CAPTURE
+        // ============================================
+
+        function mulaiCountdown() {
+            // Cek slot sudah penuh
+            if (slotAktif >= tataLetakAktif.jumlah) {
+                alert('✅ Semua slot sudah terisi!');
+                return;
+            }
+
+            // Disable tombol
+            document.getElementById('btnJepret').disabled = true;
+
+            // Tampilkan overlay countdown
+            const overlay = document.getElementById('countdownOverlay');
+            const angka = document.getElementById('countdownAngka');
+            overlay.style.display = 'flex';
+
+            let hitungan = 5; // 5 detik (sesuai pilihan)
+            angka.textContent = hitungan;
+
+            countdownTimer = setInterval(() => {
+                hitungan--;
+                
+                if (hitungan > 0) {
+                    angka.textContent = hitungan;
+                    angka.style.animation = 'none';
+                    setTimeout(() => angka.style.animation = 'countdownZoom 1s ease-in-out', 10);
+                } else {
+                    clearInterval(countdownTimer);
+                    overlay.style.display = 'none';
+                    captureFoto();
+                }
+            }, 1000);
+        }
+
+        function captureFoto() {
+            const video = document.getElementById('videoKamera');
+            const canvas = document.getElementById('canvasFoto');
+            
+            // Set canvas sesuai video
+            canvas.width = video.videoWidth || 1280;
+            canvas.height = video.videoHeight || 720;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Mirror horizontal biar gak kebalik
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Flash effect
+            const flash = document.getElementById('flashOverlay');
+            flash.classList.add('aktif');
+            setTimeout(() => flash.classList.remove('aktif'), 400);
+
+            // Ambil data URL
+            const fotoData = canvas.toDataURL('image/png');
+            fotoSementara = fotoData;
+
+            // Tampilkan preview
+            setTimeout(() => {
+                tampilkanPreview(fotoData);
+            }, 300);
+        }
+
+        // ============================================
+        // PREVIEW
+        // ============================================
+
+        function tampilkanPreview(fotoData) {
+            // Sembunyikan kamera area
+            document.querySelector('.rphoto-kamera-area').style.display = 'none';
+
+            // Tampilkan preview area
+            const previewArea = document.getElementById('previewArea');
+            previewArea.style.display = 'block';
+            document.getElementById('previewSlotNum').textContent = (slotAktif + 1);
+            document.getElementById('previewFoto').src = fotoData;
+        }
+
+        function okPreview() {
+            // Simpan ke slot
+            slotFoto[slotAktif] = fotoSementara;
+            fotoSementara = null;
+
+            // Sembunyikan preview
+            document.getElementById('previewArea').style.display = 'none';
+            document.querySelector('.rphoto-kamera-area').style.display = 'block';
+
+            // Update grid
+            generateSlotGrid();
+
+            // Pindah ke slot berikutnya
+            slotAktif++;
+
+            if (slotAktif >= tataLetakAktif.jumlah) {
+                // Semua slot terisi
+                document.getElementById('slotInfo').textContent = '✅ Semua slot terisi!';
+                document.getElementById('btnJepret').disabled = true;
+                document.getElementById('btnJepret').textContent = '✅ Semua Slot Terisi';
+                document.getElementById('selesaiArea').style.display = 'block';
+            } else {
+                // Update info slot
+                document.getElementById('slotInfo').textContent = 'Slot ' + (slotAktif + 1) + ' dari ' + tataLetakAktif.jumlah;
+                document.getElementById('slotAktifText').textContent = (slotAktif + 1);
+                document.getElementById('btnJepret').disabled = false;
+                generateSlotGrid();
+            }
+        }
+
+        function jepretUlang() {
+            // Kembali ke kamera
+            document.getElementById('previewArea').style.display = 'none';
+            document.querySelector('.rphoto-kamera-area').style.display = 'block';
+            fotoSementara = null;
+            document.getElementById('btnJepret').disabled = false;
+        }
+
+        // ============================================
+        // HAPUS SLOT
+        // ============================================
+
+        function hapusSlot(index) {
+            if (!confirm('Hapus foto Slot ' + (index + 1) + '? 💔')) return;
+
+            slotFoto[index] = null;
+            
+            // Set slot aktif ke index yang dihapus
+            slotAktif = index;
+            
+            // Update UI
+            document.getElementById('slotInfo').textContent = 'Slot ' + (slotAktif + 1) + ' dari ' + tataLetakAktif.jumlah;
+            document.getElementById('slotAktifText').textContent = (slotAktif + 1);
+            document.getElementById('btnJepret').disabled = false;
+            document.getElementById('btnJepret').innerHTML = '📸 JEPRET SLOT <span id="slotAktifText">' + (slotAktif + 1) + '</span>';
+            document.getElementById('selesaiArea').style.display = 'none';
+            
+            generateSlotGrid();
+        }
+
+        // ============================================
+        // LANJUT TATA LETAK / SELESAI
+        // ============================================
+
+        function lanjutTataLetak() {
+            // Simpan hasil tata letak ini
+            semuaHasilFoto.push({
+                tataLetak: tataLetakAktif.nama,
+                grid: tataLetakAktif.grid,
+                foto: [...slotFoto]
+            });
+
+            // Reset untuk tata letak baru
+            if (confirm('➡️ Lanjut ke tata letak berikutnya?\n\nPilih tata letak baru di halaman registrasi.')) {
+                matikanKamera();
+                if (timerSesiInterval) clearInterval(timerSesiInterval);
+                
+                // Simpan hasil sementara
+                localStorage.setItem('hasilFotoSementara', JSON.stringify(semuaHasilFoto));
+                
+                // Kembali ke registrasi
+                window.location.href = 'photobox.html';
+            }
+        }
+
+        function selesaikanSesi() {
+            // Simpan hasil tata letak ini
+            semuaHasilFoto.push({
+                tataLetak: tataLetakAktif.nama,
+                grid: tataLetakAktif.grid,
+                foto: [...slotFoto]
+            });
+
+            // Tampilkan modal hasil
+            tampilkanModalHasil();
+        }
+
+                // ============================================
+        // MODAL HASIL
+        // ============================================
+
+        function tampilkanModalHasil() {
+            matikanKamera();
+            if (timerSesiInterval) clearInterval(timerSesiInterval);
+            if (countdownTimer) clearInterval(countdownTimer);
+
+            // Kalau slotFoto belum masuk semuaHasilFoto, masukkan dulu
+            const adaFoto = slotFoto.some(f => f !== null);
+            if (adaFoto) {
+                const sudahAda = semuaHasilFoto.some(h => h.tataLetak === tataLetakAktif.nama);
+                if (!sudahAda) {
+                    semuaHasilFoto.push({
+                        tataLetak: tataLetakAktif.nama,
+                        grid: tataLetakAktif.grid,
+                        foto: [...slotFoto]
+                    });
+                }
+            }
+
+            // Flatten semua foto jadi satu array
+            semuaFotoArray = [];
+            semuaHasilFoto.forEach(hasil => {
+                hasil.foto.forEach(foto => {
+                    if (foto) semuaFotoArray.push(foto);
+                });
+            });
+
+            if (semuaFotoArray.length === 0) {
+                alert('⚠️ Belum ada foto yang diambil!');
+                return;
+            }
+
+            indexPreview = 0;
+            renderPreviewBesar();
+            
+            document.getElementById('modalHasil').classList.add('show');
+        }
+
+
+
+        function renderPreviewBesar() {
+            const container = document.getElementById('previewBesar');
+            const fotoData = semuaFotoArray[indexPreview];
+            const total = semuaFotoArray.length;
+
+            // Render foto + frame ke canvas
+            renderFotoDenganFrame(fotoData, container);
+
+            // Update info
+            document.getElementById('infoFoto').textContent = 
+                '📸 Foto ' + (indexPreview + 1) + ' dari ' + total;
+
+            // Disable nav button kalau di ujung
+            document.querySelector('.rphoto-nav-btn:first-child').disabled = (indexPreview === 0);
+            document.querySelector('.rphoto-nav-btn:last-child').disabled = (indexPreview === total - 1);
+        }
+
+                // ============================================
+        // RENDER FOTO + FRAME KE CANVAS
+        // ============================================
+
+        function renderFotoDenganFrame(fotoData, container) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            const img = new Image();
+            img.onload = function() {
+                // Ukuran canvas (rasio 3:4 seperti photobox)
+                const canvasWidth = 600;
+                const canvasHeight = 800;
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+
+                // 1. Background frame
+                ctx.fillStyle = frameData.warna;
+                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                // 2. Border putih tipis
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 4;
+                ctx.strokeRect(15, 15, canvasWidth - 30, canvasHeight - 30);
+
+                // 3. Area foto (dengan margin)
+                const fotoArea = {
+                    x: 40,
+                    y: 120,
+                    width: canvasWidth - 80,
+                    height: canvasHeight - 240
+                };
+
+                // 4. Gambar foto
+                // Cek rasio foto
+                const rasioFoto = img.width / img.height;
+                const rasioArea = fotoArea.width / fotoArea.height;
+                
+                let drawWidth, drawHeight, drawX, drawY;
+
+                if (rasioFoto > rasioArea) {
+                    // Foto lebih lebar
+                    drawHeight = fotoArea.height;
+                    drawWidth = fotoArea.height * rasioFoto;
+                    drawX = fotoArea.x + (fotoArea.width - drawWidth) / 2;
+                    drawY = fotoArea.y;
+                } else {
+                    // Foto lebih tinggi
+                    drawWidth = fotoArea.width;
+                    drawHeight = fotoArea.width / rasioFoto;
+                    drawX = fotoArea.x;
+                    drawY = fotoArea.y + (fotoArea.height - drawHeight) / 2;
+                }
+
+                // Clip area foto
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(fotoArea.x, fotoArea.y, fotoArea.width, fotoArea.height);
+                ctx.clip();
+                ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+                ctx.restore();
+
+                // Border putih di sekeliling foto
+                ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(fotoArea.x, fotoArea.y, fotoArea.width, fotoArea.height);
+
+                // 5. Header text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 22px Georgia, serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(frameData.header, canvasWidth / 2, 50);
+
+                // Garis bawah header
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(canvasWidth / 4, 70);
+                ctx.lineTo(canvasWidth * 3 / 4, 70);
+                ctx.stroke();
+
+                // 6. Footer text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 18px Georgia, serif';
+                ctx.fillText(frameData.footer, canvasWidth / 2, canvasHeight - 50);
+
+                // Garis atas footer
+                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                ctx.beginPath();
+                ctx.moveTo(canvasWidth / 4, canvasHeight - 70);
+                ctx.lineTo(canvasWidth * 3 / 4, canvasHeight - 70);
+                ctx.stroke();
+
+                // 7. Logo (kalau ada)
+                if (frameData.logo) {
+                    const logoImg = new Image();
+                    logoImg.onload = function() {
+                        const logoSize = 40;
+                        // Logo kiri atas
+                        ctx.drawImage(logoImg, 25, 20, logoSize, logoSize);
+                        // Logo kanan atas
+                        ctx.drawImage(logoImg, canvasWidth - 25 - logoSize, 20, logoSize, logoSize);
+                        
+                        // Tampilkan canvas
+                        container.innerHTML = '';
+                        container.appendChild(canvas);
+                    };
+                    logoImg.src = frameData.logo;
+                } else {
+                    // Tampilkan canvas tanpa logo
+                    container.innerHTML = '';
+                    container.appendChild(canvas);
+                }
+            };
+            img.src = fotoData;
+        }
+
+        function fotoSebelumnya() {
+            if (indexPreview > 0) {
+                indexPreview--;
+                renderPreviewBesar();
+            }
+        }
+
+        function fotoBerikutnya() {
+            if (indexPreview < semuaFotoArray.length - 1) {
+                indexPreview++;
+                renderPreviewBesar();
+            }
+        }
+
+        function tutupModalHasil() {
+            document.getElementById('modalHasil').classList.remove('show');
+        }
+
+                // ============================================
+        // PANEL MANAGEMENT
+        // ============================================
+
+        function bukaPanelDownload() {
+            document.getElementById('panelDownload').classList.add('show');
+        }
+
+        function bukaPanelEditFrame() {
+            // Isi form dengan data frame saat ini
+            document.getElementById('editHeader').value = frameData.header;
+            document.getElementById('editFooter').value = frameData.footer;
+            document.getElementById('editWarnaFrame').value = frameData.warna;
+            
+            // Highlight warna yang terpilih
+            document.querySelectorAll('.warna-btn').forEach(btn => {
+                btn.classList.remove('terpilih');
+                if (btn.dataset.warna === frameData.warna) {
+                    btn.classList.add('terpilih');
+                }
+            });
+
+            // Preview logo
+            if (frameData.logo) {
+                document.getElementById('logoPreview').style.display = 'flex';
+                document.getElementById('logoPreviewImg').src = frameData.logo;
+            } else {
+                document.getElementById('logoPreview').style.display = 'none';
+            }
+
+            document.getElementById('panelEditFrame').classList.add('show');
+        }
+
+        function tutupPanel(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function pilihWarnaFrame(warna, el) {
+            frameData.warna = warna;
+            document.getElementById('editWarnaFrame').value = warna;
+            
+            document.querySelectorAll('.warna-btn').forEach(btn => btn.classList.remove('terpilih'));
+            if (el) el.classList.add('terpilih');
+        }
+
+        function handleUploadLogo(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.includes('png')) {
+                alert('⚠️ File harus PNG!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                frameData.logo = e.target.result;
+                document.getElementById('logoPreview').style.display = 'flex';
+                document.getElementById('logoPreviewImg').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function hapusLogo() {
+            frameData.logo = null;
+            document.getElementById('logoPreview').style.display = 'none';
+            document.getElementById('uploadLogoFrame').value = '';
+        }
+
+        function konfirmasiEditFrame() {
+            const header = document.getElementById('editHeader').value.trim();
+            const footer = document.getElementById('editFooter').value.trim();
+
+            if (!header) {
+                alert('⚠️ Tulisan header wajib diisi!');
+                return;
+            }
+
+            if (!footer) {
+                alert('⚠️ Tulisan footer wajib diisi!');
+                return;
+            }
+
+            if (!confirm('✏️ Simpan perubahan frame?\n\nHeader: ' + header + '\nFooter: ' + footer + '\nWarna: ' + frameData.warna)) {
+                return;
+            }
+
+            // Update frame data
+            frameData.header = header;
+            frameData.footer = footer;
+
+            // Tutup panel
+            tutupPanel('panelEditFrame');
+
+            // Re-render preview
+            renderPreviewBesar();
+
+            // Simpan ke localStorage
+            localStorage.setItem('framePhotobox', JSON.stringify(frameData));
+        }
+
+                // ============================================
+        // DOWNLOAD FOTO
+        // ============================================
+
+        function konfirmasiDownload() {
+            const jumlah = document.getElementById('pilihDownload').value;
+            
+            if (jumlah === 'semua') {
+                if (confirm('📥 Download semua ' + semuaFotoArray.length + ' foto?')) {
+                    tutupPanel('panelDownload');
+                    downloadSemuaFoto();
+                }
+            } else {
+                if (confirm('📥 Download foto ini saja?')) {
+                    tutupPanel('panelDownload');
+                    downloadSatuFoto(indexPreview);
+                }
+            }
+        }
+
+        async function downloadSemuaFoto() {
+            const format = document.getElementById('formatDownload').value;
+            const kualitas = document.getElementById('kualitasDownload').value;
+
+            for (let i = 0; i < semuaFotoArray.length; i++) {
+                await downloadSatuFoto(i, format, kualitas, false);
+                await new Promise(r => setTimeout(r, 400));
+            }
+
+            alert('✅ Semua foto berhasil di-download!');
+        }
+
+        async function downloadSatuFoto(index, format, kualitas, showAlert = true) {
+            format = format || document.getElementById('formatDownload').value;
+            kualitas = kualitas || document.getElementById('kualitasDownload').value;
+
+            const fotoData = semuaFotoArray[index];
+            if (!fotoData) return;
+
+            // Render foto + frame ke canvas resolusi tinggi
+            const canvas = await generateFotoFrame(fotoData, kualitas);
+
+            // Download
+            const mimeType = format === 'jpg' ? 'image/jpeg' : 
+                            format === 'webp' ? 'image/webp' : 'image/png';
+            const ekstensi = format === 'jpg' ? 'jpg' : 
+                            format === 'webp' ? 'webp' : 'png';
+
+            if (format === 'pdf') {
+                downloadPDFFromCanvas(canvas, index + 1);
+            } else {
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'harisanita-photobox-' + (index + 1) + '.' + ekstensi;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    if (showAlert) alert('✅ Foto berhasil di-download!');
+                }, mimeType, 0.95);
+            }
+        }
+
+        function generateFotoFrame(fotoData, kualitas) {
+            return new Promise((resolve) => {
+                // Ukuran berdasarkan kualitas
+                const ukuranMap = {
+                    'standar': 720,
+                    'hd': 1080,
+                    'fullhd': 1440,
+                    'ultrahd': 2160
+                };
+                const targetHeight = ukuranMap[kualitas] || 1080;
+                const targetWidth = targetHeight * 0.75; // rasio 3:4
+
+                const canvas = document.createElement('canvas');
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                const ctx = canvas.getContext('2d');
+
+                const img = new Image();
+                img.onload = function() {
+                    const scale = targetWidth / 600; // skala dari canvas preview
+
+                    // 1. Background
+                    ctx.fillStyle = frameData.warna;
+                    ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+                    // 2. Border putih tipis
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                    ctx.lineWidth = 4 * scale;
+                    ctx.strokeRect(15 * scale, 15 * scale, targetWidth - 30 * scale, targetHeight - 30 * scale);
+
+                    // 3. Area foto
+                    const fotoArea = {
+                        x: 40 * scale,
+                        y: 120 * scale,
+                        width: targetWidth - 80 * scale,
+                        height: targetHeight - 240 * scale
+                    };
+
+                    // 4. Gambar foto
+                    const rasioFoto = img.width / img.height;
+                    const rasioArea = fotoArea.width / fotoArea.height;
+                    
+                    let drawWidth, drawHeight, drawX, drawY;
+
+                    if (rasioFoto > rasioArea) {
+                        drawHeight = fotoArea.height;
+                        drawWidth = fotoArea.height * rasioFoto;
+                        drawX = fotoArea.x + (fotoArea.width - drawWidth) / 2;
+                        drawY = fotoArea.y;
+                    } else {
+                        drawWidth = fotoArea.width;
+                        drawHeight = fotoArea.width / rasioFoto;
+                        drawX = fotoArea.x;
+                        drawY = fotoArea.y + (fotoArea.height - drawHeight) / 2;
+                    }
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.rect(fotoArea.x, fotoArea.y, fotoArea.width, fotoArea.height);
+                    ctx.clip();
+                    ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
+                    ctx.restore();
+
+                    // Border putih foto
+                    ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+                    ctx.lineWidth = 3 * scale;
+                    ctx.strokeRect(fotoArea.x, fotoArea.y, fotoArea.width, fotoArea.height);
+
+                    // 5. Header
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold ' + (22 * scale) + 'px Georgia, serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(frameData.header, targetWidth / 2, 50 * scale);
+
+                    // Garis header
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                    ctx.lineWidth = 1 * scale;
+                    ctx.beginPath();
+                    ctx.moveTo(targetWidth / 4, 70 * scale);
+                    ctx.lineTo(targetWidth * 3 / 4, 70 * scale);
+                    ctx.stroke();
+
+                    // 6. Footer
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold ' + (18 * scale) + 'px Georgia, serif';
+                    ctx.fillText(frameData.footer, targetWidth / 2, targetHeight - 50 * scale);
+
+                    // Garis footer
+                    ctx.beginPath();
+                    ctx.moveTo(targetWidth / 4, targetHeight - 70 * scale);
+                    ctx.lineTo(targetWidth * 3 / 4, targetHeight - 70 * scale);
+                    ctx.stroke();
+
+                    // 7. Logo
+                    if (frameData.logo) {
+                        const logoImg = new Image();
+                        logoImg.onload = function() {
+                            const logoSize = 40 * scale;
+                            ctx.drawImage(logoImg, 25 * scale, 20 * scale, logoSize, logoSize);
+                            ctx.drawImage(logoImg, targetWidth - 25 * scale - logoSize, 20 * scale, logoSize, logoSize);
+                            resolve(canvas);
+                        };
+                        logoImg.src = frameData.logo;
+                    } else {
+                        resolve(canvas);
+                    }
+                };
+                img.src = fotoData;
+            });
+        }
+
+        function downloadPDFFromCanvas(canvas, nomor) {
+            const imgData = canvas.toDataURL('image/png');
+            const win = window.open('', '_blank');
+            win.document.write(`
+                <html>
+                <head><title>Foto ${nomor}</title></head>
+                <body style="margin:0;display:flex;justify-content:center;align-items:center;height:100vh;">
+                    <img src="${imgData}" style="max-width:100%;max-height:100vh;" />
+                </body>
+                </html>
+            `);
+            win.document.close();
+            setTimeout(() => {
+                win.print();
+            }, 500);
+        }
+
+        // ============================================
+        // SELESAI SEMUA
+        // ============================================
+
+        function selesaiSemua() {
+            if (confirm('🏠 Selesai sesi foto?\n\nSemua foto akan hilang jika belum di-download.')) {
+                matikanKamera();
+                if (timerSesiInterval) clearInterval(timerSesiInterval);
+                if (countdownTimer) clearInterval(countdownTimer);
+                localStorage.removeItem('tiketPhotobox');
+                localStorage.removeItem('hasilFotoSementara');
+                window.location.href = 'lainnya.html';
+            }
+        }
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            const icons = ['❤️', '📸', '✨', '💕', '🌸'];
+            hati.textContent = icons[Math.floor(Math.random() * icons.length)];
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 18 + 14) + 'px';
+            hati.style.animationDuration = (Math.random() * 4 + 3) + 's';
+            hati.style.opacity = Math.random() * 0.4 + 0.3;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 7000);
+        }
+        setInterval(buatHati, 1200);
+
+        // ============================================
+        // KEYBOARD SHORTCUT
+        // ============================================
+
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (!document.getElementById('btnJepret').disabled) {
+                    mulaiCountdown();
+                }
+            }
+        });
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+
+        window.addEventListener('load', async function() {
+            tiket = ambilTiket();
+            if (!tiket) return;
+
+            // Cek hasil sementara (kalau lanjut dari tata letak sebelumnya)
+            const hasilSementara = localStorage.getItem('hasilFotoSementara');
+            if (hasilSementara) {
+                semuaHasilFoto = JSON.parse(hasilSementara);
+            }
+
+            setupTataLetak();
+            await nyalakanKamera();
+            mulaiTimerSesi();
+        });
+    </script>
+</body>
+</html>

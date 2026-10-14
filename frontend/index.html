@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️ Hanote - Arsip Haris & Anita</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ANIMASI HATI BERJATUHAN -->
+    <div id="hatiContainer"></div>
+
+    <!-- ========================================== -->
+    <!-- HALAMAN LOGIN                             -->
+    <!-- ========================================== -->
+    <div id="halamanLogin" class="halaman-login">
+        <div class="container-login">
+            
+            <!-- FOTO BERDUA -->
+            <div class="foto-berdua">
+                <img src="assets/images/foto-berdua.jpg" alt="Haris & Anita" id="fotoBerdua" />
+            </div>
+
+            <div class="logo">
+                <span class="logo-icon">❤️</span>
+                <h1>HANOTE</h1>
+                <p class="subtitle" id="subtitleLogin">
+                    SELAMAT DATANG DIRUANG ARSIP HARIS DAN ANITA 💕💕
+                </p>
+            </div>
+
+            <div class="form-login">
+                <label>🔑 Kode Ruangan</label>
+                <input type="text" id="inputRuangan" placeholder="Masukkan Kode Ruangan Anda" />
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="masukRuangan()">🚪 Masuk</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='buat-ruangan.html'">✨ Buat Ruangan</button>
+                </div>
+                <div id="pesanLogin" class="pesan"></div>
+            </div>
+
+            <!-- TOMBOL LOGOUT (muncul kalau sudah login) -->
+<button 
+    id="btnLogoutIndex" 
+    class="btn btn-danger" 
+    onclick="logoutDariIndex()" 
+    style="display: none; width: 100%; margin-top: 10px;"
+>
+    🔄 Logout / Ganti Ruangan
+</button>
+
+            <div class="quote-cinta">
+                💌 "Cinta dan ilmu, dua hal yang tak pernah cukup dipelajari"
+            </div>
+
+            <!-- ⬇️ TARUH INSTAGRAM DI SINI ⬇️ -->
+            <div class="instagram-credit">
+    <a href="https://instagram.com/harissflhh" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="IG" class="ig-icon" />
+        @harissflhh
+    </a>
+    <span style="color:#f5576c;margin:0 4px;">❤️</span>
+    <a href="https://instagram.com/anitzlya_" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="IG" class="ig-icon" />
+        @anitzlya_
+    </a>
+</div>
+
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- HALAMAN UTAMA (DASHBOARD)                 -->
+    <!-- ========================================== -->
+    <div id="halamanUtama" class="halaman-utama" style="display: none;">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="keluarRuangan()">🚪 Keluar</button>
+                    </div>
+                </div>
+                <div class="statistik">
+                    <span>📋 <span id="totalTugas">0</span></span>
+                    <span>✅ <span id="totalSelesai">0</span></span>
+                    <span>⏳ <span id="totalBelum">0</span></span>
+                </div>
+            </div>
+
+            <!-- QUOTE CINTA RANDOM -->
+            <div class="quote-banner" id="quoteBanner">
+                💕 "Cinta itu seperti belajar, butuh kesabaran dan keikhlasan"
+            </div>
+
+            <!-- FORM TAMBAH TUGAS -->
+            <div class="form-tugas">
+                <div class="form-row">
+                    <input type="text" id="inputJudul" placeholder="📝 Nama tugas..." />
+                    <input type="date" id="inputDeadline" />
+                </div>
+                <div class="form-row">
+                    <select id="inputPemilik">
+                        <option value="aku">👨 Haris</option>
+                        <option value="pacar">👩 Anita</option>
+                    </select>
+                    <select id="inputKategori">
+                        <option value="Tugas">📚 Tugas</option>
+                        <option value="UTS">📝 UTS</option>
+                        <option value="UAS">📝 UAS</option>
+                        <option value="Makalah">📄 Makalah</option>
+                        <option value="Lainnya">📌 Lainnya</option>
+                    </select>
+                    <select id="inputPrioritas">
+                        <option value="biasa">⚪ Biasa</option>
+                        <option value="penting">🔴 Penting</option>
+                        <option value="ringan">🟢 Ringan</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <textarea id="inputDeskripsi" placeholder="📄 Deskripsi tugas..." rows="2"></textarea>
+                </div>
+                <div class="form-row">
+                    <input type="file" id="inputFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.ppt,.txt" />
+                    <span style="font-size:12px;color:#7c6b8a;display:block;margin-top:4px;">📎 Upload file (PDF, Word, Excel, Gambar) max 10MB</span>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="tambahTugas()">➕ Tambah Tugas</button>
+            </div>
+
+            <!-- TAB NAVIGASI -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="bukaTab('tugas', this)">📋 Tugas Aktif</button>
+                <button class="tab-btn" onclick="bukaTab('arsip', this)">📂 Arsip</button>
+            </div>
+
+            <!-- FILTER -->
+            <div class="filter">
+                <button class="active" onclick="filterTugas('semua', this)">📋 Semua</button>
+                <button onclick="filterTugas('aku', this)">👨 Haris</button>
+                <button onclick="filterTugas('pacar', this)">👩 Anita</button>
+                <button onclick="filterTugas('selesai', this)">✅ Selesai</button>
+                <button onclick="filterTugas('belum', this)">⏳ Belum</button>
+            </div>
+
+            <!-- DAFTAR TUGAS -->
+            <div id="daftarTugas" class="daftar-tugas">
+                <div class="kosong">
+                    <span>📭</span>
+                    <p>Belum ada tugas di ruangan ini</p>
+                    <p class="sub">Ayo tambah tugas pertama! 💕</p>
+                </div>
+            </div>
+
+            <!-- DAFTAR ARSIP -->
+            <div id="daftarArsip" class="daftar-tugas" style="display: none;">
+                <div class="kosong">
+                    <span>📭</span>
+                    <p>Belum ada tugas yang diarsipkan</p>
+                    <p class="sub">Selesaikan tugas dulu ya! 💕</p>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- MODAL FORM ARSIP TUGAS                    -->
+            <!-- ========================================== -->
+            <div id="modalArsip" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>📂 Arsipkan Tugas</h2>
+                        <button class="modal-close" onclick="tutupModalArsip()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Isi detail tugas yang akan diarsipkan di bawah ini:</p>
+                        
+                        <label>📝 Nama Tugas</label>
+                        <input type="text" id="arsipJudul" readonly />
+                        
+                        <label>📚 Mata Kuliah</label>
+                        <input type="text" id="arsipMatkul" placeholder="Contoh: Pancasila" />
+                        
+                        <label>📅 Deadline</label>
+                        <input type="date" id="arsipDeadline" readonly />
+                        
+                        <label>📄 Deskripsi</label>
+                        <textarea id="arsipDeskripsi" placeholder="Deskripsi tugas..." readonly></textarea>
+                        
+                        <label>📎 File Tugas (opsional)</label>
+                        <input type="file" id="arsipFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                        <span style="font-size:12px;color:#7c6b8a;">Upload file pendukung tugas (max 10MB)</span>
+                        
+                        <label>✏️ Keterangan (opsional)</label>
+                        <input type="text" id="arsipKeterangan" placeholder="Contoh: Nilai A, Sudah dikumpulkan, dll" />
+                        
+                        <div class="modal-btn-group">
+                            <button class="btn btn-secondary" onclick="tutupModalArsip()">❌ Batal</button>
+                            <button class="btn btn-primary" onclick="simpanArsip()">💾 Simpan Arsip</button>
+                        </div>
+                        
+                        <div id="pesanArsip" class="pesan"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>💡 Hijau = ≥3 hari | 🟡 Kuning = 1-2 hari | 🔴 Merah = hari ini/lewat</p>
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCRIPT                                   -->
+    <!-- ========================================== -->
+    <script src="script.js"></script>
+
+<script>
+    // ============================================
+    // AUTO-FILL INPUT KALAU SUDAH PERNAH MASUK
+    // ============================================
+    window.onload = function() {
+        const ruanganTersimpan = localStorage.getItem('ruanganHanote');
+        const input = document.getElementById('inputRuangan');
+        
+        if (ruanganTersimpan && input) {
+            input.value = ruanganTersimpan;
+            
+            // Ubah tombol jadi "Masuk Dashboard" + tampilkan tombol Logout
+            const btnMasuk = document.querySelector('.form-login .btn-primary');
+            if (btnMasuk) {
+                btnMasuk.textContent = '🚪 Masuk Dashboard';
+            }
+            
+            // Tampilkan tombol logout
+            const btnLogout = document.getElementById('btnLogoutIndex');
+            if (btnLogout) {
+                btnLogout.style.display = 'block';
+            }
+        }
+    };
+
+    // ============================================
+    // LOGOUT DARI HALAMAN LOGIN
+    // ============================================
+    function logoutDariIndex() {
+        if (confirm('🚪 Logout dari ruangan ini?\n\nKamu perlu memasukkan kode ruangan lagi untuk masuk.')) {
+            localStorage.removeItem('ruanganHanote');
+            location.reload();
+        }
+    }
+
+    // ============================================
+    // ANIMASI HATI BERJATUHAN
+    // ============================================
+    function buatHati() {
+        const container = document.getElementById('hatiContainer');
+        const hati = document.createElement('div');
+        hati.className = 'hati-jatuh';
+        hati.textContent = '❤️';
+        hati.style.left = Math.random() * 100 + '%';
+        hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+        hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        hati.style.opacity = Math.random() * 0.5 + 0.5;
+        container.appendChild(hati);
+        
+        setTimeout(() => {
+            hati.remove();
+        }, 5000);
+    }
+
+    setInterval(buatHati, 300);
+</script>
+</body>
+</html>

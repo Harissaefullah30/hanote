@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏔️ Petualangan Kita - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           PETUALANGAN KITA - TEMA PINK + HIJAU
+           ============================================ */
+
+        body {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 50%, #a8e6cf 100%);
+            background-attachment: fixed;
+        }
+
+        /* HEADER DENGAN BACKGROUND FOTO */
+        .petualangan-hero {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .petualangan-hero .bg-foto {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+                .petualangan-hero .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.25), rgba(67, 233, 123, 0.2));
+            z-index: 1;
+        }
+
+                .petualangan-hero .konten {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            color: white;
+            text-align: center;
+            padding: 20px 20px 24px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
+            border-radius: 0 0 24px 24px;
+        }
+
+                .petualangan-hero .ikon-besar {
+            font-size: 32px;
+            display: inline-block;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+        }
+
+                .petualangan-hero h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 4px;
+        }
+
+                .petualangan-hero p {
+            font-size: 13px;
+            font-style: italic;
+            opacity: 0.95;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* HEADER ATAS */
+        .header {
+            margin-bottom: 20px;
+        }
+
+        /* CARD SECTION */
+        .section-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(240, 147, 251, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            box-shadow: 0 12px 40px rgba(240, 147, 251, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7c6b8a;
+        }
+
+        .info-box .ikon {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 12px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .info-box h3 {
+            font-size: 20px;
+            color: #2d1b3d;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-box .sub {
+            font-size: 12px;
+            color: #b5a5c4;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+                /* ============================================
+           FORM PETUALANGAN
+           ============================================ */
+
+        .form-petualangan {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-row-petualangan {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-row-petualangan > * {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .form-petualangan input,
+        .form-petualangan select,
+        .form-petualangan textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #d4f0dc;
+            border-radius: 14px;
+            font-size: 14px;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-petualangan input:focus,
+        .form-petualangan select:focus,
+        .form-petualangan textarea:focus {
+            outline: none;
+            border-color: #43e97b;
+            box-shadow: 0 0 0 4px rgba(67, 233, 123, 0.15);
+        }
+
+        .form-petualangan textarea {
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        .btn-simpan-petualangan {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+
+        .btn-simpan-petualangan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.4);
+        }
+
+        .pesan-petualangan {
+            text-align: center;
+            font-size: 13px;
+            min-height: 20px;
+            font-weight: 600;
+            color: #f5576c;
+        }
+
+        /* KARTU KEGIATAN */
+        .kegiatan-card {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(67, 233, 123, 0.1));
+            border: 2px solid rgba(67, 233, 123, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            transition: all 0.3s;
+        }
+
+        .kegiatan-card:hover {
+            transform: translateX(6px);
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.2);
+        }
+
+        .kegiatan-card .foto-kegiatan {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .kegiatan-card .info-kegiatan {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .kegiatan-card .tempat {
+            font-size: 16px;
+            font-weight: 800;
+            color: #2d1b3d;
+            margin-bottom: 4px;
+        }
+
+        .kegiatan-card .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 12px;
+            color: #4a3f5c;
+            margin-bottom: 6px;
+        }
+
+        .kegiatan-card .meta span {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .kegiatan-card .deskripsi {
+            font-size: 12px;
+            color: #7c6b8a;
+            font-style: italic;
+        }
+
+        .kegiatan-card .btn-hapus-kegiatan {
+            background: linear-gradient(135deg, #ff9a9e, #f5576c);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+                /* ============================================
+           MENU PETUALANGAN
+           ============================================ */
+
+        .menu-petualangan {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+        }
+
+        .menu-card-petualangan {
+            background: rgba(255, 255, 255, 0.85);
+            border: 3px solid rgba(67, 233, 123, 0.3);
+            border-radius: 20px;
+            padding: 20px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-card-petualangan:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(67, 233, 123, 0.3);
+            border-color: #43e97b;
+        }
+
+        .menu-card-petualangan:active {
+            transform: scale(0.97);
+        }
+
+        .menu-icon-petualangan {
+            font-size: 42px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .menu-nama {
+            font-size: 15px;
+            font-weight: 800;
+            color: #2d1b3d;
+            margin-bottom: 4px;
+        }
+
+        .menu-desc {
+            font-size: 11px;
+            color: #7c6b8a;
+        }
+
+        /* TOMBOL KEMBALI FITUR */
+        .btn-kembali-fitur {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(240, 147, 251, 0.15);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #4a3f5c;
+            cursor: pointer;
+            margin-bottom: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-kembali-fitur:hover {
+            background: rgba(240, 147, 251, 0.3);
+            transform: translateX(-4px);
+        }
+
+                /* ============================================
+           CHECKLIST - AESTHETIC
+           ============================================ */
+
+        /* HERO CHECKLIST */
+        .checklist-hero {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            box-shadow: 0 12px 40px rgba(240, 147, 251, 0.3);
+            text-align: center;
+            color: white;
+        }
+
+        .checklist-hero-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 50%, rgba(255,255,255,0.15) 0%, transparent 50%);
+            animation: shimmer 5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .checklist-hero-konten {
+            position: relative;
+            z-index: 1;
+        }
+
+        .checklist-foto {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .checklist-foto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .checklist-hero h2 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .checklist-hero p {
+            font-size: 13px;
+            font-style: italic;
+            opacity: 0.95;
+            margin-bottom: 12px;
+        }
+
+        .checklist-quote {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* TAB */
+        .checklist-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .checklist-tab {
+            padding: 10px 24px;
+            border: 2px solid #d4f0dc;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 700;
+            color: #4a3f5c;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checklist-tab:hover {
+            border-color: #43e97b;
+            transform: translateY(-2px);
+        }
+
+        .checklist-tab.active {
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(67, 233, 123, 0.3);
+        }
+
+        /* FORM TAMBAH */
+        .checklist-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .checklist-form input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #d4f0dc;
+            border-radius: 14px;
+            font-size: 14px;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+        }
+
+        .checklist-form input:focus {
+            outline: none;
+            border-color: #43e97b;
+            box-shadow: 0 0 0 4px rgba(67, 233, 123, 0.15);
+        }
+
+        .checklist-form button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            color: white;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .checklist-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.4);
+        }
+
+        /* PROGRESS */
+        .checklist-progress {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(67, 233, 123, 0.2);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #4a3f5c;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-info b {
+            color: #43e97b;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(67, 233, 123, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb 0%, #43e97b 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* ITEM CHECKLIST */
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 2px solid rgba(67, 233, 123, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(4px);
+            border-color: #43e97b;
+        }
+
+        .checklist-item.checked {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(67, 233, 123, 0.15));
+            border-color: #43e97b;
+        }
+
+        .checklist-item.checked .item-nama {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .checklist-checkbox {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            border: 3px solid #d4f0dc;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .checklist-item.checked .checklist-checkbox {
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            border-color: transparent;
+            color: white;
+        }
+
+        .item-nama {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d1b3d;
+        }
+
+        .item-hapus {
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: #f5576c;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .item-hapus:hover {
+            background: rgba(245, 87, 108, 0.15);
+            transform: scale(1.15);
+        }
+
+        /* TOMBOL RESET */
+        .btn-reset-checklist {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #d4f0dc;
+            border-radius: 14px;
+            background: transparent;
+            color: #4a3f5c;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reset-checklist:hover {
+            border-color: #f5576c;
+            color: #f5576c;
+            background: rgba(245, 87, 108, 0.05);
+        }
+
+                /* ============================================
+           STATISTIK PETUALANGAN
+           ============================================ */
+
+        /* HERO STATISTIK */
+        .statistik-hero {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .statistik-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .statistik-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.55), rgba(67, 233, 123, 0.55));
+            z-index: 1;
+        }
+
+        .statistik-konten {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 60%, transparent 100%);
+            border-radius: 0 0 24px 24px;
+        }
+
+        .statistik-konten h2 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 4px;
+        }
+
+        .statistik-konten p {
+            font-size: 13px;
+            font-style: italic;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            margin-bottom: 8px;
+        }
+
+        .statistik-quote {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* FILTER WAKTU */
+        .statistik-filter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .statistik-filter label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #4a3f5c;
+        }
+
+        .statistik-filter select {
+            padding: 8px 16px;
+            border: 2px solid #d4f0dc;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: inherit;
+            cursor: pointer;
+            color: #2d1b3d;
+        }
+
+        .statistik-filter select:focus {
+            outline: none;
+            border-color: #43e97b;
+            box-shadow: 0 0 0 4px rgba(67, 233, 123, 0.15);
+        }
+
+        /* KARTU STATISTIK UTAMA */
+        .statistik-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .statistik-card {
+            border-radius: 18px;
+            padding: 18px 12px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .statistik-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: rotateSlow 8s linear infinite;
+        }
+
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .statistik-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .statistik-icon {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .statistik-angka {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 4px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .statistik-label {
+            font-size: 11px;
+            font-weight: 700;
+            opacity: 0.95;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* INFO TAMBAHAN */
+        .statistik-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .statistik-info-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.12), rgba(67, 233, 123, 0.12));
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 2px solid rgba(67, 233, 123, 0.2);
+            transition: all 0.3s;
+        }
+
+        .statistik-info-card:hover {
+            transform: translateX(4px);
+            border-color: #43e97b;
+        }
+
+        .statistik-info-card .info-icon {
+            font-size: 28px;
+        }
+
+        .statistik-info-card .info-label {
+            font-size: 11px;
+            color: #7c6b8a;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .statistik-info-card .info-nilai {
+            font-size: 16px;
+            font-weight: 800;
+            color: #2d1b3d;
+        }
+
+        /* GRAFIK BULANAN */
+        .grafik-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 6px;
+            height: 180px;
+            padding: 16px 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            border: 2px solid rgba(67, 233, 123, 0.15);
+        }
+
+        .grafik-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            gap: 6px;
+            position: relative;
+        }
+
+        .grafik-bar-fill {
+            width: 100%;
+            min-height: 4px;
+            background: linear-gradient(180deg, #f093fb 0%, #43e97b 100%);
+            border-radius: 8px 8px 0 0;
+            transition: height 0.8s ease;
+            position: relative;
+        }
+
+        .grafik-bar-fill:hover {
+            filter: brightness(1.15);
+        }
+
+        .grafik-bar-nilai {
+            position: absolute;
+            top: -18px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #2d1b3d;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1px 6px;
+            border-radius: 8px;
+        }
+
+        .grafik-bar-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #7c6b8a;
+        }
+
+        /* TARGET */
+        .btn-set-target {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #d4f0dc;
+            border-radius: 14px;
+            background: transparent;
+            color: #43e97b;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 16px;
+        }
+
+        .btn-set-target:hover {
+            background: rgba(67, 233, 123, 0.1);
+            border-color: #43e97b;
+        }
+
+        .target-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .target-item {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 2px solid rgba(67, 233, 123, 0.15);
+        }
+
+        .target-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
+            color: #2d1b3d;
+            margin-bottom: 8px;
+        }
+
+        .target-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(67, 233, 123, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .target-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb 0%, #43e97b 100%);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        /* ACHIEVEMENT */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(200, 200, 200, 0.3);
+            border-radius: 14px;
+            padding: 12px 10px;
+            text-align: center;
+            transition: all 0.3s;
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .achievement-card.tercapai {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(67, 233, 123, 0.15));
+            border-color: #43e97b;
+            opacity: 1;
+            filter: grayscale(0);
+            box-shadow: 0 4px 16px rgba(67, 233, 123, 0.25);
+        }
+
+        .achievement-card .ach-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .achievement-card .ach-nama {
+            font-size: 12px;
+            font-weight: 800;
+            color: #2d1b3d;
+            margin-bottom: 2px;
+        }
+
+        .achievement-card .ach-syarat {
+            font-size: 10px;
+            color: #7c6b8a;
+            font-weight: 600;
+        }
+
+        .achievement-card .ach-status {
+            font-size: 16px;
+            margin-top: 4px;
+        }
+
+        /* MODAL TARGET */
+        .modal-target {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-target.show {
+            display: flex;
+        }
+
+        .modal-target-content {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-target-content h2 {
+            font-size: 22px;
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .modal-target-content label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #4a3f5c;
+            margin-bottom: 6px;
+            margin-top: 12px;
+        }
+
+        .modal-target-content input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #d4f0dc;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            color: #2d1b3d;
+            box-sizing: border-box;
+        }
+
+        .modal-target-content input:focus {
+            outline: none;
+            border-color: #43e97b;
+            box-shadow: 0 0 0 4px rgba(67, 233, 123, 0.15);
+        }
+
+        .modal-target-btn {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-target-btn button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-batal {
+            background: #e8dff5;
+            color: #4a3f5c;
+        }
+
+        .btn-simpan-target {
+            background: linear-gradient(135deg, #f093fb 0%, #43e97b 100%);
+            color: white;
+        }
+
+        .modal-target-btn button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.3);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .petualangan-hero {
+                height: 220px;
+            }
+            .petualangan-hero h1 {
+                font-size: 26px;
+            }
+            .petualangan-hero .ikon-besar {
+                font-size: 42px;
+            }
+            .section-card {
+                padding: 18px;
+            }
+            .section-title {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMASI HATI -->
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <!-- HEADER ATAS -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeDashboard()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HERO PETUALANGAN -->
+                        <div class="petualangan-hero">
+                <img src="assets/images/foto-petualangan.jpg" alt="Petualangan" class="bg-foto" />
+                <div class="overlay"></div>
+                <div class="konten">
+                    <h1>
+    <img src="assets/icons/icon-petualangan.png" alt="Icon" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;" />
+    PETUALANGAN KITA
+    <img src="assets/icons/icon-petualangan.png" alt="Icon" style="width: 32px; height: 32px; vertical-align: middle; margin-left: 8px;" />
+</h1>
+                    <p>"Setiap langkah adalah cerita" 💕</p>
+                </div>
+            </div>
+
+                                    <!-- MENU PILIHAN -->
+            <div class="section-card" id="menuPilihan">
+                <div class="section-title">🏔️ Mau Ngapain Hari Ini?</div>
+
+                <div class="menu-petualangan">
+                    <div class="menu-card-petualangan" onclick="bukaFitur('catat')">
+                        <div class="menu-icon-petualangan">📝</div>
+                        <div class="menu-nama">Catat Kegiatan</div>
+                        <div class="menu-desc">Simpan momen petualangan</div>
+                    </div>
+
+                    <div class="menu-card-petualangan" onclick="bukaFitur('checklist')">
+                        <div class="menu-icon-petualangan">🎒</div>
+                        <div class="menu-nama">Checklist Alat</div>
+                        <div class="menu-desc">Daftar alat & makanan</div>
+                    </div>
+
+                    <div class="menu-card-petualangan" onclick="bukaFitur('statistik')">
+                        <div class="menu-icon-petualangan">📊</div>
+                        <div class="menu-nama">Statistik</div>
+                        <div class="menu-desc">Total gunung & jarak</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FITUR: CATAT KEGIATAN (HIDDEN) -->
+            <div id="fiturCatat" style="display:none;">
+                <div class="section-card">
+                    <div class="btn-kembali-fitur" onclick="tutupFitur()">⬅️ Kembali ke Menu</div>
+                    <div class="section-title">📝 Catat Kegiatan Baru</div>
+
+                    <div class="form-petualangan">
+                        <div class="form-row-petualangan">
+                            <input type="text" id="inputTempat" placeholder="🏔️ Nama tempat (contoh: Gunung Bromo)" />
+                            <input type="date" id="inputTanggal" />
+                        </div>
+                        <div class="form-row-petualangan">
+                            <input type="text" id="inputDurasi" placeholder="⏱️ Durasi (contoh: 3 jam)" />
+                            <input type="text" id="inputJarak" placeholder="📏 Jarak (contoh: 5 km)" />
+                        </div>
+                        <div class="form-row-petualangan">
+                            <select id="inputMedan">
+                                <option value="Mudah">🟢 Medan: Mudah</option>
+                                <option value="Sedang" selected>🟡 Medan: Sedang</option>
+                                <option value="Sulit">🔴 Medan: Sulit</option>
+                            </select>
+                            <select id="inputCuaca">
+                                <option value="Cerah">☀️ Cuaca: Cerah</option>
+                                <option value="Berawan">☁️ Cuaca: Berawan</option>
+                                <option value="Hujan">🌧️ Cuaca: Hujan</option>
+                                <option value="Berkabut">🌫️ Cuaca: Berkabut</option>
+                            </select>
+                        </div>
+                        <div class="form-row-petualangan">
+                            <textarea id="inputDeskripsi" placeholder="📄 Cerita kegiatan (opsional)..." rows="2"></textarea>
+                        </div>
+                        <div class="form-row-petualangan">
+                            <input type="file" id="inputFotoKegiatan" accept="image/*" />
+                        </div>
+                        <button class="btn-simpan-petualangan" onclick="simpanKegiatan()">💾 Simpan Kegiatan</button>
+                        <div id="pesanKegiatan" class="pesan-petualangan"></div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-title">📋 Daftar Kegiatan</div>
+                    <div id="daftarKegiatan">
+                        <div class="info-box">
+                            <span class="ikon">📭</span>
+                            <h3>Belum Ada Kegiatan</h3>
+                            <p>Catat kegiatan pertama kalian! 💕</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- FITUR: CHECKLIST (HIDDEN) -->
+            <div id="fiturChecklist" style="display:none;">
+
+                <!-- HEADER CHECKLIST -->
+                <div class="checklist-hero">
+                    <div class="checklist-hero-bg"></div>
+                    <div class="checklist-hero-konten">
+                        <div class="checklist-foto">
+    <img src="assets/images/foto-checklist.jpg" alt="Haris & Anita" />
+</div>
+                        <h2>🎒 Checklist Petualangan</h2>
+                        <p>"Jangan sampai ada yang ketinggalan ya!" 💕</p>
+                        <div class="checklist-quote">
+                            🏔️ Haris & Anita siap berangkat! 🌿
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="btn-kembali-fitur" onclick="tutupFitur()">⬅️ Kembali ke Menu</div>
+
+                    <!-- TAB: ALAT / MAKANAN -->
+                    <div class="checklist-tabs">
+                        <button class="checklist-tab active" onclick="gantiTab('alat', this)">
+                            🎒 Alat Wajib
+                        </button>
+                        <button class="checklist-tab" onclick="gantiTab('makanan', this)">
+                            🍔 Makanan Wajib
+                        </button>
+                    </div>
+
+                    <!-- FORM TAMBAH -->
+                    <div class="checklist-form">
+                        <input type="text" id="inputItemChecklist" placeholder="Tambah item baru..." />
+                        <button onclick="tambahItemChecklist()">➕ Tambah</button>
+                    </div>
+
+                    <!-- PROGRESS -->
+                    <div class="checklist-progress">
+                        <div class="progress-info">
+                            <span>📊 Progres: <b id="progressText">0/0</b></span>
+                            <span id="progressPersen">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- DAFTAR ITEMS -->
+                    <div id="daftarChecklist" class="checklist-items">
+                        <div class="info-box">
+                            <span class="ikon">📭</span>
+                            <h3>Belum Ada Item</h3>
+                            <p>Tambah alat & makanan wajib kalian! 💕</p>
+                        </div>
+                    </div>
+
+                    <!-- TOMBOL RESET -->
+                    <button class="btn-reset-checklist" onclick="resetChecklist()">🔄 Reset Semua Checklist</button>
+                </div>
+            </div>
+
+                        <!-- FITUR: STATISTIK (HIDDEN) -->
+            <div id="fiturStatistik" style="display:none;">
+
+                <!-- HERO STATISTIK -->
+                <div class="statistik-hero">
+                    <img src="assets/images/foto-statistik.jpg" alt="Petualangan" class="statistik-bg" />
+                    <div class="statistik-overlay"></div>
+                    <div class="statistik-konten">
+                        <h2>📊 Statistik Petualangan</h2>
+                        <p>"Setiap perjalanan punya cerita" 💕</p>
+                        <div class="statistik-quote">
+                            🏔️ Haris & Anita - Petualang Sejati 🌿
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="btn-kembali-fitur" onclick="tutupFitur()">⬅️ Kembali ke Menu</div>
+
+                    <!-- FILTER WAKTU -->
+                    <div class="statistik-filter">
+                        <label>📅 Filter Waktu:</label>
+                        <select id="filterWaktu" onchange="ambilStatistik()">
+                            <option value="semua">Semua Waktu</option>
+                            <option value="bulan">Bulan Ini</option>
+                            <option value="tahun">Tahun Ini</option>
+                        </select>
+                    </div>
+
+                    <!-- KARTU STATISTIK UTAMA -->
+                    <div class="statistik-grid">
+                        <div class="statistik-card" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <div class="statistik-icon">🏔️</div>
+                            <div class="statistik-angka" id="statTempat">0</div>
+                            <div class="statistik-label">Total Tempat</div>
+                        </div>
+                        <div class="statistik-card" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                            <div class="statistik-icon">📏</div>
+                            <div class="statistik-angka" id="statJarak">0</div>
+                            <div class="statistik-label">Total Jarak (km)</div>
+                        </div>
+                        <div class="statistik-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                            <div class="statistik-icon">⏱️</div>
+                            <div class="statistik-angka" id="statDurasi">0</div>
+                            <div class="statistik-label">Total Durasi (jam)</div>
+                        </div>
+                        <div class="statistik-card" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                            <div class="statistik-icon">📅</div>
+                            <div class="statistik-angka" id="statBulanIni">0</div>
+                            <div class="statistik-label">Kegiatan Bulan Ini</div>
+                        </div>
+                    </div>
+
+                    <!-- INFO TAMBAHAN -->
+                    <div class="statistik-info-grid">
+                        <div class="statistik-info-card">
+                            <span class="info-icon">🟡</span>
+                            <div>
+                                <div class="info-label">Medan Terbanyak</div>
+                                <div class="info-nilai" id="statMedan">-</div>
+                            </div>
+                        </div>
+                        <div class="statistik-info-card">
+                            <span class="info-icon">☀️</span>
+                            <div>
+                                <div class="info-label">Cuaca Terbanyak</div>
+                                <div class="info-nilai" id="statCuaca">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- GRAFIK BULANAN -->
+                <div class="section-card">
+                    <div class="section-title">📈 Grafik Kegiatan (12 Bulan Terakhir)</div>
+                    <div class="grafik-container" id="grafikBulanan"></div>
+                </div>
+
+                <!-- TARGET -->
+                <div class="section-card">
+                    <div class="section-title">🎯 Target Petualangan</div>
+                    <button class="btn-set-target" onclick="bukaModalTarget()">✏️ Atur Target</button>
+
+                    <div class="target-list">
+                        <div class="target-item">
+                            <div class="target-header">
+                                <span>🏔️ Target Gunung</span>
+                                <span id="targetGunungText">0/10</span>
+                            </div>
+                            <div class="target-bar">
+                                <div class="target-fill" id="targetGunungFill" style="width:0%;"></div>
+                            </div>
+                        </div>
+                        <div class="target-item">
+                            <div class="target-header">
+                                <span>📏 Target Jarak (km)</span>
+                                <span id="targetJarakText">0/100</span>
+                            </div>
+                            <div class="target-bar">
+                                <div class="target-fill" id="targetJarakFill" style="width:0%;"></div>
+                            </div>
+                        </div>
+                        <div class="target-item">
+                            <div class="target-header">
+                                <span>📅 Target Kegiatan</span>
+                                <span id="targetKegiatanText">0/50</span>
+                            </div>
+                            <div class="target-bar">
+                                <div class="target-fill" id="targetKegiatanFill" style="width:0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACHIEVEMENT -->
+                <div class="section-card">
+                    <div class="section-title">🏆 Achievement</div>
+                    <div class="achievement-grid" id="achievementGrid"></div>
+                </div>
+
+            </div>
+
+            <!-- MODAL TARGET -->
+            <div class="modal-target" id="modalTarget">
+                <div class="modal-target-content">
+                    <h2>🎯 Atur Target</h2>
+                    <label>🏔️ Target Gunung</label>
+                    <input type="number" id="inputTargetGunung" value="10" min="1" />
+                    <label>📏 Target Jarak (km)</label>
+                    <input type="number" id="inputTargetJarak" value="100" min="1" />
+                    <label>📅 Target Kegiatan</label>
+                    <input type="number" id="inputTargetKegiatan" value="50" min="1" />
+                    <div class="modal-target-btn">
+                        <button class="btn-batal" onclick="tutupModalTarget()">❌ Batal</button>
+                        <button class="btn-simpan-target" onclick="simpanTarget()">💾 Simpan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+                // ============================================
+        // CHECKLIST LOGIC
+        // ============================================
+
+        let semuaChecklist = [];
+        let tabAktif = 'alat';
+
+        function gantiTab(tab, element) {
+            tabAktif = tab;
+            document.querySelectorAll('.checklist-tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+            tampilkanChecklist();
+        }
+
+        async function ambilChecklist() {
+            try {
+                const response = await fetch(`${API_URL}/checklist?ruangan=${ruangan}`);
+                semuaChecklist = await response.json();
+                tampilkanChecklist();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+                // ============================================
+        // STATISTIK LOGIC
+        // ============================================
+
+        let dataStatistik = null;
+
+        async function ambilStatistik() {
+            try {
+                const filter = document.getElementById('filterWaktu')?.value || 'semua';
+                const response = await fetch(`${API_URL}/statistik?ruangan=${ruangan}`);
+                dataStatistik = await response.json();
+
+                tampilkanStatistik(dataStatistik);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function tampilkanStatistik(data) {
+            // Animasi angka
+            animasiAngka('statTempat', data.totalTempat);
+            animasiAngka('statJarak', data.totalJarak);
+            animasiAngka('statDurasi', data.totalDurasi);
+            animasiAngka('statBulanIni', data.kegiatanBulanIni);
+
+            // Info tambahan
+            document.getElementById('statMedan').textContent = data.medanTerbanyak || '-';
+            document.getElementById('statCuaca').textContent = data.cuacaTerbanyak || '-';
+
+            // Grafik
+            tampilkanGrafik(data.grafikBulanan);
+
+            // Target
+            tampilkanTarget(data.target, data.totalTempat, data.totalJarak, data.totalDurasi);
+
+            // Achievement
+            tampilkanAchievement(data.achievement);
+        }
+
+        // ============================================
+        // ANIMASI ANGKA
+        // ============================================
+
+        function animasiAngka(elementId, target) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                el.textContent = Math.round(current * 10) / 10;
+            }, 30);
+        }
+
+        // ============================================
+        // GRAFIK BULANAN
+        // ============================================
+
+        function tampilkanGrafik(grafikBulanan) {
+            const container = document.getElementById('grafikBulanan');
+            if (!container) return;
+
+            const entries = Object.entries(grafikBulanan);
+            const maxVal = Math.max(...entries.map(e => e[1]), 1);
+
+            const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+
+            container.innerHTML = entries.map(([key, val]) => {
+                const bulan = parseInt(key.split('-')[1]);
+                const label = namaBulan[bulan - 1];
+                const persen = (val / maxVal) * 100;
+
+                return `
+                    <div class="grafik-bar">
+                        <div class="grafik-bar-fill" style="height: ${persen}%;">
+                            ${val > 0 ? `<div class="grafik-bar-nilai">${val}</div>` : ''}
+                        </div>
+                        <div class="grafik-bar-label">${label}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // TARGET
+        // ============================================
+
+        function tampilkanTarget(target, totalTempat, totalJarak, totalDurasi) {
+            // Target Gunung
+            const persenGunung = Math.min((totalTempat / target.targetGunung) * 100, 100);
+            document.getElementById('targetGunungText').textContent = `${totalTempat}/${target.targetGunung}`;
+            document.getElementById('targetGunungFill').style.width = persenGunung + '%';
+
+            // Target Jarak
+            const persenJarak = Math.min((totalJarak / target.targetJarak) * 100, 100);
+            document.getElementById('targetJarakText').textContent = `${totalJarak}/${target.targetJarak}`;
+            document.getElementById('targetJarakFill').style.width = persenJarak + '%';
+
+            // Target Kegiatan
+            const persenKegiatan = Math.min((totalTempat / target.targetKegiatan) * 100, 100);
+            document.getElementById('targetKegiatanText').textContent = `${totalTempat}/${target.targetKegiatan}`;
+            document.getElementById('targetKegiatanFill').style.width = persenKegiatan + '%';
+        }
+
+        // ============================================
+        // ACHIEVEMENT
+        // ============================================
+
+        function tampilkanAchievement(achievement) {
+            const container = document.getElementById('achievementGrid');
+            if (!container) return;
+
+            container.innerHTML = achievement.map(a => `
+                <div class="achievement-card ${a.tercapai ? 'tercapai' : ''}">
+                    <span class="ach-icon">${a.icon}</span>
+                    <div class="ach-nama">${a.nama}</div>
+                    <div class="ach-syarat">${a.syarat} gunung</div>
+                    <div class="ach-status">${a.tercapai ? '✅' : '🔒'}</div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // MODAL TARGET
+        // ============================================
+
+        function bukaModalTarget() {
+            if (dataStatistik && dataStatistik.target) {
+                document.getElementById('inputTargetGunung').value = dataStatistik.target.targetGunung;
+                document.getElementById('inputTargetJarak').value = dataStatistik.target.targetJarak;
+                document.getElementById('inputTargetKegiatan').value = dataStatistik.target.targetKegiatan;
+            }
+            document.getElementById('modalTarget').classList.add('show');
+        }
+
+        function tutupModalTarget() {
+            document.getElementById('modalTarget').classList.remove('show');
+        }
+
+        async function simpanTarget() {
+            const targetGunung = document.getElementById('inputTargetGunung').value;
+            const targetJarak = document.getElementById('inputTargetJarak').value;
+            const targetKegiatan = document.getElementById('inputTargetKegiatan').value;
+
+            try {
+                await fetch(`${API_URL}/statistik/target`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        targetGunung,
+                        targetJarak,
+                        targetKegiatan,
+                        ruangan
+                    })
+                });
+
+                tutupModalTarget();
+                await ambilStatistik();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal simpan target!');
+            }
+        }
+
+        function tampilkanChecklist() {
+            const container = document.getElementById('daftarChecklist');
+            const filtered = semuaChecklist.filter(c => c.kategori === tabAktif);
+
+            // Update progress
+            const total = filtered.length;
+            const checked = filtered.filter(c => c.checked).length;
+            const persen = total > 0 ? Math.round((checked / total) * 100) : 0;
+            document.getElementById('progressText').textContent = `${checked}/${total}`;
+            document.getElementById('progressPersen').textContent = `${persen}%`;
+            document.getElementById('progressFill').style.width = persen + '%';
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="info-box">
+                        <span class="ikon">📭</span>
+                        <h3>Belum Ada ${tabAktif === 'alat' ? 'Alat' : 'Makanan'}</h3>
+                        <p>Tambah ${tabAktif === 'alat' ? 'alat' : 'makanan'} wajib kalian! 💕</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => `
+                <div class="checklist-item ${item.checked ? 'checked' : ''}" onclick="toggleChecklist('${item._id}')">
+                    <div class="checklist-checkbox">
+                        ${item.checked ? '✓' : ''}
+                    </div>
+                    <div class="item-nama">${item.nama}</div>
+                    <button class="item-hapus" onclick="event.stopPropagation(); hapusItemChecklist('${item._id}')">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        async function tambahItemChecklist() {
+            const input = document.getElementById('inputItemChecklist');
+            const nama = input.value.trim();
+
+            if (!nama) {
+                alert('⚠️ Ketik nama item dulu!');
+                return;
+            }
+
+            try {
+                await fetch(`${API_URL}/checklist`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nama: nama,
+                        kategori: tabAktif,
+                        ruangan: ruangan
+                    })
+                });
+
+                input.value = '';
+                await ambilChecklist();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal tambah item!');
+            }
+        }
+
+        async function toggleChecklist(id) {
+            try {
+                await fetch(`${API_URL}/checklist/${id}`, { method: 'PUT' });
+                await ambilChecklist();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function hapusItemChecklist(id) {
+            if (!confirm('Hapus item ini? 💔')) return;
+
+            try {
+                await fetch(`${API_URL}/checklist/${id}`, { method: 'DELETE' });
+                await ambilChecklist();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function resetChecklist() {
+            if (!confirm('Reset semua checklist? (tidak menghapus item) 💕')) return;
+
+            try {
+                await fetch(`${API_URL}/checklist/reset`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ruangan: ruangan })
+                });
+                await ambilChecklist();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Enter key untuk tambah item
+        document.getElementById('inputItemChecklist')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') tambahItemChecklist();
+        });
+
+                // ============================================
+        // NAVIGASI MENU
+        // ============================================
+
+                       function bukaFitur(fitur) {
+            document.getElementById('menuPilihan').style.display = 'none';
+
+            if (fitur === 'catat') {
+                document.getElementById('fiturCatat').style.display = 'block';
+                ambilKegiatan();
+            } else if (fitur === 'checklist') {
+                document.getElementById('fiturChecklist').style.display = 'block';
+                ambilChecklist();
+            } else if (fitur === 'statistik') {
+                document.getElementById('fiturStatistik').style.display = 'block';
+                ambilStatistik();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function tutupFitur() {
+            document.getElementById('fiturCatat').style.display = 'none';
+            document.getElementById('fiturChecklist').style.display = 'none';
+            document.getElementById('fiturStatistik').style.display = 'none';
+            document.getElementById('menuPilihan').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // ============================================
+        // PETUALANGAN KITA - DASAR
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+                // ============================================
+        // API URL
+        // ============================================
+        const API_URL = 'http://localhost:3000/api';
+
+        // ============================================
+        // CATAT KEGIATAN
+        // ============================================
+
+        async function simpanKegiatan() {
+            const tempat = document.getElementById('inputTempat').value.trim();
+            const tanggal = document.getElementById('inputTanggal').value;
+            const durasi = document.getElementById('inputDurasi').value.trim();
+            const jarak = document.getElementById('inputJarak').value.trim();
+            const medan = document.getElementById('inputMedan').value;
+            const cuaca = document.getElementById('inputCuaca').value;
+            const deskripsi = document.getElementById('inputDeskripsi').value.trim();
+            const fotoInput = document.getElementById('inputFotoKegiatan');
+            const pesan = document.getElementById('pesanKegiatan');
+
+            if (!tempat || !tanggal) {
+                pesan.textContent = '⚠️ Tempat & tanggal wajib diisi!';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('tempat', tempat);
+            formData.append('tanggal', tanggal);
+            formData.append('durasi', durasi);
+            formData.append('jarak', jarak);
+            formData.append('medan', medan);
+            formData.append('cuaca', cuaca);
+            formData.append('deskripsi', deskripsi);
+            formData.append('ruangan', ruangan);
+
+            if (fotoInput.files[0]) {
+                formData.append('foto', fotoInput.files[0]);
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/petualangan`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Gagal simpan');
+
+                pesan.style.color = '#48bb78';
+                pesan.textContent = '✅ Kegiatan berhasil disimpan! 💕';
+
+                // Reset form
+                document.getElementById('inputTempat').value = '';
+                document.getElementById('inputTanggal').value = '';
+                document.getElementById('inputDurasi').value = '';
+                document.getElementById('inputJarak').value = '';
+                document.getElementById('inputDeskripsi').value = '';
+                document.getElementById('inputFotoKegiatan').value = '';
+
+                await ambilKegiatan();
+
+                setTimeout(() => pesan.textContent = '', 2000);
+            } catch (error) {
+                console.error('Error:', error);
+                pesan.style.color = '#f5576c';
+                pesan.textContent = '❌ Gagal simpan! Pastikan server jalan.';
+            }
+        }
+
+        // ============================================
+        // AMBIL DAFTAR KEGIATAN
+        // ============================================
+
+        async function ambilKegiatan() {
+            try {
+                const response = await fetch(`${API_URL}/petualangan?ruangan=${ruangan}`);
+                const data = await response.json();
+                tampilkanKegiatan(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function tampilkanKegiatan(data) {
+            const container = document.getElementById('daftarKegiatan');
+
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="info-box">
+                        <span class="ikon">📭</span>
+                        <h3>Belum Ada Kegiatan</h3>
+                        <p>Catat kegiatan pertama kalian! 💕</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Urutkan dari terbaru
+            data.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+            container.innerHTML = data.map(k => {
+                const fotoUrl = k.foto ? `${API_URL.replace('/api', '')}/uploads/petualangan/${k.foto}` : null;
+                const badgeMedan = k.medan === 'Mudah' ? '🟢' : k.medan === 'Sulit' ? '🔴' : '🟡';
+
+                return `
+                    <div class="kegiatan-card">
+                        ${fotoUrl ? `<img src="${fotoUrl}" class="foto-kegiatan" />` : ''}
+                        <div class="info-kegiatan">
+                            <div class="tempat">🏔️ ${k.tempat}</div>
+                            <div class="meta">
+                                <span>📅 ${k.tanggal}</span>
+                                ${k.durasi !== '-' ? `<span>⏱️ ${k.durasi}</span>` : ''}
+                                ${k.jarak !== '-' ? `<span>📏 ${k.jarak}</span>` : ''}
+                                <span>${badgeMedan} ${k.medan}</span>
+                                <span>☀️ ${k.cuaca}</span>
+                            </div>
+                            ${k.deskripsi ? `<div class="deskripsi">💬 ${k.deskripsi}</div>` : ''}
+                        </div>
+                        <button class="btn-hapus-kegiatan" onclick="hapusKegiatan('${k._id}')">🗑️</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // HAPUS KEGIATAN
+        // ============================================
+
+        async function hapusKegiatan(id) {
+            if (!confirm('Yakin mau hapus kegiatan ini? 💔')) return;
+
+            try {
+                await fetch(`${API_URL}/petualangan/${id}`, { method: 'DELETE' });
+                await ambilKegiatan();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal hapus!');
+            }
+        }
+
+        // ============================================
+        // LOAD PERTAMA
+        // ============================================
+
+        window.addEventListener('load', function() {
+            ambilKegiatan();
+        });
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        function kembaliKeDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = Math.random() > 0.7 ? '🌿' : '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 500);
+    </script>
+
+</body>
+</html>

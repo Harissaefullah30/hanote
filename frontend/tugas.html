@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Tugas - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ANIMASI HATI -->
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeDashboard()">⬅ Kembali</button>
+                    </div>
+                </div>
+                <div class="statistik">
+                    <span>📋 <span id="totalTugas">0</span></span>
+                    <span>✅ <span id="totalSelesai">0</span></span>
+                    <span>⏳ <span id="totalBelum">0</span></span>
+                </div>
+            </div>
+
+            <!-- QUOTE -->
+            <div class="quote-banner" id="quoteBanner">
+                💕 "Cinta itu seperti belajar, butuh kesabaran dan keikhlasan"
+            </div>
+
+            <!-- FORM TAMBAH TUGAS -->
+            <div class="form-tugas">
+                <div class="form-row">
+                    <input type="text" id="inputJudul" placeholder="📝 Nama tugas..." />
+                    <input type="date" id="inputDeadline" />
+                </div>
+                <div class="form-row">
+                    <select id="inputPemilik">
+                        <option value="aku">👨 Haris</option>
+                        <option value="pacar">👩 Anita</option>
+                    </select>
+                    <select id="inputKategori">
+                        <option value="Tugas">📚 Tugas</option>
+                        <option value="UTS">📝 UTS</option>
+                        <option value="UAS">📝 UAS</option>
+                        <option value="Makalah">📄 Makalah</option>
+                        <option value="Lainnya">📌 Lainnya</option>
+                    </select>
+                    <select id="inputPrioritas">
+                        <option value="biasa">⚪ Biasa</option>
+                        <option value="penting">🔴 Penting</option>
+                        <option value="ringan">🟢 Ringan</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <textarea id="inputDeskripsi" placeholder="📄 Deskripsi tugas..." rows="2"></textarea>
+                </div>
+                <div class="form-row">
+                    <input type="file" id="inputFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.ppt,.txt" />
+                    <span style="font-size:12px;color:#7c6b8a;display:block;margin-top:4px;">📎 Upload file (PDF, Word, Excel, Gambar) max 10MB</span>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="tambahTugas()">➕ Tambah Tugas</button>
+            </div>
+
+            <!-- FILTER -->
+            <div class="filter">
+                <button class="active" onclick="filterTugas('semua', this)">📋 Semua</button>
+                <button onclick="filterTugas('aku', this)">👨 Haris</button>
+                <button onclick="filterTugas('pacar', this)">👩 Anita</button>
+                <button onclick="filterTugas('selesai', this)">✅ Selesai</button>
+                <button onclick="filterTugas('belum', this)">⏳ Belum</button>
+            </div>
+
+            <!-- TAB NAVIGASI -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" onclick="bukaTab('tugas', this)">📋 Tugas Aktif</button>
+                <button class="tab-btn" onclick="bukaTab('arsip', this)">📂 Arsip</button>
+            </div>
+
+            <!-- DAFTAR TUGAS -->
+            <div id="daftarTugas" class="daftar-tugas">
+                <div class="kosong">
+                    <span>📭</span>
+                    <p>Belum ada tugas di ruangan ini</p>
+                    <p class="sub">Ayo tambah tugas pertama! 💕</p>
+                </div>
+            </div>
+
+            <!-- DAFTAR ARSIP -->
+            <div id="daftarArsip" class="daftar-tugas" style="display: none;">
+                <div class="kosong">
+        <           span>📭</span>
+                    <p>Belum ada tugas yang diarsipkan</p>
+                     <p class="sub">Selesaikan tugas dulu ya! 💕</p>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>💡 Hijau = ≥3 hari | 🟡 Kuning = 1-2 hari | 🔴 Merah = hari ini/lewat</p>
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL ARSIP -->
+    <div id="modalArsip" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📂 Arsipkan Tugas</h2>
+                <button class="modal-close" onclick="tutupModalArsip()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p>Isi detail tugas yang akan diarsipkan di bawah ini:</p>
+                
+                <label>📝 Nama Tugas</label>
+                <input type="text" id="arsipJudul" readonly />
+                
+                <label>📚 Mata Kuliah</label>
+                <input type="text" id="arsipMatkul" placeholder="Contoh: Pancasila" />
+                
+                <label>📅 Deadline</label>
+                <input type="date" id="arsipDeadline" readonly />
+                
+                <label>📄 Deskripsi</label>
+                <textarea id="arsipDeskripsi" placeholder="Deskripsi tugas..." readonly></textarea>
+                
+                <label>📎 File Tugas (opsional)</label>
+                <input type="file" id="arsipFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                <span style="font-size:12px;color:#7c6b8a;">Upload file pendukung tugas (max 10MB)</span>
+                
+                <label>✏️ Keterangan (opsional)</label>
+                <input type="text" id="arsipKeterangan" placeholder="Contoh: Nilai A, Sudah dikumpulkan, dll" />
+                
+                <div class="modal-btn-group">
+                    <button class="btn btn-secondary" onclick="tutupModalArsip()">❌ Batal</button>
+                    <button class="btn btn-primary" onclick="simpanArsip()">💾 Simpan Arsip</button>
+                </div>
+                
+                <div id="pesanArsip" class="pesan"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        // ============================================
+        // INISIALISASI HALAMAN TUGAS
+        // ============================================
+
+        // Ambil ruangan dari localStorage
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        // ⚠️ PENTING: Set ruanganAktif agar script.js bisa menggunakannya
+        ruanganAktif = ruangan;
+
+        // Kembali ke dashboard
+        function kembaliKeDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Quote random
+        function tampilkanQuote() {
+            const quotes = [
+                '💕 "Cinta itu seperti belajar, butuh kesabaran dan keikhlasan"',
+                '🌸 "Belajar bersamamu, membuat segala hal terasa indah"',
+                '❤️ "Cinta dan ilmu, dua hal yang tak pernah cukup dipelajari"',
+                '🌺 "Setiap tugas selesai, cinta kita makin kuat"',
+                '💖 "Bersamamu, belajar jadi petualangan yang menyenangkan"',
+                '🌷 "Cinta adalah guru terbaik dalam hidup"',
+                '💗 "Menghitung deadline, sambil menghitung detik bertemu denganmu"',
+                '🌻 "Belajar itu berat, tapi bersama kamu terasa ringan"'
+            ];
+            document.getElementById('quoteBanner').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+        }
+
+        // Inisialisasi halaman tugas
+        window.onload = function() {
+            console.log('✅ ruanganAktif:', ruanganAktif); // Debug
+            ambilTugas();
+            tampilkanQuote();
+        };
+
+        // Animasi hati
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+    </script>
+
+</body>
+</html>

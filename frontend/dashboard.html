@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️ Dashboard - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ANIMASI HATI BERJATUHAN -->
+    <div id="hatiContainer"></div>
+
+    <div class="dashboard-container">
+        
+        <!-- HEADER -->
+        <div class="dashboard-header">
+            <div class="dashboard-logo">
+                <span class="logo-icon">❤️</span>
+                <h1>HANOTE</h1>
+            </div>
+            <div class="dashboard-user">
+                <span class="ruangan-badge" id="dashboardRuangan">harisganteng</span>
+                <button class="btn btn-small btn-outline" onclick="keluarDashboard()">🚪 Keluar</button>
+            </div>
+        </div>
+
+        <!-- KALENDER MINI & JAM -->
+        <div class="kalender-mini">
+            <div class="kalender-tanggal">
+                <span class="tanggal" id="tanggalHari">01</span>
+                <div class="kalender-info">
+                    <span class="bulan" id="bulanTahun">Januari 2026</span>
+                    <span class="hari" id="namaHari">Senin</span>
+                </div>
+            </div>
+            <div class="kalender-jam">
+                <span class="jam" id="jamSekarang">00:00:00</span>
+                <span class="status-waktu" id="statusWaktu">WIB</span>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- KONTEN: MENU UTAMA                           -->
+        <!-- ============================================ -->
+        <div id="tabMenuContent" class="tab-content active">
+            
+            <!-- QUOTE -->
+            <div class="quote-banner" id="quoteBanner">
+                💕 "Cinta itu seperti belajar, butuh kesabaran dan keikhlasan"
+            </div>
+
+            <!-- MENU GRID -->
+            <div class="menu-grid">
+
+                <!-- Menu Tugas -->
+                <div class="menu-card" onclick="window.location.href='tugas.html'">
+                    <div class="menu-icon">📋</div>
+                    <div class="menu-title">Tugas</div>
+                    <div class="menu-desc">Kelola tugas kuliah aktif</div>
+                </div>
+
+                <!-- Menu Galeri -->
+                <div class="menu-card" onclick="window.location.href='galeri.html'">
+                    <div class="menu-icon">📸</div>
+                    <div class="menu-title">Galeri</div>
+                    <div class="menu-desc">Simpan foto & video berdua</div>
+                </div>
+
+                <!-- Menu Keuangan -->
+                <div class="menu-card" onclick="window.location.href='keuangan.html'">
+                    <div class="menu-icon">💰</div>
+                    <div class="menu-title">Keuangan</div>
+                    <div class="menu-desc">Catat pengeluaran bersama</div>
+                </div>
+
+                <!-- Menu Link -->
+                <div class="menu-card" onclick="window.location.href='link.html'">
+                    <div class="menu-icon">🔖</div>
+                    <div class="menu-title">Link</div>
+                    <div class="menu-desc">Simpan link penting</div>
+                </div>
+
+                <!-- Menu Spin -->
+                <div class="menu-card" onclick="window.location.href='spin.html'">
+                    <div class="menu-icon">🎲</div>
+                    <div class="menu-title">Spin</div>
+                    <div class="menu-desc">Random makan & tempat</div>
+                </div>
+
+                <!-- Menu Game -->
+                <div class="menu-card" onclick="window.location.href='games.html'">
+                    <div class="menu-icon">🎮</div>
+                    <div class="menu-title">Game</div>
+                    <div class="menu-desc">Main game seru berdua</div>
+                </div>
+
+                <!-- Menu Petualangan -->
+                <div class="menu-card menu-petualangan-card" onclick="window.location.href='petualangan.html'">
+                    <div class="menu-icon">🏔️</div>
+                    <div class="menu-title">Petualangan</div>
+                    <div class="menu-desc">Catat kegiatan fisik</div>
+                </div>
+
+                <!-- Menu Lainnya -->
+                <div class="menu-card menu-lainnya-card" onclick="window.location.href='lainnya.html'">
+                    <div class="menu-icon">
+                        <img src="assets/icons/icon-lainnya.png" alt="Lainnya" style="width: 42px; height: 42px; object-fit: contain;" />
+                    </div>
+                    <div class="menu-title">Lainnya</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="dashboard-footer">
+            <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================
+        // TAMPILKAN RUANGAN
+        // ============================================
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('dashboardRuangan').textContent = ruangan;
+
+        // ============================================
+        // QUOTE RANDOM
+        // ============================================
+        const quotes = [
+            '💕 "Cinta itu seperti belajar, butuh kesabaran dan keikhlasan"',
+            '🌸 "Belajar bersamamu, membuat segala hal terasa indah"',
+            '❤️ "Cinta dan ilmu, dua hal yang tak pernah cukup dipelajari"',
+            '🌺 "Setiap tugas selesai, cinta kita makin kuat"',
+            '💖 "Bersamamu, belajar jadi petualangan yang menyenangkan"',
+            '🌷 "Cinta adalah guru terbaik dalam hidup"',
+            '💗 "Menghitung deadline, sambil menghitung detik bertemu denganmu"',
+            '🌻 "Belajar itu berat, tapi bersama kamu terasa ringan"'
+        ];
+        document.getElementById('quoteBanner').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // ============================================
+        // KALENDER MINI & JAM
+        // ============================================
+        function updateKalender() {
+            const now = new Date();
+            const tanggal = String(now.getDate()).padStart(2, '0');
+            const bulan = now.getMonth();
+            const tahun = now.getFullYear();
+            const hari = now.getDay();
+            const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const namaHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            
+            document.getElementById('tanggalHari').textContent = tanggal;
+            document.getElementById('bulanTahun').textContent = namaBulan[bulan] + ' ' + tahun;
+            document.getElementById('namaHari').textContent = namaHari[hari];
+            
+            const jam = String(now.getHours()).padStart(2, '0');
+            const menit = String(now.getMinutes()).padStart(2, '0');
+            const detik = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('jamSekarang').textContent = jam + ':' + menit + ':' + detik;
+        }
+        updateKalender();
+        setInterval(updateKalender, 1000);
+
+        // ============================================
+        // FUNGSI KELUAR
+        // ============================================
+        function keluarDashboard() {
+            if (confirm('Yakin mau keluar? 💕')) {
+                localStorage.removeItem('ruanganHanote');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+    </script>
+
+</body>
+</html>

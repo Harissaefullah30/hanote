@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔤 Sambung Kata - Hanote Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           AESTHETIC SAMBUNG KATA
+           ============================================ */
+        .game-header { text-align: center; padding: 20px 0 10px; border-bottom: 2px dashed #f0e6f5; margin-bottom: 20px; position: relative; }
+        .game-header h1 { font-size: 32px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; letter-spacing: 2px; }
+        .game-header p { color: #7c6b8a; font-style: italic; font-size: 14px; margin-top: 4px; }
+
+        /* FOTO POJOK */
+        .foto-pojok {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #f093fb;
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+            transition: all 0.3s;
+        }
+        .foto-pojok:hover { transform: scale(1.1) rotate(5deg); }
+        .foto-pojok img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* STEP SECTION */
+        .step-section { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px; border: 2px solid rgba(255, 255, 255, 0.4); margin-bottom: 20px; box-shadow: 0 8px 32px rgba(240, 147, 251, 0.1); }
+        .step-title { font-size: 18px; font-weight: 800; color: #2d1b3d; margin-bottom: 14px; }
+
+        /* KESULITAN */
+        .pilihan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .pilihan-card { background: rgba(255, 255, 255, 0.8); border: 3px solid #e8dff5; border-radius: 20px; padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .pilihan-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3); }
+        .pilihan-card.terpilih { border-color: #f093fb; background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2)); transform: scale(1.03); box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4); }
+        .pilihan-card .icon { font-size: 42px; display: block; margin-bottom: 8px; }
+        .pilihan-card .nama { font-size: 16px; font-weight: 800; color: #2d1b3d; }
+        .pilihan-card .desc { font-size: 12px; color: #7c6b8a; margin-top: 4px; }
+
+        /* WAKTU */
+        .waktu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .waktu-card { background: rgba(255, 255, 255, 0.8); border: 3px solid #e8dff5; border-radius: 16px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .waktu-card:hover { transform: scale(1.05); }
+        .waktu-card.terpilih { border-color: #f093fb; background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2)); transform: scale(1.08); box-shadow: 0 8px 24px rgba(240, 147, 251, 0.4); }
+        .waktu-card .waktu { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .waktu-card .label { font-size: 12px; color: #7c6b8a; font-weight: 700; margin-top: 4px; }
+
+        /* TOMBOL */
+        .btn-mulai { width: 100%; padding: 16px; border: none; border-radius: 16px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; font-size: 17px; font-weight: 800; cursor: pointer; transition: all 0.3s; letter-spacing: 1px; margin-top: 16px; box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3); }
+        .btn-mulai:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(240, 147, 251, 0.5); }
+        .btn-mulai:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .pesan { text-align: center; font-size: 13px; min-height: 20px; margin-top: 10px; font-weight: 600; }
+        .pesan.error { color: #f5576c; }
+
+        /* ARENA */
+        .arena-section { display: none; }
+        .arena-section.show { display: block; }
+
+        .arena-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 12px 16px; background: linear-gradient(135deg, rgba(240, 147, 251, 0.15), rgba(245, 87, 108, 0.15)); border-radius: 14px; flex-wrap: wrap; gap: 8px; }
+        .arena-header .info { font-size: 13px; font-weight: 800; color: #2d1b3d; }
+        .arena-header .info span { color: #f5576c; }
+
+        .timer-bar { width: 100%; height: 14px; background: rgba(232, 223, 245, 0.5); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .timer-fill { height: 100%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); transition: width 1s linear; border-radius: 10px; }
+        .timer-fill.merah { background: linear-gradient(135deg, #ff9a9e 0%, #f5576c 100%); animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+        /* KARTU SOAL - GLASSMORPHISM */
+        .soal-box {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.95) 0%, rgba(245, 87, 108, 0.95) 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(240, 147, 251, 0.4);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .soal-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .soal-box .label { font-size: 12px; opacity: 0.9; font-weight: 700; margin-bottom: 12px; letter-spacing: 2px; position: relative; z-index: 1; }
+        .soal-box .kata { font-size: 44px; font-weight: 800; letter-spacing: 8px; text-transform: uppercase; position: relative; z-index: 1; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
+        .soal-box .hint { font-size: 14px; margin-top: 12px; opacity: 0.9; position: relative; z-index: 1; font-style: italic; }
+
+        /* INPUT */
+        .input-area { display: flex; gap: 10px; margin-bottom: 16px; }
+        .input-area input { flex: 1; padding: 18px; border: 3px solid #e8dff5; border-radius: 18px; font-size: 20px; font-weight: 700; font-family: inherit; color: #2d1b3d; text-align: center; text-transform: uppercase; letter-spacing: 3px; background: rgba(255, 255, 255, 0.9); transition: all 0.3s; }
+        .input-area input:focus { outline: none; border-color: #f093fb; box-shadow: 0 0 0 6px rgba(240, 147, 251, 0.2); }
+        .input-area button { padding: 18px 32px; border: none; border-radius: 18px; background: linear-gradient(135deg, #43e97b, #38f9d7); color: white; font-size: 20px; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 24px rgba(72, 187, 120, 0.3); }
+        .input-area button:hover { transform: scale(1.05); box-shadow: 0 12px 32px rgba(72, 187, 120, 0.5); }
+
+        /* STATUS */
+        .status-game { text-align: center; font-size: 16px; font-weight: 800; color: #2d1b3d; padding: 14px; background: rgba(240, 147, 251, 0.1); border-radius: 14px; margin-bottom: 16px; min-height: 50px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .status-game.benar { background: rgba(72, 187, 120, 0.2); color: #22543d; }
+        .status-game.salah { background: rgba(245, 87, 108, 0.2); color: #742a2a; animation: shake 0.5s ease; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* SKOR */
+        .skor-info { display: flex; justify-content: space-around; padding: 16px; background: rgba(246, 240, 250, 0.5); border-radius: 16px; margin-bottom: 16px; }
+        .skor-info .item { text-align: center; }
+        .skor-info .item .label { font-size: 12px; color: #7c6b8a; font-weight: 700; }
+        .skor-info .item .nilai { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        /* RIWAYAT */
+        .riwayat-kata { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; justify-content: center; }
+        .riwayat-kata span { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2)); color: #4a3f5c; border: 1px solid rgba(240, 147, 251, 0.3); }
+
+        .btn-selesai { width: 100%; padding: 12px; border: none; border-radius: 14px; background: #e8dff5; color: #4a3f5c; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px; }
+
+        /* MODAL HASIL */
+        .modal-hasil { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 9999; }
+        .modal-hasil.show { display: flex; }
+        .modal-content { background: white; border-radius: 24px; padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-content h2 { font-size: 28px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800; margin-bottom: 20px; }
+        .modal-stat { font-size: 16px; color: #2d1b3d; margin-bottom: 10px; font-weight: 600; }
+        .modal-stat span { font-weight: 800; color: #f5576c; }
+        .modal-skor { font-size: 42px; font-weight: 800; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 15px 0; }
+        .btn-modal { width: 100%; padding: 14px; border: none; border-radius: 14px; font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+        .btn-modal.lanjut { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .btn-modal.selesai { background: #e8dff5; color: #4a3f5c; }
+        .btn-modal:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3); }
+
+        /* CONFETTI */
+        .confetti { position: fixed; width: 10px; height: 10px; z-index: 9998; pointer-events: none; animation: confetti-fall 2s linear forwards; }
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .game-header h1 { font-size: 24px; }
+            .soal-box .kata { font-size: 32px; letter-spacing: 4px; }
+            .soal-box { padding: 30px 16px; }
+            .waktu-card .waktu { font-size: 22px; }
+            .input-area input { font-size: 16px; padding: 14px; letter-spacing: 1px; }
+            .input-area button { padding: 14px 20px; font-size: 16px; }
+            .foto-pojok { width: 45px; height: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeGames()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-header">
+                <h1>🔤 Sambung Kata</h1>
+                <p>"Sambung kata, raih skor tertinggi!" 💕</p>
+
+                <!-- FOTO POJOK -->
+                <div class="foto-pojok">
+                    <img src="assets/images/foto-berdua.jpg" alt="Haris & Anita" />
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- HALAMAN PILIHAN                            -->
+            <!-- ========================================== -->
+            <div id="pilihanSection">
+                <div class="step-section">
+                    <div class="step-title">1️⃣ Pilih Tingkat Kesulitan</div>
+                    <div class="pilihan-grid">
+                        <div class="pilihan-card" onclick="pilihKesulitan('mudah', this)" id="kartuMudah">
+                            <span class="icon">🟢</span>
+                            <div class="nama">Mudah</div>
+                            <div class="desc">Kata umum</div>
+                        </div>
+                        <div class="pilihan-card" onclick="pilihKesulitan('sulit', this)" id="kartuSulit">
+                            <span class="icon">🔴</span>
+                            <div class="nama">Sulit</div>
+                            <div class="desc">Kata jarang</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-section">
+                    <div class="step-title">2️⃣ Pilih Waktu Permainan</div>
+                    <div class="waktu-grid">
+                        <div class="waktu-card" onclick="pilihWaktu(60, this)">
+                            <div class="waktu">1</div>
+                            <div class="label">Menit</div>
+                        </div>
+                        <div class="waktu-card" onclick="pilihWaktu(120, this)">
+                            <div class="waktu">2</div>
+                            <div class="label">Menit</div>
+                        </div>
+                        <div class="waktu-card" onclick="pilihWaktu(180, this)">
+                            <div class="waktu">3</div>
+                            <div class="label">Menit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-mulai" onclick="mulaiPermainan()" id="btnMulai" disabled>🎮 MULAI PERMAINAN</button>
+                <div class="pesan" id="pesanMulai"></div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- HALAMAN ARENA                              -->
+            <!-- ========================================== -->
+            <div class="arena-section" id="arenaSection">
+                <div class="arena-header">
+                    <div class="info">⏱️ <span id="timerText">01:00</span></div>
+                    <div class="info">📊 Skor: <span id="skorAkhir">0</span></div>
+                    <div class="info">🏆 <span id="kataTerakhir">-</span></div>
+                </div>
+
+                <div class="timer-bar">
+                    <div class="timer-fill" id="timerFill" style="width: 100%;"></div>
+                </div>
+
+                <div class="soal-box">
+                    <div class="label">🔤 SAMBUNG DARI:</div>
+                    <div class="kata" id="kataSoal">...</div>
+                    <div class="hint" id="hintSoal">Ketik kata yang dimulai dengan huruf terakhir!</div>
+                </div>
+
+                <div class="input-area">
+                    <input type="text" id="inputJawaban" placeholder="KETIK JAWABAN..." autocomplete="off" />
+                    <button onclick="cekJawaban()">✅</button>
+                </div>
+
+                <div class="status-game" id="statusGame">Ketik kata & tekan ✅!</div>
+
+                <div class="skor-info">
+                    <div class="item">
+                        <div class="label">✅ Benar</div>
+                        <div class="nilai" id="skorBenar">0</div>
+                    </div>
+                    <div class="item">
+                        <div class="label">❌ Salah</div>
+                        <div class="nilai" id="skorSalah">0</div>
+                    </div>
+                </div>
+
+                <div class="riwayat-kata" id="riwayatKata"></div>
+
+                <button class="btn-selesai" onclick="selesaiPermainan()">⏹️ Selesai Sekarang</button>
+            </div>
+
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL HASIL -->
+    <div class="modal-hasil" id="modalHasil">
+        <div class="modal-content">
+            <h2>🏁 Permainan Selesai!</h2>
+            <div class="modal-stat">✅ Benar: <span id="hasilBenar">0</span></div>
+            <div class="modal-stat">❌ Salah: <span id="hasilSalah">0</span></div>
+            <div class="modal-skor">🎯 Skor: <span id="hasilSkor">0</span></div>
+            <div class="modal-stat">🏆 Highscore: <span id="hasilHighscore">0</span></div>
+            <button class="btn-modal lanjut" onclick="lanjutMain()">🔁 Main Lagi</button>
+            <button class="btn-modal selesai" onclick="selesaiMain()">🏠 Selesai & Kembali</button>
+        </div>
+    </div>
+
+        <script>
+        // ============================================
+        // GAME SAMBUNG KATA - LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        let kesulitanAktif = null;
+        let waktuTotal = 60;
+        let skor = { benar: 0, salah: 0, total: 0 };
+        let kataAktif = null;
+        let timerInterval = null;
+        let waktuTersisa = 60;
+        let sedangMain = false;
+        let riwayatKata = [];
+
+        // ============================================
+        // BANK KATA - MUDAH (100+)
+        // ============================================
+
+        const kataMudah = [
+            { kata: 'BUKU', hint: 'Benda untuk membaca' },
+            { kata: 'MEJA', hint: 'Perabot rumah' },
+            { kata: 'PINTU', hint: 'Untuk masuk' },
+            { kata: 'KURSI', hint: 'Untuk duduk' },
+            { kata: 'LAMPU', hint: 'Sumber cahaya' },
+            { kata: 'IBU', hint: 'Orang tua perempuan' },
+            { kata: 'AYAH', hint: 'Orang tua laki-laki' },
+            { kata: 'KAKI', hint: 'Anggota tubuh' },
+            { kata: 'TANGAN', hint: 'Anggota tubuh' },
+            { kata: 'KEPALA', hint: 'Bagian atas tubuh' },
+            { kata: 'MATA', hint: 'Untuk melihat' },
+            { kata: 'TELINGA', hint: 'Untuk mendengar' },
+            { kata: 'HIDUNG', hint: 'Untuk mencium' },
+            { kata: 'MULUT', hint: 'Untuk makan' },
+            { kata: 'RAMBUT', hint: 'Di atas kepala' },
+            { kata: 'SEPATU', hint: 'Alas kaki' },
+            { kata: 'BAJU', hint: 'Pakaian' },
+            { kata: 'CELANA', hint: 'Pakaian' },
+            { kata: 'TOPI', hint: 'Pelindung kepala' },
+            { kata: 'NASI', hint: 'Makanan pokok' },
+            { kata: 'AYAM', hint: 'Hewan berkaki 2' },
+            { kata: 'SAPI', hint: 'Hewan berkaki 4' },
+            { kata: 'KUCING', hint: 'Hewan mengeong' },
+            { kata: 'ANJING', hint: 'Hewan menggonggong' },
+            { kata: 'BURUNG', hint: 'Hewan terbang' },
+            { kata: 'IKAN', hint: 'Hewan air' },
+            { kata: 'GAJAH', hint: 'Hewan besar' },
+            { kata: 'SINGA', hint: 'Raja hutan' },
+            { kata: 'HARIMAU', hint: 'Hewan loreng' },
+            { kata: 'BUNGA', hint: 'Tanaman indah' },
+            { kata: 'POHON', hint: 'Tanaman besar' },
+            { kata: 'DAUN', hint: 'Bagian pohon' },
+            { kata: 'BUAH', hint: 'Hasil pohon' },
+            { kata: 'SAYUR', hint: 'Makanan sehat' },
+            { kata: 'SUSU', hint: 'Minuman sehat' },
+            { kata: 'AIR', hint: 'Minuman' },
+            { kata: 'ROTI', hint: 'Makanan' },
+            { kata: 'KUE', hint: 'Makanan manis' },
+            { kata: 'GULA', hint: 'Bahan manis' },
+            { kata: 'GARAM', hint: 'Bahan asin' },
+            { kata: 'MINYAK', hint: 'Bahan masak' },
+            { kata: 'BERAS', hint: 'Bahan nasi' },
+            { kata: 'TELUR', hint: 'Dari ayam' },
+            { kata: 'DAGING', hint: 'Makanan protein' },
+            { kata: 'SAWI', hint: 'Sayuran hijau' },
+            { kata: 'WORTEL', hint: 'Sayuran oranye' },
+            { kata: 'TOMAT', hint: 'Buah merah' },
+            { kata: 'CABAI', hint: 'Bikin pedas' },
+            { kata: 'BAWANG', hint: 'Bumbu dapur' },
+            { kata: 'PISANG', hint: 'Buah kuning' },
+            { kata: 'JERUK', hint: 'Buah oranye' },
+            { kata: 'MANGGA', hint: 'Buah manis' },
+            { kata: 'APEL', hint: 'Buah merah' },
+            { kata: 'ANGGUR', hint: 'Buah kecil' },
+            { kata: 'SEMANGKA', hint: 'Buah besar' },
+            { kata: 'PEPAYA', hint: 'Buah oranye' },
+            { kata: 'DURIAN', hint: 'Raja buah' },
+            { kata: 'RAMBUTAN', hint: 'Buah berambut' },
+            { kata: 'SALAK', hint: 'Buah bersisik' },
+            { kata: 'MOBIL', hint: 'Kendaraan' },
+            { kata: 'MOTOR', hint: 'Kendaraan roda 2' },
+            { kata: 'SEPEDA', hint: 'Kendaraan kayuh' },
+            { kata: 'KERETA', hint: 'Kendaraan rel' },
+            { kata: 'PESAWAT', hint: 'Kendaraan udara' },
+            { kata: 'KAPAL', hint: 'Kendaraan laut' },
+            { kata: 'BECAK', hint: 'Kendaraan roda 3' },
+            { kata: 'DELMAN', hint: 'Kendaraan kuda' },
+            { kata: 'BUMI', hint: 'Planet kita' },
+            { kata: 'BULAN', hint: 'Satelit bumi' },
+            { kata: 'MATAHARI', hint: 'Bintang siang' },
+            { kata: 'BINTANG', hint: 'Cahaya malam' },
+            { kata: 'LANGIT', hint: 'Di atas kita' },
+            { kata: 'AWAN', hint: 'Putih di langit' },
+            { kata: 'HUJAN', hint: 'Air dari langit' },
+            { kata: 'PANAS', hint: 'Cuaca terik' },
+            { kata: 'DINGIN', hint: 'Cuaca sejuk' },
+            { kata: 'ANGIN', hint: 'Udara bergerak' },
+            { kata: 'RUMAH', hint: 'Tempat tinggal' },
+            { kata: 'SEKOLAH', hint: 'Tempat belajar' },
+            { kata: 'KANTOR', hint: 'Tempat kerja' },
+            { kata: 'PASAR', hint: 'Tempat belanja' },
+            { kata: 'TOKO', hint: 'Tempat jual' },
+            { kata: 'MALL', hint: 'Pusat belanja' },
+            { kata: 'TAMAN', hint: 'Tempat main' },
+            { kata: 'JALAN', hint: 'Untuk lewat' },
+            { kata: 'SUNGAI', hint: 'Aliran air' },
+            { kata: 'GUNUNG', hint: 'Tanah tinggi' },
+            { kata: 'PANTAI', hint: 'Tepi laut' },
+            { kata: 'LAUT', hint: 'Air asin' },
+            { kata: 'DANAU', hint: 'Air luas' },
+            { kata: 'HUTAN', hint: 'Banyak pohon' },
+            { kata: 'KEBUN', hint: 'Tanaman' },
+            { kata: 'SAWAH', hint: 'Tanaman padi' },
+            { kata: 'KOTA', hint: 'Wilayah besar' },
+            { kata: 'DESA', hint: 'Wilayah kecil' },
+            { kata: 'NEGARA', hint: 'Wilayah besar' },
+            { kata: 'PULAU', hint: 'Tanah di air' },
+            { kata: 'BENUA', hint: 'Daratan luas' },
+            { kata: 'ORANG', hint: 'Manusia' },
+            { kata: 'TEMAN', hint: 'Sahabat' },
+            { kata: 'KELUARGA', hint: 'Orang terdekat' },
+            { kata: 'SAUDARA', hint: 'Kerabat' },
+            { kata: 'GURU', hint: 'Pengajar' },
+            { kata: 'DOKTER', hint: 'Pengobat' },
+            { kata: 'POLISI', hint: 'Penjaga' },
+            { kata: 'PETANI', hint: 'Penggarap sawah' },
+            { kata: 'NELAYAN', hint: 'Pencari ikan' },
+            { kata: 'PILOT', hint: 'Pengemudi pesawat' },
+            { kata: 'SOPIR', hint: 'Pengemudi mobil' }
+        ];
+
+        // ============================================
+        // BANK KATA - SULIT (100+)
+        // ============================================
+
+        const kataSulit = [
+            { kata: 'KOMPUTER', hint: 'Alat elektronik' },
+            { kata: 'TELEVISI', hint: 'Alat hiburan' },
+            { kata: 'KULIAH', hint: 'Sekolah tinggi' },
+            { kata: 'MAHASISWA', hint: 'Pelajar kuliah' },
+            { kata: 'PUSTAKA', hint: 'Tempat buku' },
+            { kata: 'PERPUSTAKAAN', hint: 'Tempat baca' },
+            { kata: 'TEKNOLOGI', hint: 'Ilmu alat' },
+            { kata: 'INFORMASI', hint: 'Berita' },
+            { kata: 'KOMUNIKASI', hint: 'Cara berhubungan' },
+            { kata: 'ORGANISASI', hint: 'Perkumpulan' },
+            { kata: 'PENDIDIKAN', hint: 'Proses belajar' },
+            { kata: 'KESEHATAN', hint: 'Kondisi tubuh' },
+            { kata: 'KEBERSIHAN', hint: 'Bebas kotor' },
+            { kata: 'KEAMANAN', hint: 'Bebas bahaya' },
+            { kata: 'KENYAMANAN', hint: 'Rasa nyaman' },
+            { kata: 'KEBAHAGIAAN', hint: 'Rasa senang' },
+            { kata: 'KESUKSESAN', hint: 'Hasil baik' },
+            { kata: 'PERJUANGAN', hint: 'Usaha keras' },
+            { kata: 'PENGORBANAN', hint: 'Rela berkorban' },
+            { kata: 'KESABARAN', hint: 'Tahan uji' },
+            { kata: 'KEJUJURAN', hint: 'Tidak bohong' },
+            { kata: 'KEDISIPLINAN', hint: 'Taat aturan' },
+            { kata: 'TANGGUNGJAWAB', hint: 'Siap menanggung' },
+            { kata: 'KEBERANIAN', hint: 'Tidak takut' },
+            { kata: 'KEMANDIRIAN', hint: 'Berdiri sendiri' },
+            { kata: 'KREATIVITAS', hint: 'Daya cipta' },
+            { kata: 'INOVASI', hint: 'Pembaruan' },
+            { kata: 'MOTIVASI', hint: 'Dorongan' },
+            { kata: 'INSPIRASI', hint: 'Ide muncul' },
+            { kata: 'IMAGINASI', hint: 'Daya khayal' },
+            { kata: 'KONSENTRASI', hint: 'Fokus' },
+            { kata: 'REFLEKSI', hint: 'Cerminan' },
+            { kata: 'EVALUASI', hint: 'Penilaian' },
+            { kata: 'ANALISIS', hint: 'Penguraian' },
+            { kata: 'SINTESIS', hint: 'Penggabungan' },
+            { kata: 'HIPOTESIS', hint: 'Dugaan awal' },
+            { kata: 'KESIMPULAN', hint: 'Hasil akhir' },
+            { kata: 'PENELITIAN', hint: 'Riset' },
+            { kata: 'EKSPERIMEN', hint: 'Percobaan' },
+            { kata: 'OBSERVASI', hint: 'Pengamatan' },
+            { kata: 'DOKUMENTASI', hint: 'Pencatatan' },
+            { kata: 'PUBLIKASI', hint: 'Penerbitan' },
+            { kata: 'REFERENSI', hint: 'Rujukan' },
+            { kata: 'BIBLIOGRAFI', hint: 'Daftar buku' },
+            { kata: 'GLOSARIUM', hint: 'Daftar istilah' },
+            { kata: 'SINONIM', hint: 'Persamaan kata' },
+            { kata: 'ANTONIM', hint: 'Lawan kata' },
+            { kata: 'HOMONIM', hint: 'Sama bunyi' },
+            { kata: 'METAFORA', hint: 'Kiasan' },
+            { kata: 'PARADIGMA', hint: 'Pola pikir' },
+            { kata: 'FILOSOFI', hint: 'Ilmu pikiran' },
+            { kata: 'PSIKOLOGI', hint: 'Ilmu jiwa' },
+            { kata: 'SOSIOLOGI', hint: 'Ilmu sosial' },
+            { kata: 'ANTROPOLOGI', hint: 'Ilmu manusia' },
+            { kata: 'GEOGRAFI', hint: 'Ilmu bumi' },
+            { kata: 'SEJARAH', hint: 'Ilmu masa lalu' },
+            { kata: 'EKONOMI', hint: 'Ilmu uang' },
+            { kata: 'POLITIK', hint: 'Ilmu pemerintahan' },
+            { kata: 'DEMOKRASI', hint: 'Pemerintahan rakyat' },
+            { kata: 'KONSTITUSI', hint: 'Hukum dasar' },
+            { kata: 'PARLEMEN', hint: 'Dewan rakyat' },
+            { kata: 'PRESIDEN', hint: 'Kepala negara' },
+            { kata: 'GUBERNUR', hint: 'Kepala provinsi' },
+            { kata: 'WALIKOTA', hint: 'Kepala kota' },
+            { kata: 'MENTERI', hint: 'Pembantu presiden' },
+            { kata: 'DIPLOMASI', hint: 'Hubungan negara' },
+            { kata: 'NEGOSIASI', hint: 'Perundingan' },
+            { kata: 'KOLABORASI', hint: 'Kerja sama' },
+            { kata: 'KONFLIK', hint: 'Pertentangan' },
+            { kata: 'KOMPROMI', hint: 'Persetujuan' },
+            { kata: 'KONSENSUS', hint: 'Kesepakatan' },
+            { kata: 'TOLERANSI', hint: 'Saling menghargai' },
+            { kata: 'INTEGRITAS', hint: 'Keutuhan' },
+            { kata: 'EMPATI', hint: 'Rasa peduli' },
+            { kata: 'SIMpati', hint: 'Rasa kasihan' },
+            { kata: 'ALTRUISME', hint: 'Suka menolong' },
+            { kata: 'OPTIMIS', hint: 'Berpikir positif' },
+            { kata: 'PESIMIS', hint: 'Berpikir negatif' },
+            { kata: 'REALISTIS', hint: 'Sesuai kenyataan' },
+            { kata: 'IDEALIS', hint: 'Sesuai cita-cita' },
+            { kata: 'PRAGMATIS', hint: 'Praktis' },
+            { kata: 'AMBISI', hint: 'Keinginan kuat' },
+            { kata: 'PRESTASI', hint: 'Hasil kerja' },
+            { kata: 'APRESIASI', hint: 'Penghargaan' },
+            { kata: 'MOTIVATOR', hint: 'Pemberi semangat' },
+            { kata: 'INOVATOR', hint: 'Pembaru' },
+            { kata: 'KREATOR', hint: 'Pencipta' },
+            { kata: 'FASILITATOR', hint: 'Pemudah' },
+            { kata: 'KOORDINATOR', hint: 'Pengatur' },
+            { kata: 'ADMINISTRASI', hint: 'Tata usaha' },
+            { kata: 'MANAJEMEN', hint: 'Pengelolaan' },
+            { kata: 'ORGANISIR', hint: 'Penata' },
+            { kata: 'SUPERVISOR', hint: 'Pengawas' },
+            { kata: 'KONSULTAN', hint: 'Penasihat' },
+            { kata: 'TRAINER', hint: 'Pelatih' },
+            { kata: 'MENTOR', hint: 'Pembimbing' },
+            { kata: 'FASILITAS', hint: 'Sarana' },
+            { kata: 'INFRASTRUKTUR', hint: 'Prasarana' },
+            { kata: 'SUPERVISI', hint: 'Pengawasan' },
+            { kata: 'KOORDINASI', hint: 'Pengaturan' }
+        ];
+
+        // ============================================
+        // BANK KATA LUCU
+        // ============================================
+
+        const kataLucu = [
+            { kata: 'BUCIN', hint: 'Budak cinta 💕' },
+            { kata: 'MAGER', hint: 'Malas gerak 😴' },
+            { kata: 'GABUT', hint: 'Gak ada kerjaan 😅' },
+            { kata: 'KEPO', hint: 'Penasaran banget 👀' },
+            { kata: 'BAYU', hint: 'Umur tua 👴' },
+            { kata: 'GEMAY', hint: 'Gemuk lucu 🐱' },
+            { kata: 'JOMBLO', hint: 'Belum punya pacar 💔' },
+            { kata: 'MOKONDO', hint: 'Jalan-jalan 🚗' },
+            { kata: 'GALAU', hint: 'Perasaan sedih 😢' },
+            { kata: 'PHP', hint: 'Pemberi harapan palsu 😏' },
+            { kata: 'BAPER', hint: 'Bawa perasaan 😭' },
+            { kata: 'CURHAT', hint: 'Curahan hati 💬' },
+            { kata: 'GOSIP', hint: 'Omongan orang 🗣️' },
+            { kata: 'NYELENEH', hint: 'Aneh tapi lucu 🤪' },
+            { kata: 'JULID', hint: 'Suka nyinyir 🙄' },
+            { kata: 'SANTUY', hint: 'Santai aja 😎' },
+            { kata: 'GOKIL', hint: 'Keren banget 🤩' },
+            { kata: 'NYASAR', hint: 'Salah jalan 🗺️' },
+            { kata: 'KUDET', hint: 'Kurang update 📰' },
+            { kata: 'RUNGKAD', hint: 'Gagal total 💥' }
+        ];
+
+        // ============================================
+        // NAVIGASI
+        // ============================================
+
+        function kembaliKeGames() {
+            window.location.href = 'games.html';
+        }
+
+        // ============================================
+        // PILIH KESULITAN
+        // ============================================
+
+        function pilihKesulitan(level, element) {
+            if (sedangMain) return;
+            kesulitanAktif = level;
+            document.querySelectorAll('.pilihan-card').forEach(card => card.classList.remove('terpilih'));
+            element.classList.add('terpilih');
+            cekSiapMulai();
+        }
+
+        function pilihWaktu(waktu, element) {
+            if (sedangMain) return;
+            waktuTotal = waktu;
+            document.querySelectorAll('.waktu-card').forEach(card => card.classList.remove('terpilih'));
+            element.classList.add('terpilih');
+            cekSiapMulai();
+        }
+
+        function cekSiapMulai() {
+            if (kesulitanAktif && waktuTotal) {
+                document.getElementById('btnMulai').disabled = false;
+            }
+        }
+
+        // ============================================
+        // AMBIL KATA RANDOM (TIDAK MENGULANG)
+        // ============================================
+
+        function ambilKata() {
+            let bank;
+            if (kesulitanAktif === 'mudah') bank = [...kataMudah, ...kataLucu];
+            else bank = [...kataSulit, ...kataLucu];
+
+            let tersedia = bank.filter(k => !riwayatKata.includes(k.kata));
+
+            if (tersedia.length === 0) {
+                riwayatKata = [];
+                tersedia = bank;
+            }
+
+            return tersedia[Math.floor(Math.random() * tersedia.length)];
+        }
+
+        // ============================================
+        // MULAI PERMAINAN
+        // ============================================
+
+        function mulaiPermainan() {
+            if (sedangMain) return;
+            if (!kesulitanAktif || !waktuTotal) {
+                document.getElementById('pesanMulai').className = 'pesan error';
+                document.getElementById('pesanMulai').textContent = '⚠️ Pilih kesulitan & waktu dulu!';
+                return;
+            }
+
+            sedangMain = true;
+            skor = { benar: 0, salah: 0, total: 0 };
+            riwayatKata = [];
+            waktuTersisa = waktuTotal;
+
+            document.getElementById('pilihanSection').style.display = 'none';
+            document.getElementById('arenaSection').classList.add('show');
+
+            updateSkor();
+            updateTimerDisplay();
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                waktuTersisa--;
+                updateTimerDisplay();
+
+                if (waktuTersisa <= 0) {
+                    clearInterval(timerInterval);
+                    selesaiPermainan();
+                }
+            }, 1000);
+
+            kataAktif = ambilKata();
+            riwayatKata.push(kataAktif.kata);
+            document.getElementById('kataSoal').textContent = kataAktif.kata;
+            document.getElementById('hintSoal').textContent = '💡 ' + kataAktif.hint;
+            document.getElementById('kataTerakhir').textContent = kataAktif.kata;
+            document.getElementById('statusGame').textContent = 'Sambung dari huruf: ' + kataAktif.kata.slice(-1);
+            document.getElementById('statusGame').className = 'status-game';
+
+            updateRiwayat();
+
+            document.getElementById('inputJawaban').value = '';
+            document.getElementById('inputJawaban').focus();
+        }
+
+        // ============================================
+        // CEK JAWABAN
+        // ============================================
+
+        function cekJawaban() {
+            if (!sedangMain) return;
+
+            const input = document.getElementById('inputJawaban');
+            const jawaban = input.value.trim().toUpperCase();
+            const hurufTerakhir = kataAktif.kata.slice(-1);
+            const status = document.getElementById('statusGame');
+
+            if (!jawaban) {
+                status.textContent = '⚠️ Ketik jawaban dulu!';
+                status.className = 'status-game salah';
+                return;
+            }
+
+            if (jawaban[0] !== hurufTerakhir) {
+                skor.salah++;
+                status.textContent = '❌ Harus mulai dari huruf: ' + hurufTerakhir;
+                status.className = 'status-game salah';
+                updateSkor();
+                shakeScreen();
+                input.value = '';
+                input.focus();
+                return;
+            }
+
+            if (jawaban.length < 3) {
+                skor.salah++;
+                status.textContent = '❌ Minimal 3 huruf!';
+                status.className = 'status-game salah';
+                updateSkor();
+                shakeScreen();
+                input.value = '';
+                input.focus();
+                return;
+            }
+
+            if (riwayatKata.includes(jawaban)) {
+                skor.salah++;
+                status.textContent = '❌ Kata sudah dipakai!';
+                status.className = 'status-game salah';
+                updateSkor();
+                shakeScreen();
+                input.value = '';
+                input.focus();
+                return;
+            }
+
+            // ✅ BENAR
+            skor.benar++;
+            skor.total += 10;
+            status.textContent = '✅ Benar! +10 poin 💕';
+            status.className = 'status-game benar';
+            updateSkor();
+            tampilkanConfetti();
+
+            riwayatKata.push(jawaban);
+            updateRiwayat();
+
+            // Ganti kata baru
+            kataAktif = ambilKata();
+            riwayatKata.push(kataAktif.kata);
+            document.getElementById('kataSoal').textContent = kataAktif.kata;
+            document.getElementById('hintSoal').textContent = '💡 ' + kataAktif.hint;
+            document.getElementById('kataTerakhir').textContent = kataAktif.kata;
+
+            input.value = '';
+            input.focus();
+
+            setTimeout(() => {
+                status.textContent = 'Sambung dari huruf: ' + kataAktif.kata.slice(-1);
+                status.className = 'status-game';
+            }, 1000);
+        }
+
+        // ============================================
+        // UPDATE SKOR
+        // ============================================
+
+        function updateSkor() {
+            document.getElementById('skorBenar').textContent = skor.benar;
+            document.getElementById('skorSalah').textContent = skor.salah;
+            document.getElementById('skorAkhir').textContent = skor.total;
+        }
+
+        // ============================================
+        // UPDATE TIMER
+        // ============================================
+
+        function updateTimerDisplay() {
+            const menit = String(Math.floor(waktuTersisa / 60)).padStart(2, '0');
+            const detik = String(waktuTersisa % 60).padStart(2, '0');
+            document.getElementById('timerText').textContent = menit + ':' + detik;
+
+            const persen = (waktuTersisa / waktuTotal) * 100;
+            const fill = document.getElementById('timerFill');
+            fill.style.width = persen + '%';
+
+            if (waktuTersisa <= 10) {
+                fill.classList.add('merah');
+            } else {
+                fill.classList.remove('merah');
+            }
+        }
+
+        // ============================================
+        // UPDATE RIWAYAT
+        // ============================================
+
+        function updateRiwayat() {
+            const container = document.getElementById('riwayatKata');
+            const tampil = riwayatKata.slice(-10);
+            container.innerHTML = tampil.map(k => `<span>${k}</span>`).join('');
+        }
+
+        // ============================================
+        // EFEK CONFETTI
+        // ============================================
+
+        function tampilkanConfetti() {
+            const colors = ['#f093fb', '#f5576c', '#4facfe', '#43e97b', '#f9d423', '#ff9a56'];
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 2500);
+            }
+        }
+
+        // ============================================
+        // EFEK SHAKE
+        // ============================================
+
+        function shakeScreen() {
+            const arena = document.getElementById('arenaSection');
+            arena.style.animation = 'shake 0.5s ease';
+            setTimeout(() => arena.style.animation = '', 500);
+        }
+
+        // ============================================
+        // SELESAI PERMAINAN
+        // ============================================
+
+        function selesaiPermainan() {
+            sedangMain = false;
+            if (timerInterval) clearInterval(timerInterval);
+
+            let highscore = parseInt(localStorage.getItem('highscoreKata') || '0');
+            if (skor.total > highscore) {
+                highscore = skor.total;
+                localStorage.setItem('highscoreKata', skor.total);
+            }
+
+            document.getElementById('hasilBenar').textContent = skor.benar;
+            document.getElementById('hasilSalah').textContent = skor.salah;
+            document.getElementById('hasilSkor').textContent = skor.total;
+            document.getElementById('hasilHighscore').textContent = highscore;
+            document.getElementById('modalHasil').classList.add('show');
+        }
+
+        // ============================================
+        // LANJUT MAIN
+        // ============================================
+
+        function lanjutMain() {
+            document.getElementById('modalHasil').classList.remove('show');
+            document.getElementById('arenaSection').classList.remove('show');
+            document.getElementById('pilihanSection').style.display = 'block';
+
+            // Reset pilihan
+            kesulitanAktif = null;
+            waktuTotal = 60;
+            document.querySelectorAll('.pilihan-card').forEach(c => c.classList.remove('terpilih'));
+            document.querySelectorAll('.waktu-card').forEach(c => c.classList.remove('terpilih'));
+            document.getElementById('btnMulai').disabled = true;
+        }
+
+        function selesaiMain() {
+            document.getElementById('modalHasil').classList.remove('show');
+            window.location.href = 'games.html';
+        }
+
+        // ============================================
+        // ENTER KEY
+        // ============================================
+
+        document.getElementById('inputJawaban').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') cekJawaban();
+        });
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+
+    </script>
+
+</body>
+</html>
+

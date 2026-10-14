@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 Spin Wheel - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           SPIN WHEEL - STYLE
+           ============================================ */
+
+        .spin-header {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-bottom: 2px dashed #f0e6f5;
+            margin-bottom: 20px;
+        }
+
+        .spin-header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .spin-header p {
+            color: #7c6b8a;
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* MODE SELECTOR */
+        .spin-mode {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .spin-mode button {
+            padding: 10px 24px;
+            border: 2px solid #e8dff5;
+            border-radius: 20px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            color: #4a3f5c;
+        }
+
+        .spin-mode button:hover {
+            border-color: #f093fb;
+            background: rgba(240, 147, 251, 0.08);
+        }
+
+        .spin-mode button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* WHEEL AREA */
+        .spin-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .spin-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* WHEEL */
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            min-height: 320px;
+        }
+
+        .wheel {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background: conic-gradient(
+                #f093fb 0deg 60deg,
+                #f5576c 60deg 120deg,
+                #4facfe 120deg 180deg,
+                #43e97b 180deg 240deg,
+                #fa709a 240deg 300deg,
+                #a18cd1 300deg 360deg
+            );
+        }
+
+        .wheel::after {
+            content: '🎯';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .spin-result {
+            margin-top: 20px;
+            text-align: center;
+            min-height: 60px;
+        }
+
+        .spin-result .hasil-label {
+            font-size: 13px;
+            color: #7c6b8a;
+            font-weight: 500;
+        }
+
+        .spin-result .hasil-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 4px;
+        }
+
+        /* LIST ITEMS */
+        .spin-list {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .spin-list h3 {
+            font-size: 16px;
+            color: #2d1b3d;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spin-list .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: rgba(246, 240, 250, 0.5);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #2d1b3d;
+            transition: all 0.2s;
+        }
+
+        .spin-list .item:hover {
+            background: rgba(240, 147, 251, 0.1);
+        }
+
+        .spin-list .item .hapus {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #f5576c;
+            padding: 0 4px;
+            transition: all 0.2s;
+        }
+
+        .spin-list .item .hapus:hover {
+            transform: scale(1.2);
+        }
+
+        .spin-list .input-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .spin-list .input-row input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e8dff5;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s;
+        }
+
+        .spin-list .input-row input:focus {
+            outline: none;
+            border-color: #f093fb;
+            box-shadow: 0 0 0 3px rgba(240, 147, 251, 0.12);
+        }
+
+        .spin-list .input-row button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .spin-list .input-row button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(240, 147, 251, 0.3);
+        }
+
+        /* TOMBOL SPIN */
+        .btn-spin {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+        .btn-spin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(240, 147, 251, 0.4);
+        }
+
+        .btn-spin:active {
+            transform: scale(0.97);
+        }
+
+        .btn-spin:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* KOSONG */
+        .spin-empty {
+            text-align: center;
+            padding: 20px;
+            color: #b5a5c4;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMASI HATI -->
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeDashboard()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SPIN HEADER -->
+            <div class="spin-header">
+                <h1>🎲 Spin Wheel</h1>
+                <p>"Biar gak bingung, spin aja!" 💕</p>
+            </div>
+
+            <!-- MODE SELECTOR -->
+            <div class="spin-mode">
+                <button class="active" onclick="gantiMode('makanan', this)">🍔 Makanan</button>
+                <button onclick="gantiMode('tempat', this)">🗺️ Tempat</button>
+            </div>
+
+            <!-- SPIN AREA -->
+            <div class="spin-area">
+                <!-- WHEEL -->
+                <div class="wheel-container">
+                    <div class="wheel-pointer">🔻</div>
+                    <div class="wheel" id="wheel"></div>
+                    <div class="spin-result" id="spinResult">
+                        <div class="hasil-label">Hasil Spin</div>
+                        <div class="hasil-value" id="hasilValue">?</div>
+                    </div>
+                </div>
+
+                <!-- LIST -->
+                <div class="spin-list">
+                    <h3 id="listJudul">🍔 Daftar Makanan</h3>
+                    <div id="daftarItem"></div>
+                    <div class="input-row">
+                        <input type="text" id="inputItem" placeholder="Tambah item..." />
+                        <button onclick="tambahItem()">➕</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOMBOL SPIN -->
+            <button class="btn-spin" id="btnSpin" onclick="spin()">🎲 SPIN SEKARANG!</button>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // ============================================
+        // SPIN WHEEL - LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+        ruanganAktif = ruangan;
+
+        let modeAktif = 'makanan';
+        let daftarMakanan = ['Bakso', 'Sushi', 'Ayam Geprek', 'Pizza', 'Mie Ayam', 'Nasi Padang'];
+        let daftarTempat = ['Pantai', 'Nonton Film', 'Mal', 'Cafe', 'Piknik', 'Main ke Rumah'];
+        let sedangSpin = false;
+
+        function kembaliKeDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Ganti mode
+        function gantiMode(mode, element) {
+            modeAktif = mode;
+            document.querySelectorAll('.spin-mode button').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+            
+            document.getElementById('listJudul').textContent = mode === 'makanan' ? '🍔 Daftar Makanan' : '🗺️ Daftar Tempat';
+            document.getElementById('hasilValue').textContent = '?';
+            renderDaftar();
+        }
+
+        // Render daftar item
+        function renderDaftar() {
+            const list = modeAktif === 'makanan' ? daftarMakanan : daftarTempat;
+            const container = document.getElementById('daftarItem');
+            
+            if (list.length === 0) {
+                container.innerHTML = `<div class="spin-empty">Belum ada item. Tambah dulu ya! 💕</div>`;
+                return;
+            }
+            
+            container.innerHTML = list.map((item, index) => `
+                <div class="item">
+                    <span>${item}</span>
+                    <button class="hapus" onclick="hapusItem(${index})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        // Tambah item
+        function tambahItem() {
+            const input = document.getElementById('inputItem');
+            const nilai = input.value.trim();
+            
+            if (!nilai) {
+                alert('⚠️ Masukkan item dulu!');
+                return;
+            }
+            
+            if (modeAktif === 'makanan') {
+                daftarMakanan.push(nilai);
+            } else {
+                daftarTempat.push(nilai);
+            }
+            
+            input.value = '';
+            renderDaftar();
+        }
+
+        // Hapus item
+        function hapusItem(index) {
+            if (modeAktif === 'makanan') {
+                daftarMakanan.splice(index, 1);
+            } else {
+                daftarTempat.splice(index, 1);
+            }
+            renderDaftar();
+        }
+
+        // Spin
+        function spin() {
+            if (sedangSpin) return;
+            
+            const list = modeAktif === 'makanan' ? daftarMakanan : daftarTempat;
+            
+            if (list.length === 0) {
+                alert('⚠️ Tambah item dulu sebelum spin!');
+                return;
+            }
+            
+            sedangSpin = true;
+            const btn = document.getElementById('btnSpin');
+            btn.disabled = true;
+            btn.textContent = '⏳ Berputar...';
+            
+            const wheel = document.getElementById('wheel');
+            const hasilValue = document.getElementById('hasilValue');
+            
+            // Random putaran (minimal 3 putaran + sudut acak)
+            const putaran = 360 * 3 + Math.floor(Math.random() * 360);
+            
+            wheel.style.transform = `rotate(${putaran}deg)`;
+            
+            // Setelah animasi selesai (3 detik), tampilkan hasil
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * list.length);
+                hasilValue.textContent = list[randomIndex];
+                
+                sedangSpin = false;
+                btn.disabled = false;
+                btn.textContent = '🎲 SPIN LAGI!';
+            }, 3000);
+        }
+
+        // Enter key untuk tambah item
+        document.getElementById('inputItem').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') tambahItem();
+        });
+
+        // Animasi hati
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+
+        // Inisialisasi
+        window.onload = function() {
+            renderDaftar();
+        };
+    </script>
+
+</body>
+</html>

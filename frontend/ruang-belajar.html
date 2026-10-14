@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 Ruang Belajar - Hanote</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           RUANG BELAJAR - HIJAU DAUN & HANGAT
+           ============================================ */
+
+        body.ruang-belajar-body {
+            background: linear-gradient(135deg, #d4edda 0%, #a8e6cf 50%, #7bc99e 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.8s ease;
+        }
+
+        body.ruang-belajar-body.mode-malam {
+            background: linear-gradient(135deg, #1a2b1f 0%, #0f1a13 50%, #050805 100%);
+        }
+
+        .rb-music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            border: 2px solid white;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 16px rgba(67, 233, 123, 0.4);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .rb-music-toggle:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(67, 233, 123, 0.6);
+        }
+
+        .rb-music-toggle.aktif {
+            animation: pulseRbMusic 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseRbMusic {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .rb-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 30px;
+            padding: 30px 24px;
+            box-shadow: 0 20px 60px rgba(67, 233, 123, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            z-index: 1;
+            transition: all 0.8s ease;
+        }
+
+        body.mode-malam .rb-container {
+            background: rgba(20, 30, 25, 0.95);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            border-color: rgba(67, 233, 123, 0.3);
+        }
+
+        .rb-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed #7bc99e;
+            margin-bottom: 20px;
+        }
+
+        .rb-btn-back {
+            display: inline-block;
+            margin-bottom: 14px;
+            background: transparent;
+            border: 2px solid #43e97b;
+            color: #2d6a4f;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 8px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .rb-btn-back:hover {
+            background: #43e97b;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        body.mode-malam .rb-btn-back {
+            color: #a8e6cf;
+            border-color: #43e97b;
+        }
+
+        .rb-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2d6a4f;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            transition: color 0.8s ease;
+        }
+
+        body.mode-malam .rb-header h1 {
+            color: #a8e6cf;
+        }
+
+        .rb-header p {
+            font-size: 13px;
+            color: #52b788;
+            font-style: italic;
+            transition: color 0.8s ease;
+        }
+
+        body.mode-malam .rb-header p {
+            color: #7bc99e;
+        }
+
+        .rb-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .rb-ctrl-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+        }
+
+        .rb-ctrl-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 233, 123, 0.5);
+        }
+
+        .rb-ctrl-btn.off {
+            background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+            box-shadow: 0 4px 12px rgba(160, 174, 192, 0.3);
+        }
+
+                .rb-ruangan {
+            position: relative;
+            background: linear-gradient(180deg, #f0fff4 0%, #d4edda 100%);
+            border-radius: 24px;
+            padding: 20px 20px 30px;
+            margin-bottom: 30px;
+            min-height: 320px;
+            border: 3px solid #7bc99e;
+            box-shadow: 
+                inset 0 0 40px rgba(67, 233, 123, 0.1),
+                0 10px 30px rgba(45, 106, 79, 0.2);
+            transition: all 0.8s ease;
+            overflow: hidden;
+        }
+
+        body.mode-malam .rb-ruangan {
+            background: linear-gradient(180deg, #1a2b1f 0%, #0f1a13 100%);
+            border-color: #2d6a4f;
+            box-shadow: 
+                inset 0 0 80px rgba(0, 0, 0, 0.8),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+                /* LAMPU BELAJAR */
+        .rb-lampu {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rb-lampu-tutup {
+            width: 50px;
+            height: 18px;
+            background: linear-gradient(180deg, #4a5568 0%, #2d3748 100%);
+            border-radius: 50% 50% 4px 4px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .rb-lampu-badan {
+            width: 6px;
+            height: 50px;
+            background: linear-gradient(90deg, #2d3748, #4a5568, #2d3748);
+            border-radius: 3px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .rb-lampu-cahaya {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 80px solid transparent;
+            border-right: 80px solid transparent;
+            border-top: 130px solid rgba(255, 235, 150, 0.4);
+            filter: blur(8px);
+            transition: opacity 0.5s ease;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .rb-lampu.mati .rb-lampu-cahaya {
+            opacity: 0;
+        }
+
+        body.mode-malam .rb-lampu-cahaya {
+            border-top-color: rgba(255, 235, 150, 0.55);
+            filter: blur(12px);
+        }
+
+                /* MEJA KAYU */
+        .rb-meja-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 90px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .rb-meja {
+            position: relative;
+            width: 320px;
+            height: 140px;
+        }
+
+        .rb-meja-atas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(180deg, #d4a373 0%, #a67c52 100%);
+            border-radius: 12px;
+            box-shadow: 
+                0 8px 0 #8b5a2b,
+                0 12px 24px rgba(139, 90, 43, 0.4),
+                inset 0 3px 6px rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 2;
+            transition: all 0.8s ease;
+        }
+
+        body.mode-malam .rb-meja-atas {
+            background: linear-gradient(180deg, #8b5a2b 0%, #6b4423 100%);
+            box-shadow: 
+                0 8px 0 #4a2f15,
+                0 12px 24px rgba(0, 0, 0, 0.6),
+                inset 0 3px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        .rb-meja-atas::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            right: 10px;
+            height: 2px;
+            background: repeating-linear-gradient(90deg, rgba(139, 90, 43, 0.4) 0px, rgba(139, 90, 43, 0.4) 25px, transparent 25px, transparent 50px);
+            border-radius: 2px;
+        }
+
+        .rb-meja-item {
+            font-size: 26px;
+            cursor: pointer;
+            transition: all 0.3s;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            animation: floatRbMejaItem 3s ease-in-out infinite;
+            user-select: none;
+        }
+
+        .rb-meja-item:nth-child(1) { animation-delay: 0s; }
+        .rb-meja-item:nth-child(2) { animation-delay: 0.3s; }
+        .rb-meja-item:nth-child(3) { animation-delay: 0.6s; }
+        .rb-meja-item:nth-child(4) { animation-delay: 0.9s; }
+        .rb-meja-item:nth-child(5) { animation-delay: 1.2s; }
+
+        @keyframes floatRbMejaItem {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .rb-meja-item:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .rb-meja-kaki-kiri,
+        .rb-meja-kaki-kanan {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            height: 80px;
+            background: linear-gradient(90deg, #8b5a2b 0%, #a67c52 50%, #8b5a2b 100%);
+            border-radius: 0 0 8px 8px;
+            box-shadow: inset -3px 0 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.8s ease;
+        }
+
+        body.mode-malam .rb-meja-kaki-kiri,
+        body.mode-malam .rb-meja-kaki-kanan {
+            background: linear-gradient(90deg, #4a2f15 0%, #6b4423 50%, #4a2f15 100%);
+        }
+
+        .rb-meja-kaki-kiri {
+            left: 24px;
+        }
+
+        .rb-meja-kaki-kanan {
+            right: 24px;
+        }
+
+                /* KURSI */
+        .rb-kursi {
+            font-size: 70px;
+            margin-top: -20px;
+            filter: drop-shadow(0 6px 12px rgba(45, 106, 79, 0.4));
+            transition: all 0.3s;
+        }
+
+        .rb-kursi:hover {
+            transform: translateY(-6px) scale(1.05);
+        }
+
+        /* SECTION BUKU */
+        .rb-buku-section {
+            margin-bottom: 24px;
+        }
+
+        .rb-section-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2d6a4f;
+            margin-bottom: 8px;
+            text-align: center;
+            letter-spacing: 1px;
+            transition: color 0.8s ease;
+        }
+
+        body.mode-malam .rb-section-title {
+            color: #a8e6cf;
+        }
+
+        .rb-section-sub {
+            font-size: 13px;
+            color: #52b788;
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+            transition: color 0.8s ease;
+        }
+
+        body.mode-malam .rb-section-sub {
+            color: #7bc99e;
+        }
+
+        /* GRID BUKU */
+        .rb-buku-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+        }
+
+        .rb-buku-card {
+            position: relative;
+            background: linear-gradient(135deg, var(--warna, #43e97b), #2d6a4f);
+            border-radius: 18px;
+            padding: 18px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(45, 106, 79, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            overflow: hidden;
+        }
+
+        .rb-buku-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            animation: shimmerRbBuku 5s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmerRbBuku {
+            0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+            50% { transform: translate(20%, 20%); opacity: 0.6; }
+        }
+
+        .rb-buku-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 16px 40px rgba(45, 106, 79, 0.5);
+            border-color: white;
+        }
+
+        .rb-buku-card:active {
+            transform: scale(0.97);
+        }
+
+        .rb-buku-icon {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .rb-buku-nama {
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 2px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .rb-buku-desc {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.85);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* FOOTER */
+        .rb-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px dashed #7bc99e;
+            font-size: 12px;
+            color: #52b788;
+            font-style: italic;
+            transition: all 0.8s ease;
+        }
+
+        body.mode-malam .rb-footer {
+            border-color: #2d6a4f;
+            color: #7bc99e;
+        }
+
+        .rb-footer p {
+            margin: 4px 0;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .rb-container {
+                padding: 20px 14px;
+            }
+
+            .rb-header h1 {
+                font-size: 20px;
+                letter-spacing: 1px;
+            }
+
+            .rb-ruangan {
+                padding: 30px 14px 20px;
+                min-height: 300px;
+            }
+
+            .rb-lampu {
+                top: 14px;
+                right: 20px;
+                transform: scale(0.8);
+            }
+
+            .rb-meja {
+                width: 240px;
+                height: 120px;
+            }
+
+            .rb-meja-atas {
+                height: 50px;
+            }
+
+            .rb-meja-item {
+                font-size: 20px;
+            }
+
+            .rb-meja-kaki-kiri,
+            .rb-meja-kaki-kanan {
+                height: 70px;
+                width: 16px;
+            }
+
+            .rb-kursi {
+                font-size: 52px;
+            }
+
+            .rb-buku-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .rb-buku-icon {
+                font-size: 30px;
+            }
+
+            .rb-buku-nama {
+                font-size: 12px;
+            }
+
+            .rb-music-toggle {
+                font-size: 11px;
+                padding: 8px 14px;
+                top: 12px;
+                right: 12px;
+            }
+
+            .rb-ctrl-btn {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body class="ruang-belajar-body">
+
+    <div id="hatiContainer"></div>
+
+    <button class="rb-music-toggle" id="rbMusicToggle" onclick="toggleMusikBelajar()">
+        🎵 Musik: OFF
+    </button>
+
+    <audio id="musikBelajar" loop>
+        <source src="assets/music/musik-belajar.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="rb-container">
+
+        <div class="rb-header">
+            <button class="rb-btn-back" onclick="kembaliKePerpustakaan()">⬅ Kembali ke Perpustakaan</button>
+            <h1>📖 RUANG BELAJAR</h1>
+            <p>"Tempat fokus, tenang, dan membaca bersama" 💕</p>
+        </div>
+
+        <div class="rb-controls">
+            <button class="rb-ctrl-btn" id="btnMode" onclick="toggleMode()">🌙 Mode Malam</button>
+            <button class="rb-ctrl-btn" id="btnLampu" onclick="toggleLampu()">💡 Lampu: ON</button>
+        </div>
+
+        <div class="rb-ruangan" id="rbRuangan">
+
+            <div class="rb-lampu" id="rbLampu">
+                <div class="rb-lampu-tutup"></div>
+                <div class="rb-lampu-badan"></div>
+                <div class="rb-lampu-cahaya" id="rbLampuCahaya"></div>
+            </div>
+
+            <div class="rb-meja-area">
+                <div class="rb-meja">
+                    <div class="rb-meja-atas">
+                        <span class="rb-meja-item" onclick="alert('🕯️ Lilin menyala, suasananya hangat')">🕯️</span>
+                        <span class="rb-meja-item" onclick="alert('📖 Buku terbuka, siap dibaca')">📖</span>
+                        <span class="rb-meja-item" onclick="alert('☕ Kopi hangat, teman belajar')">☕</span>
+                        <span class="rb-meja-item" onclick="alert('✏️ Alat tulis, siap mencatat')">✏️</span>
+                        <span class="rb-meja-item" onclick="alert('🌹 Bunga kecil, biar aesthetic')">🌹</span>
+                    </div>
+                    <div class="rb-meja-kaki-kiri"></div>
+                    <div class="rb-meja-kaki-kanan"></div>
+                </div>
+                <div class="rb-kursi">🪑</div>
+            </div>
+
+        </div>
+
+        <div class="rb-buku-section">
+            <div class="rb-section-title">📚 Pilih Buku untuk Dibaca</div>
+            <p class="rb-section-sub">Klik buku untuk membaca & menulis catatan 💕</p>
+
+            <div class="rb-buku-grid">
+                <div class="rb-buku-card" onclick="bukaBuku('cinta')" style="--warna: #f093fb;">
+                    <div class="rb-buku-icon">💕</div>
+                    <div class="rb-buku-nama">Buku Cinta</div>
+                    <div class="rb-buku-desc">Quote cinta</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('mimpi')" style="--warna: #4facfe;">
+                    <div class="rb-buku-icon">🌟</div>
+                    <div class="rb-buku-nama">Buku Mimpi</div>
+                    <div class="rb-buku-desc">Motivasi</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('kenangan')" style="--warna: #43e97b;">
+                    <div class="rb-buku-icon">📖</div>
+                    <div class="rb-buku-nama">Buku Kenangan</div>
+                    <div class="rb-buku-desc">Cerita kita</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('lucu')" style="--warna: #f9d423;">
+                    <div class="rb-buku-icon">😆</div>
+                    <div class="rb-buku-nama">Buku Lucu</div>
+                    <div class="rb-buku-desc">Jokes & tebak</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('doa')" style="--warna: #a18cd1;">
+                    <div class="rb-buku-icon">🙏</div>
+                    <div class="rb-buku-nama">Buku Doa</div>
+                    <div class="rb-buku-desc">Doa & harapan</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('masadepan')" style="--warna: #fa709a;">
+                    <div class="rb-buku-icon">🏠</div>
+                    <div class="rb-buku-nama">Buku Masa Depan</div>
+                    <div class="rb-buku-desc">Rencana kita</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('puisi')" style="--warna: #ff9a56;">
+                    <div class="rb-buku-icon">✍️</div>
+                    <div class="rb-buku-nama">Buku Puisi</div>
+                    <div class="rb-buku-desc">Puisi cinta</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('quotes')" style="--warna: #38f9d7;">
+                    <div class="rb-buku-icon">💬</div>
+                    <div class="rb-buku-nama">Buku Quotes</div>
+                    <div class="rb-buku-desc">Quote random</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('tantangan')" style="--warna: #f5576c;">
+                    <div class="rb-buku-icon">🎯</div>
+                    <div class="rb-buku-nama">Buku Tantangan</div>
+                    <div class="rb-buku-desc">Challenge berdua</div>
+                </div>
+
+                <div class="rb-buku-card" onclick="bukaBuku('rahasia')" style="--warna: #c084fc;">
+                    <div class="rb-buku-icon">🔒</div>
+                    <div class="rb-buku-nama">Buku Rahasia</div>
+                    <div class="rb-buku-desc">Pesan rahasia</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rb-footer">
+            <p>📖 Ruang Belajar Haris & Anita</p>
+            <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // ============================================
+        // RUANG BELAJAR - LOGIC
+        // ============================================
+
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+
+        function kembaliKePerpustakaan() {
+            window.location.href = 'perpustakaan.html';
+        }
+
+        // ============================================
+        // MUSIK
+        // ============================================
+
+        let musikAktif = false;
+        const musik = document.getElementById('musikBelajar');
+        const btnMusik = document.getElementById('rbMusicToggle');
+
+        function toggleMusikBelajar() {
+            if (!musik) return;
+            if (musikAktif) {
+                musik.pause();
+                musikAktif = false;
+                btnMusik.textContent = '🎵 Musik: OFF';
+                btnMusik.classList.remove('aktif');
+            } else {
+                musik.play().then(() => {
+                    musikAktif = true;
+                    btnMusik.textContent = '🎵 Musik: ON';
+                    btnMusik.classList.add('aktif');
+                }).catch(error => {
+                    console.error('Musik gagal play:', error);
+                    alert('⚠️ File musik tidak ditemukan!\n\nLetakkan file di: assets/music/musik-belajar.mp3');
+                });
+            }
+        }
+
+        // ============================================
+        // MODE MALAM
+        // ============================================
+
+        let modeMalam = false;
+        const body = document.body;
+        const btnMode = document.getElementById('btnMode');
+
+        function toggleMode() {
+            modeMalam = !modeMalam;
+            if (modeMalam) {
+                body.classList.add('mode-malam');
+                btnMode.textContent = '☀️ Mode Siang';
+            } else {
+                body.classList.remove('mode-malam');
+                btnMode.textContent = '🌙 Mode Malam';
+            }
+        }
+
+        // ============================================
+        // LAMPU
+        // ============================================
+
+        let lampuNyala = true;
+        const rbLampu = document.getElementById('rbLampu');
+        const btnLampu = document.getElementById('btnLampu');
+
+        function toggleLampu() {
+            lampuNyala = !lampuNyala;
+            if (lampuNyala) {
+                rbLampu.classList.remove('mati');
+                btnLampu.textContent = '💡 Lampu: ON';
+                btnLampu.classList.remove('off');
+            } else {
+                rbLampu.classList.add('mati');
+                btnLampu.textContent = '💡 Lampu: OFF';
+                btnLampu.classList.add('off');
+            }
+        }
+
+        // ============================================
+        // BUKA BUKU
+        // ============================================
+
+        function bukaBuku(jenis) {
+            window.location.href = 'buku.html?jenis=' + jenis;
+        }
+
+        // ============================================
+        // ANIMASI HATI
+        // ============================================
+
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            const icons = ['❤️', '📖', '✨', '🌿', '💌'];
+            hati.textContent = icons[Math.floor(Math.random() * icons.length)];
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 700);
+    </script>
+
+</body>
+</html>

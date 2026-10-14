@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✊ Suit - Hanote Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .game-header {
+            text-align: center;
+            padding: 20px 0 10px;
+            border-bottom: 2px dashed #f0e6f5;
+            margin-bottom: 20px;
+        }
+
+        .game-header h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .game-header p {
+            color: #7c6b8a;
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .mode-pilihan {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mode-pilihan button {
+            padding: 12px 28px;
+            border-radius: 16px;
+            border: 2px solid #e8dff5;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4a3f5c;
+        }
+
+        .mode-pilihan button:hover {
+            border-color: #f093fb;
+            transform: translateY(-2px);
+        }
+
+        .mode-pilihan button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .kesulitan-pilihan {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .kesulitan-pilihan button {
+            padding: 10px 24px;
+            border-radius: 14px;
+            border: 2px solid #e8dff5;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4a3f5c;
+        }
+
+        .kesulitan-pilihan button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .game-area {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+
+        .skor-area {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(246, 240, 250, 0.5);
+            border-radius: 16px;
+        }
+
+        .skor-item .label {
+            font-size: 13px;
+            color: #7c6b8a;
+            font-weight: 600;
+        }
+
+        .skor-item .nilai {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hasil-area {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .pemain .nama {
+            font-size: 14px;
+            font-weight: 700;
+            color: #7c6b8a;
+            margin-bottom: 8px;
+        }
+
+        .pemain .pilihan {
+            font-size: 72px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vs {
+            font-size: 28px;
+            font-weight: 800;
+            color: #f5576c;
+        }
+
+        .status {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2d1b3d;
+            text-align: center;
+            padding: 16px 24px;
+            background: rgba(240, 147, 251, 0.1);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status.menang {
+            background: rgba(72, 187, 120, 0.15);
+            color: #22543d;
+        }
+
+        .status.kalah {
+            background: rgba(245, 87, 108, 0.15);
+            color: #742a2a;
+        }
+
+        .status.seri {
+            background: rgba(250, 112, 154, 0.15);
+            color: #744210;
+        }
+
+        .pilihan-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .suit-btn {
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            border: 3px solid #e8dff5;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 42px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .suit-btn:hover {
+            transform: translateY(-6px) scale(1.1);
+            border-color: #f093fb;
+            box-shadow: 0 12px 32px rgba(240, 147, 251, 0.3);
+        }
+
+        .suit-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-main-lagi {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .highscore {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(246, 240, 250, 0.5);
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .highscore .item {
+            text-align: center;
+        }
+
+        .highscore .item .label {
+            font-size: 12px;
+            color: #7c6b8a;
+            font-weight: 600;
+        }
+
+        .highscore .item .nilai {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2d1b3d;
+        }
+
+        @media (max-width: 600px) {
+            .game-header h1 { font-size: 24px; }
+            .suit-btn { width: 70px; height: 70px; font-size: 32px; }
+            .pemain .pilihan { font-size: 52px; min-height: 70px; }
+            .status { font-size: 16px; padding: 12px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hatiContainer"></div>
+
+    <div class="halaman-utama">
+        <div class="container">
+
+            <div class="header">
+                <div>
+                    <h1>❤️ HANOTE</h1>
+                    <div class="info-ruangan">
+                        <span>🔑 Ruangan: </span>
+                        <span class="kode-ruangan" id="tampilRuangan">-</span>
+                        <button class="btn btn-small btn-outline" onclick="kembaliKeGames()">⬅ Kembali</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-header">
+                <h1>✊ Suit Tangan</h1>
+                <p>"Gunting, Batu, Kertas" 💕</p>
+            </div>
+
+            <div class="mode-pilihan">
+                <button class="active" onclick="pilihMode('komputer', this)">🤖 Vs Komputer</button>
+                <button onclick="pilihMode('pemain1', this)">👥 Vs Pemain (1 Device)</button>
+                <button onclick="pilihMode('pemain2', this)">📱 Vs Pemain (2 Device)</button>
+            </div>
+
+            <div class="kesulitan-pilihan" id="kesulitanArea">
+                <button class="active" onclick="pilihKesulitan('mudah', this)">🟢 Mudah</button>
+                <button onclick="pilihKesulitan('sedang', this)">🟡 Sedang</button>
+                <button onclick="pilihKesulitan('sulit', this)">🔴 Sulit</button>
+            </div>
+
+                        <!-- AREA ROOM (untuk 2 Device) -->
+            <div class="kesulitan-pilihan" id="mulaiArea" style="display:none;">
+                <button onclick="buatRoomGame()" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; padding: 12px 24px; border-radius: 14px; font-weight: 700; cursor: pointer;">🎮 Buat Room</button>
+                <button onclick="joinRoomGame()" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; padding: 12px 24px; border-radius: 14px; font-weight: 700; cursor: pointer;">🔗 Join Room</button>
+            </div>
+
+            <!-- INFO ROOM -->
+            <div class="kesulitan-pilihan" id="infoRoom" style="display:none; flex-direction: column; align-items: center; gap: 8px;">
+                <div style="font-size:14px; color:#7c6b8a; font-weight:600;">Kode Room:</div>
+                <div style="font-size:24px; font-weight:800; color:#2d1b3d; background: rgba(240,147,251,0.15); padding: 8px 24px; border-radius: 12px;" id="kodeRoomText">-</div>
+                <div style="font-size:13px; color:#7c6b8a;" id="statusRoomText">Menunggu pemain lain...</div>
+                <button onclick="resetRoomMultiplayer()" style="padding: 8px 20px; border: none; border-radius: 12px; background: #e8dff5; color: #4a3f5c; font-weight: 700; cursor: pointer; margin-top: 8px;">🔄 Main Lagi</button>
+            </div>
+
+            <div class="game-area">
+
+                <div class="skor-area">
+                    <div class="skor-item">
+                        <div class="label">👨 Haris</div>
+                        <div class="nilai" id="skorHaris">0</div>
+                    </div>
+                    <div class="skor-item">
+                        <div class="label">🤝 Seri</div>
+                        <div class="nilai" id="skorSeri">0</div>
+                    </div>
+                    <div class="skor-item">
+                        <div class="label" id="labelLawan">🤖 Komputer</div>
+                        <div class="nilai" id="skorLawan">0</div>
+                    </div>
+                </div>
+
+                <div class="hasil-area">
+                    <div class="pemain">
+                        <div class="nama">👨 Haris</div>
+                        <div class="pilihan" id="pilihanHaris">❔</div>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="pemain">
+                        <div class="nama" id="namaLawan">🤖 Komputer</div>
+                        <div class="pilihan" id="pilihanLawan">❔</div>
+                    </div>
+                </div>
+
+                <div class="status" id="statusGame">Pilih senjatamu! ✊✋✌️</div>
+
+                <div class="pilihan-buttons">
+                    <button class="suit-btn" onclick="pilihSuit('✊')">✊</button>
+                    <button class="suit-btn" onclick="pilihSuit('✋')">✋</button>
+                    <button class="suit-btn" onclick="pilihSuit('✌️')">✌️</button>
+                </div>
+
+                <button class="btn-main-lagi" onclick="resetGame()">🔄 Main Lagi</button>
+
+            </div>
+
+            <div class="highscore">
+                <div class="item">
+                    <div class="label">🏆 Kemenangan Haris</div>
+                    <div class="nilai" id="highscoreHaris">0</div>
+                </div>
+                <div class="item">
+                    <div class="label">🏆 Kemenangan Lawan</div>
+                    <div class="nilai" id="highscoreLawan">0</div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>❤️ Dibuat dengan cinta untuk Haris & Anita</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // GAME SUIT - LOGIC (SIMPLE)
+        // ============================================
+
+        // Variabel global
+        let modeAktif = 'komputer';
+        let kesulitanAktif = 'mudah';
+        let skor = { haris: 0, seri: 0, lawan: 0 };
+        let giliranSekarang = 'haris';
+        let pilihanHarisSementara = null;
+        let highscore = JSON.parse(localStorage.getItem('highscoreSuit') || '{"haris": 0, "lawan": 0}');
+                // Variabel multiplayer
+        const API_URL = 'http://localhost:3000/api';
+        let kodeRoomAktif = null;
+        let pollingInterval = null;
+        let pemainSaya = 'haris';
+
+        // Tampilkan ruangan
+        const ruangan = localStorage.getItem('ruanganHanote') || 'Ruangan';
+        document.getElementById('tampilRuangan').textContent = ruangan;
+
+        // ============================================
+        // FUNGSI NAVIGASI
+        // ============================================
+        function kembaliKeGames() {
+            window.location.href = 'games.html';
+        }
+
+        // ============================================
+        // FUNGSI PILIH MODE
+        // ============================================
+                function pilihMode(mode, element) {
+            modeAktif = mode;
+            document.querySelectorAll('.mode-pilihan button').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+            
+            const kesulitanArea = document.getElementById('kesulitanArea');
+            const mulaiArea = document.getElementById('mulaiArea');
+            const infoRoom = document.getElementById('infoRoom');
+            const labelLawan = document.getElementById('labelLawan');
+            const namaLawan = document.getElementById('namaLawan');
+            
+            kesulitanArea.style.display = 'none';
+            mulaiArea.style.display = 'none';
+            infoRoom.style.display = 'none';
+            
+            if (mode === 'komputer') {
+                kesulitanArea.style.display = 'flex';
+                labelLawan.textContent = '🤖 Komputer';
+                namaLawan.textContent = '🤖 Komputer';
+            } else if (mode === 'pemain1') {
+                labelLawan.textContent = '👩 Anita';
+                namaLawan.textContent = '👩 Anita';
+            } else if (mode === 'pemain2') {
+                mulaiArea.style.display = 'flex';
+                labelLawan.textContent = '👩 Anita';
+                namaLawan.textContent = '👩 Anita';
+            }
+            
+            resetGame();
+        }
+
+        // ============================================
+        // FUNGSI PILIH KESULITAN
+        // ============================================
+        function pilihKesulitan(level, element) {
+            kesulitanAktif = level;
+            document.querySelectorAll('.kesulitan-pilihan button').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
+        }
+
+        // ============================================
+        // FUNGSI PILIHAN KOMPUTER
+        // ============================================
+        function pilihanKomputer() {
+            const pilihan = ['✊', '✋', '✌️'];
+            return pilihan[Math.floor(Math.random() * 3)];
+        }
+
+        // ============================================
+        // FUNGSI PILIH SUIT
+        // ============================================
+                function pilihSuit(pilihanUser) {
+            // ============================================
+            // MODE 2 DEVICE (MULTIPLAYER)
+            // ============================================
+            if (modeAktif === 'pemain2') {
+                pilihSuitMultiplayer(pilihanUser);
+                return;  // ← STOP di sini, tidak lanjut ke bawah
+            }
+            
+            // ============================================
+            // MODE 1 DEVICE (BERGANTIAN)
+            // ============================================
+            if (modeAktif === 'pemain1') {
+                if (giliranSekarang === 'haris') {
+                    pilihanHarisSementara = pilihanUser;
+                    document.getElementById('pilihanHaris').textContent = pilihanUser;
+                    document.getElementById('statusGame').textContent = '👩 Anita, giliran kamu!';
+                    giliranSekarang = 'anita';
+                } else {
+                    document.getElementById('pilihanLawan').textContent = pilihanUser;
+                    tentukanPemenang(pilihanHarisSementara, pilihanUser, 'Haris', 'Anita');
+                    giliranSekarang = 'haris';
+                    pilihanHarisSementara = null;
+                }
+                return;  // ← STOP di sini
+            }
+            
+            // ============================================
+            // MODE VS KOMPUTER
+            // ============================================
+            if (modeAktif === 'komputer') {
+                document.getElementById('pilihanHaris').textContent = pilihanUser;
+                document.getElementById('statusGame').textContent = '⏳ Komputer sedang memilih...';
+                
+                setTimeout(() => {
+                    const pilihanLawan = pilihanKomputer();
+                    document.getElementById('pilihanLawan').textContent = pilihanLawan;
+                    tentukanPemenang(pilihanUser, pilihanLawan, 'Haris', 'Komputer');
+                }, 1000);
+            }
+        }
+
+        // ============================================
+        // FUNGSI TENTUKAN PEMENANG
+        // ============================================
+        function tentukanPemenang(haris, lawan, namaHaris, namaLawan) {
+            const status = document.getElementById('statusGame');
+            status.className = 'status';
+            
+            if (haris === lawan) {
+                skor.seri++;
+                status.textContent = '🤝 SERI!';
+                status.classList.add('seri');
+            } else if (
+                (haris === '✊' && lawan === '✌️') ||
+                (haris === '✋' && lawan === '✊') ||
+                (haris === '✌️' && lawan === '✋')
+            ) {
+                skor.haris++;
+                status.textContent = '🎉 ' + namaHaris + ' MENANG! 🎉';
+                status.classList.add('menang');
+            } else {
+                skor.lawan++;
+                status.textContent = '🎉 ' + namaLawan + ' MENANG! 🎉';
+                status.classList.add('kalah');
+            }
+            
+            updateSkor();
+            updateHighscore();
+        }
+
+        // ============================================
+        // FUNGSI UPDATE SKOR
+        // ============================================
+        function updateSkor() {
+            document.getElementById('skorHaris').textContent = skor.haris;
+            document.getElementById('skorSeri').textContent = skor.seri;
+            document.getElementById('skorLawan').textContent = skor.lawan;
+        }
+
+        // ============================================
+        // FUNGSI UPDATE HIGHSCORE
+        // ============================================
+        function updateHighscore() {
+            if (skor.haris > highscore.haris) highscore.haris = skor.haris;
+            if (skor.lawan > highscore.lawan) highscore.lawan = skor.lawan;
+            localStorage.setItem('highscoreSuit', JSON.stringify(highscore));
+            
+            document.getElementById('highscoreHaris').textContent = highscore.haris;
+            document.getElementById('highscoreLawan').textContent = highscore.lawan;
+        }
+
+        // ============================================
+        // FUNGSI RESET GAME
+        // ============================================
+        function resetGame() {
+            skor = { haris: 0, seri: 0, lawan: 0 };
+            updateSkor();
+            
+            document.getElementById('pilihanHaris').textContent = '❔';
+            document.getElementById('pilihanLawan').textContent = '❔';
+            document.getElementById('statusGame').textContent = 'Pilih senjatamu! ✊✋✌️';
+            document.getElementById('statusGame').className = 'status';
+            
+            giliranSekarang = 'haris';
+            pilihanHarisSementara = null;
+        }
+
+        // ============================================
+        // FUNGSI ANIMASI HATI
+        // ============================================
+        function buatHati() {
+            const container = document.getElementById('hatiContainer');
+            if (!container) return;
+            const hati = document.createElement('div');
+            hati.className = 'hati-jatuh';
+            hati.textContent = '❤️';
+            hati.style.left = Math.random() * 100 + '%';
+            hati.style.fontSize = (Math.random() * 20 + 16) + 'px';
+            hati.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            hati.style.opacity = Math.random() * 0.5 + 0.5;
+            container.appendChild(hati);
+            setTimeout(() => hati.remove(), 5000);
+        }
+        setInterval(buatHati, 300);
+
+                // ============================================
+        // FUNGSI MULTIPLAYER (2 DEVICE)
+        // ============================================
+
+        async function buatRoomGame() {
+            try {
+                const response = await fetch(`${API_URL}/game/suit/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ruangan: ruangan,
+                        pemain: pemainSaya
+                    })
+                });
+                
+                const data = await response.json();
+                kodeRoomAktif = data.kodeRoom;
+                
+                document.getElementById('kodeRoomText').textContent = kodeRoomAktif;
+                document.getElementById('infoRoom').style.display = 'flex';
+                document.getElementById('statusRoomText').textContent = 'Menunggu pasangan join...';
+                
+                mulaiPolling();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal buat room! Pastikan server backend jalan.');
+            }
+        }
+
+        async function joinRoomGame() {
+            const kode = prompt('Masukkan kode room:');
+            if (!kode) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/game/suit/join`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        kodeRoom: kode.toUpperCase(),
+                        pemain: pemainSaya === 'haris' ? 'anita' : 'haris'
+                    })
+                });
+                
+                if (!response.ok) throw new Error('Room tidak ditemukan');
+                
+                const data = await response.json();
+                kodeRoomAktif = data.kodeRoom;
+                pemainSaya = 'anita';
+                
+                document.getElementById('kodeRoomText').textContent = kodeRoomAktif;
+                document.getElementById('infoRoom').style.display = 'flex';
+                document.getElementById('statusRoomText').textContent = 'Terhubung! Main sekarang!';
+                
+                mulaiPolling();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal join room! Pastikan kode benar & server jalan.');
+            }
+        }
+
+        function mulaiPolling() {
+            if (pollingInterval) clearInterval(pollingInterval);
+            
+            pollingInterval = setInterval(async () => {
+                if (!kodeRoomAktif) return;
+                
+                try {
+                    const response = await fetch(`${API_URL}/game/suit/room/${kodeRoomAktif}`);
+                    const room = await response.json();
+                    
+                    if (room.pemain2 && room.status === 'siap') {
+                        document.getElementById('statusRoomText').textContent = '✅ Terhubung! Pilih senjatamu!';
+                    }
+                    
+                    const lawan = pemainSaya === room.pemain1 ? 'pemain2' : 'pemain1';
+                    if (room[lawan]) {
+                        document.getElementById('pilihanLawan').textContent = room[lawan];
+                    }
+                    
+                    if (room[pemainSaya]) {
+                        document.getElementById('pilihanHaris').textContent = room[pemainSaya];
+                    }
+                    
+                    if (room.status === 'selesai' && room.hasil) {
+                        clearInterval(pollingInterval);
+                        
+                        const status = document.getElementById('statusGame');
+                        status.className = 'status';
+                        
+                        if (room.hasil === 'seri') {
+                            status.textContent = '🤝 SERI! Main lagi yuk!';
+                            status.classList.add('seri');
+                        } else if (room.hasil === pemainSaya) {
+                            status.textContent = '🎉 KAMU MENANG! 🎉';
+                            status.classList.add('menang');
+                        } else {
+                            status.textContent = '😢 KAMU KALAH! Coba lagi!';
+                            status.classList.add('kalah');
+                        }
+                    }
+                    
+                } catch (error) {
+                    console.error('Polling error:', error);
+                }
+            }, 1500);
+        }
+
+        async function pilihSuitMultiplayer(pilihan) {
+            if (!kodeRoomAktif) {
+                alert('⚠️ Buat atau join room dulu!');
+                return;
+            }
+            
+            try {
+                await fetch(`${API_URL}/game/suit/pilih`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        kodeRoom: kodeRoomAktif,
+                        pemain: pemainSaya,
+                        pilihan: pilihan
+                    })
+                });
+                
+                document.getElementById('pilihanHaris').textContent = pilihan;
+                document.getElementById('statusGame').textContent = '⏳ Menunggu lawan memilih...';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Gagal memilih!');
+            }
+        }
+
+        async function resetRoomMultiplayer() {
+            if (!kodeRoomAktif) return;
+            
+            try {
+                await fetch(`${API_URL}/game/suit/reset`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ kodeRoom: kodeRoomAktif })
+                });
+                
+                document.getElementById('pilihanHaris').textContent = '❔';
+                document.getElementById('pilihanLawan').textContent = '❔';
+                document.getElementById('statusGame').textContent = 'Pilih senjatamu! ✊✋✌️';
+                document.getElementById('statusGame').className = 'status';
+                
+                mulaiPolling();
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // ============================================
+        // INISIALISASI
+        // ============================================
+        window.onload = function() {
+            updateHighscore();
+            resetGame();
+        };
+    </script>
+
+</body>
+</html>
