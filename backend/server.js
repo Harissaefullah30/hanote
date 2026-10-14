@@ -291,8 +291,7 @@ app.get('/', (req, res) => {
         name: '❤️ HANOTE API',
         status: 'online',
         message: 'Server Hanote berjalan dengan cinta! 💕',
-        version: '1.0.0',
-        totalTugas: tugas.length
+        version: '1.0.0'
     });
 });
 
