@@ -1406,14 +1406,20 @@ app.post('/api/kado/reset', async (req, res) => {
 // JALANKAN SERVER
 // ============================================
 
-app.listen(PORT, () => {
-    console.log('========================================');
-    console.log('   ❤️  HANOTE SERVER  ❤️');
-    console.log('========================================');
-    console.log(`🚀 Server berjalan di: http://localhost:${PORT}`);
-    console.log(`📋 API Tugas: http://localhost:${PORT}/api/tugas`);
-    console.log(`📎 API Upload: http://localhost:${PORT}/api/upload`);
-    console.log(`🏠 Home: http://localhost:${PORT}`);
-    console.log(`💕 Siap untuk cinta dan tugas!`);
-    console.log('========================================');
-});
+// Kalau di lokal (bukan Vercel) → jalankan server
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log('========================================');
+        console.log('   ❤️  HANOTE SERVER  ❤️');
+        console.log('========================================');
+        console.log(`🚀 Server berjalan di: http://localhost:${PORT}`);
+        console.log(`📋 API Tugas: http://localhost:${PORT}/api/tugas`);
+        console.log(`📎 API Upload: http://localhost:${PORT}/api/upload`);
+        console.log(`🏠 Home: http://localhost:${PORT}`);
+        console.log(`💕 Siap untuk cinta dan tugas!`);
+        console.log('========================================');
+    });
+}
+
+// Export untuk Vercel serverless
+module.exports = app;
