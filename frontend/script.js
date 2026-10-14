@@ -3,7 +3,7 @@
 // ============================================
 
 // Konfigurasi
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://hanote-backend.vercel.app/api';
 let ruanganAktif = '';
 let semuaTugas = [];
 let filterAktif = 'semua';
