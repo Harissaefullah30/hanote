@@ -8,6 +8,17 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary').v2;
+
+// ============================================
+// KONFIGURASI CLOUDINARY
+// ============================================
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 const Tugas = require('./models/Tugas');
 const Arsip = require('./models/Arsip');
 const Link = require('./models/Link');
@@ -241,17 +252,34 @@ app.delete('/api/tugas/:id', async (req, res) => {
 // API ENDPOINT - UPLOAD FILE
 // ============================================
 
-app.post('/api/upload', upload.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'Tidak ada file yang diupload!' });
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'Tidak ada file yang diupload!' });
+        }
+
+        // Upload ke Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'hanote/tugas',
+            resource_type: 'auto'
+        });
+
+        // Hapus file temporary di server
+        if (fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+
+        res.json({
+            filename: result.public_id,
+            originalname: req.file.originalname,
+            path: result.secure_url,
+            url: result.secure_url,
+            size: req.file.size
+        });
+    } catch (error) {
+        console.error('Error upload:', error);
+        res.status(500).json({ error: 'Gagal upload file' });
     }
-    
-    res.json({
-        filename: req.file.filename,
-        originalname: req.file.originalname,
-        path: `/uploads/${req.file.filename}`,
-        size: req.file.size
-    });
 });
 
 // ============================================
@@ -392,6 +420,7 @@ const uploadGaleri = multer({
 });
 
 // POST - Upload ke galeri
+
 app.post('/api/galeri', uploadGaleri.single('file'), async (req, res) => {
     try {
         const { judul, kategori, deskripsi, ruangan } = req.body;
@@ -406,17 +435,29 @@ app.post('/api/galeri', uploadGaleri.single('file'), async (req, res) => {
         
         const isVideo = req.file.mimetype.startsWith('video/');
         
+        // Upload ke Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'hanote/galeri',
+            resource_type: isVideo ? 'video' : 'image'
+        });
+        
+        // Hapus file temporary di server
+        if (fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
+        
         const baru = await Galeri.create({
             judul,
             deskripsi: deskripsi || '',
             kategori: kategori || 'berdua',
             ruangan,
-            file: req.file.filename,
+            file: result.public_id,
             originalname: req.file.originalname,
             tipe: isVideo ? 'video' : 'image',
             mimetype: req.file.mimetype,
             ukuran: req.file.size,
-            tanggal: new Date().toISOString().split('T')[0]
+            tanggal: new Date().toISOString().split('T')[0],
+            url: result.secure_url  // ← simpan URL Cloudinary
         });
         
         res.status(201).json(baru);
@@ -923,6 +964,25 @@ app.post('/api/petualangan', uploadPetualangan.single('foto'), async (req, res) 
             return res.status(400).json({ error: 'Tempat, tanggal, dan ruangan wajib diisi!' });
         }
         
+        // Upload foto ke Cloudinary (kalau ada)
+        let fotoUrl = null;
+        let fotoId = null;
+        
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'hanote/petualangan',
+                resource_type: 'image'
+            });
+            
+            fotoUrl = result.secure_url;
+            fotoId = result.public_id;
+            
+            // Hapus file temporary di server
+            if (fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
+        }
+        
         const baru = await Petualangan.create({
             tempat,
             tanggal,
@@ -931,7 +991,8 @@ app.post('/api/petualangan', uploadPetualangan.single('foto'), async (req, res) 
             medan: medan || 'Sedang',
             cuaca: cuaca || 'Cerah',
             deskripsi: deskripsi || '',
-            foto: req.file ? req.file.filename : null,
+            foto: fotoId,
+            fotoUrl: fotoUrl,   // ← URL Cloudinary
             ruangan
         });
         
