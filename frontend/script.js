@@ -66,11 +66,9 @@ async function masukRuangan() {
 
         // Pindah ke dashboard setelah 1 detik
         setTimeout(() => {
-            document.getElementById('halamanLogin').style.display = 'none';
-            document.getElementById('halamanUtama').style.display = 'block';
-            document.getElementById('tampilRuangan').textContent = data.kode;
-            ambilTugas();
-        }, 1000);
+    // Redirect ke dashboard.html
+    window.location.href = 'dashboard.html';
+}, 1000);
 
     } catch (err) {
         console.error('Error login:', err);
@@ -98,7 +96,7 @@ function kembaliKeLogin() {
     document.getElementById('halamanLogin').style.display = 'block';
 }
 
-function simpanRuanganBaru() {
+async function simpanRuanganBaru() {
     const nama = document.getElementById('inputNamaRuangan').value.trim();
     const sandi = document.getElementById('inputSandiRuangan').value.trim();
     const deskripsi = document.getElementById('inputDeskripsiRuangan').value.trim();
@@ -117,32 +115,41 @@ function simpanRuanganBaru() {
         return;
     }
     
-    // Ambil daftar ruangan dari localStorage
-    const ruanganTersimpan = localStorage.getItem('daftarRuangan');
-    const daftarRuangan = ruanganTersimpan ? JSON.parse(ruanganTersimpan) : [];
-    
-    // Cek apakah ruangan sudah ada
-    if (daftarRuangan.includes(nama)) {
+    try {
+        pesan.className = 'pesan';
+        pesan.textContent = '⏳ Membuat ruangan...';
+        
+        // Kirim ke backend MongoDB
+        const response = await fetch(`${API_URL}/ruangan/buat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ kode: nama })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            pesan.className = 'pesan error';
+            pesan.textContent = `❌ ${data.error || 'Gagal membuat ruangan!'}`;
+            return;
+        }
+        
+        // Simpan ke localStorage (untuk auto-login)
+        localStorage.setItem('ruanganHanote', nama);
+        
+        pesan.className = 'pesan success';
+        pesan.textContent = `✅ Ruangan "${nama}" berhasil dibuat! 💕`;
+        
+        // Redirect ke index.html setelah 1,5 detik
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Error buat ruangan:', error);
         pesan.className = 'pesan error';
-        pesan.textContent = `❌ Ruangan "${nama}" sudah pernah dibuat!`;
-        return;
+        pesan.textContent = '❌ Gagal terhubung ke server backend.';
     }
-    
-    // Simpan ruangan
-    daftarRuangan.push(nama);
-    localStorage.setItem('daftarRuangan', JSON.stringify(daftarRuangan));
-    localStorage.setItem('ruanganHanote', nama);
-    
-    // SIMPAN RUANGAN AKTIF (biar langsung terisi di login)
-    localStorage.setItem('ruanganHanote', nama);
-    
-    pesan.className = 'pesan success';
-    pesan.textContent = `✅ Ruangan "${nama}" berhasil dibuat! 💕`;
-    
-    // Kembali ke index.html setelah 1 detik
-    setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 1000);
 }
 
 function tutupModalBuatRuangan() {
