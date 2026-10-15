@@ -127,15 +127,7 @@ try {
     console.log('Skip bikin folder uploads (serverless):', error.message);
 }
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
-        cb(null, uniqueName);
-    }
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
     storage: storage,
@@ -258,16 +250,19 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             return res.status(400).json({ error: 'Tidak ada file yang diupload!' });
         }
 
-        // Upload ke Cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'hanote/tugas',
-            resource_type: 'auto'
+        // Upload ke Cloudinary dari memory buffer
+        const result = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream(
+                {
+                    folder: 'hanote/tugas',
+                    resource_type: 'auto'
+                },
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+            ).end(req.file.buffer);
         });
-
-        // Hapus file temporary di server
-        if (fs.existsSync(req.file.path)) {
-            fs.unlinkSync(req.file.path);
-        }
 
         res.json({
             filename: result.public_id,
@@ -404,16 +399,8 @@ try {
 }
 
 // Konfigurasi storage untuk galeri
-const galeriStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, galeriDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
-        cb(null, uniqueName);
-    }
-});
-
+const galeriStorage = multer.memoryStorage();
+    
 const uploadGaleri = multer({
     storage: galeriStorage,
     limits: { fileSize: 50 * 1024 * 1024 } // 50MB max (karena bisa video)
@@ -435,16 +422,19 @@ app.post('/api/galeri', uploadGaleri.single('file'), async (req, res) => {
         
         const isVideo = req.file.mimetype.startsWith('video/');
         
-        // Upload ke Cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path, {
+        // Upload ke Cloudinary dari memory buffer
+const result = await new Promise((resolve, reject) => {
+    cloudinary.uploader.upload_stream(
+        {
             folder: 'hanote/galeri',
             resource_type: isVideo ? 'video' : 'image'
-        });
-        
-        // Hapus file temporary di server
-        if (fs.existsSync(req.file.path)) {
-            fs.unlinkSync(req.file.path);
+        },
+        (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
         }
+    ).end(req.file.buffer);
+});
         
         const baru = await Galeri.create({
             judul,
@@ -940,15 +930,8 @@ try {
     console.log('Skip bikin folder petualangan (serverless):', error.message);
 }
 
-const petualanganStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, petualanganDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
-        cb(null, uniqueName);
-    }
-});
+const petualanganStorage = multer.memoryStorage();
+    
 
 const uploadPetualangan = multer({
     storage: petualanganStorage,
@@ -969,19 +952,22 @@ app.post('/api/petualangan', uploadPetualangan.single('foto'), async (req, res) 
         let fotoId = null;
         
         if (req.file) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
+    const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+            {
                 folder: 'hanote/petualangan',
                 resource_type: 'image'
-            });
-            
-            fotoUrl = result.secure_url;
-            fotoId = result.public_id;
-            
-            // Hapus file temporary di server
-            if (fs.existsSync(req.file.path)) {
-                fs.unlinkSync(req.file.path);
+            },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
             }
-        }
+        ).end(req.file.buffer);
+    });
+    
+    fotoUrl = result.secure_url;
+    fotoId = result.public_id;
+}
         
         const baru = await Petualangan.create({
             tempat,
