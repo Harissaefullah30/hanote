@@ -476,6 +476,31 @@ app.get('/api/galeri', async (req, res) => {
     }
 });
 
+// DELETE - Hapus dari galeri
+app.delete('/api/galeri/:id', async (req, res) => {
+    try {
+        const itemHapus = await Galeri.findByIdAndDelete(req.params.id);
+        
+        if (!itemHapus) {
+            return res.status(404).json({ error: 'Koleksi tidak ditemukan!' });
+        }
+        
+        // Hapus file dari Cloudinary (kalau ada public_id)
+        if (itemHapus.file) {
+            try {
+                await cloudinary.uploader.destroy(itemHapus.file);
+            } catch (err) {
+                console.log('Gagal hapus dari Cloudinary:', err.message);
+            }
+        }
+        
+        res.json({ message: 'Koleksi berhasil dihapus! 💕' });
+    } catch (error) {
+        console.error('Error DELETE galeri:', error);
+        res.status(500).json({ error: 'Gagal hapus galeri' });
+    }
+});
+
 
 
 // ============================================
