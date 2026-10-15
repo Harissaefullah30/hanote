@@ -20,6 +20,70 @@ const GameSuit = require('./models/GameSuit');
 const GameBalap = require('./models/GameBalap');
 const Galeri = require('./models/Galeri');
 
+// ============================================
+// API ENDPOINT - RUANGAN (MULTI-DEVICE)
+// ============================================
+
+// POST - Buat Ruangan Baru
+app.post('/api/ruangan/buat', async (req, res) => {
+    try {
+        const { kode } = req.body;
+
+        if (!kode) {
+            return res.status(400).json({ error: 'Kode ruangan tidak boleh kosong!' });
+        }
+
+        const kodeClean = kode.trim().toUpperCase();
+
+        // Cek apakah kode ruangan sudah terdaftar
+        const ruanganAda = await Ruangan.findOne({ kode: kodeClean });
+        if (ruanganAda) {
+            return res.status(400).json({ error: 'Kode ruangan sudah digunakan! Silakan gunakan kode lain atau klik Masuk.' });
+        }
+
+        // Simpan ruangan baru ke database
+        const ruanganBaru = await Ruangan.create({
+            kode: kodeClean
+        });
+
+        res.status(201).json({ 
+            message: 'Ruangan berhasil dibuat! 💕', 
+            ruangan: ruanganBaru 
+        });
+    } catch (error) {
+        console.error('Error buat ruangan:', error);
+        res.status(500).json({ error: 'Gagal membuat ruangan di server.' });
+    }
+});
+
+// POST - Masuk Ruangan
+app.post('/api/ruangan/masuk', async (req, res) => {
+    try {
+        const { kode } = req.body;
+
+        if (!kode) {
+            return res.status(400).json({ error: 'Masukkan kode ruangan!' });
+        }
+
+        const kodeClean = kode.trim().toUpperCase();
+
+        // Cari ruangan di database MongoDB
+        const ruangan = await Ruangan.findOne({ kode: kodeClean });
+        if (!ruangan) {
+            return res.status(404).json({ error: 'Kode ruangan tidak ditemukan! Silakan buat ruangan terlebih dahulu.' });
+        }
+
+        res.json({ 
+            success: true, 
+            message: 'Berhasil masuk ke ruangan! 💕', 
+            kode: ruangan.kode 
+        });
+    } catch (error) {
+        console.error('Error masuk ruangan:', error);
+        res.status(500).json({ error: 'Gagal memverifikasi ruangan.' });
+    }
+});
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;

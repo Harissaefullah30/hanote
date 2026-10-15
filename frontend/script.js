@@ -24,32 +24,59 @@ const quotes = [
 // FUNGSI LOGIN / MASUK RUANGAN
 // ============================================
 
-function masukRuangan() {
+// ============================================
+// FUNGSI LOGIN / MASUK RUANGAN (MONGODB)
+// ============================================
+async function masukRuangan() {
     const input = document.getElementById('inputRuangan');
-    const ruangan = input.value.trim();
     const pesan = document.getElementById('pesanLogin');
-    
-    if (!ruangan) {
+    const kode = input.value.trim().toUpperCase();
+
+    if (!kode) {
         pesan.className = 'pesan error';
-        pesan.textContent = '⚠️ Masukkan kode ruangan dulu!';
+        pesan.textContent = '⚠️ Masukkan kode ruangan!';
         return;
     }
-    
-    // CEK APAKAH RUANGAN SUDAH PERNAH DIBUAT
-    const ruanganTersimpan = localStorage.getItem('daftarRuangan');
-    const daftarRuangan = ruanganTersimpan ? JSON.parse(ruanganTersimpan) : [];
-    
-    if (!daftarRuangan.includes(ruangan)) {
+
+    try {
+        pesan.className = 'pesan';
+        pesan.textContent = '⏳ Memeriksa ruangan...';
+
+        // Verifikasi kode ruangan ke backend MongoDB Vercel
+        const response = await fetch(`${API_URL}/ruangan/masuk`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ kode: kode })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            pesan.className = 'pesan error';
+            pesan.textContent = `❌ ${data.error || 'Kode ruangan tidak ditemukan!'}`;
+            return;
+        }
+
+        // Simpan ruangan aktif
+        ruanganAktif = data.kode;
+        localStorage.setItem('ruanganHanote', data.kode);
+
+        pesan.className = 'pesan success';
+        pesan.textContent = '✅ Berhasil masuk ke ruangan! 💕';
+
+        // Pindah ke dashboard setelah 1 detik
+        setTimeout(() => {
+            document.getElementById('halamanLogin').style.display = 'none';
+            document.getElementById('halamanUtama').style.display = 'block';
+            document.getElementById('tampilRuangan').textContent = data.kode;
+            ambilTugas();
+        }, 1000);
+
+    } catch (err) {
+        console.error('Error login:', err);
         pesan.className = 'pesan error';
-        pesan.textContent = `❌ Ruangan "${ruangan}" belum dibuat! Buat dulu ya.`;
-        return;
+        pesan.textContent = '❌ Gagal terhubung ke server backend.';
     }
-    
-    ruanganAktif = ruangan;
-    localStorage.setItem('ruanganHanote', ruangan);
-    
-    // LANGSUNG KE DASHBOARD
-    window.location.href = 'dashboard.html';
 }
 
 function buatRuangan() {

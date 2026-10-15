@@ -49,8 +49,11 @@
             window.location.href = 'index.html';
         }
 
-        // Fungsi simpan ruangan
-        function simpanRuanganBaru() {
+        // URL Backend Vercel Anda (Ganti dengan domain backend Vercel Anda yang sebenarnya)
+        const API_BASE_URL = 'https://hanote-backend.vercel.app/api';
+
+        // Fungsi simpan ruangan ke MongoDB
+        async function simpanRuanganBaru() {
             const nama = document.getElementById('inputNamaRuangan').value.trim();
             const sandi = document.getElementById('inputSandiRuangan').value.trim();
             const deskripsi = document.getElementById('inputDeskripsiRuangan').value.trim();
@@ -67,26 +70,39 @@
                 pesan.textContent = '⚠️ Nama ruangan minimal 4 karakter!';
                 return;
             }
-            
-            const ruanganTersimpan = localStorage.getItem('daftarRuangan');
-            const daftarRuangan = ruanganTersimpan ? JSON.parse(ruanganTersimpan) : [];
-            
-            if (daftarRuangan.includes(nama)) {
+
+            try {
+                // Kirim data kode ruangan ke database MongoDB melalui Backend
+                const response = await fetch(`${API_BASE_URL}/ruangan/buat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ kode: nama })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    pesan.className = 'pesan error';
+                    pesan.textContent = `❌ ${data.error || 'Gagal membuat ruangan'}`;
+                    return;
+                }
+                
+                // Simpan kode ruangan aktif di browser ini
+                localStorage.setItem('kodeRuangan', data.ruangan.kode);
+                
+                pesan.className = 'pesan success';
+                pesan.textContent = `✅ Ruangan "${data.ruangan.kode}" berhasil dibuat secara global! 💕`;
+                
+                // Kembali ke index setelah 1.5 detik
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+
+            } catch (err) {
+                console.error(err);
                 pesan.className = 'pesan error';
-                pesan.textContent = `❌ Ruangan "${nama}" sudah pernah dibuat!`;
-                return;
+                pesan.textContent = '❌ Terjadi kesalahan koneksi ke server.';
             }
-            
-            daftarRuangan.push(nama);
-            localStorage.setItem('daftarRuangan', JSON.stringify(daftarRuangan));
-            
-            pesan.className = 'pesan success';
-            pesan.textContent = `✅ Ruangan "${nama}" berhasil dibuat! 💕`;
-            
-            // Kembali ke index setelah 1.5 detik
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
         }
 
         // Animasi hati
