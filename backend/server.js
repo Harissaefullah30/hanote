@@ -19,6 +19,13 @@ const Target = require('./models/Target');
 const GameSuit = require('./models/GameSuit');
 const GameBalap = require('./models/GameBalap');
 const Galeri = require('./models/Galeri');
+const Ruangan = require('./models/Ruangan');
+const app = express();
+app.use(cors());
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
 
 // ============================================
 // API ENDPOINT - RUANGAN (MULTI-DEVICE)
@@ -85,13 +92,7 @@ app.post('/api/ruangan/masuk', async (req, res) => {
 });
 
 
-const app = express();
-app.use(cors());
-const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
 // ============================================
 // KONEKSI MONGODB ATLAS
 // ============================================
