@@ -1914,7 +1914,7 @@
             data.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
 
             container.innerHTML = data.map(k => {
-                const fotoUrl = k.foto ? `${API_URL.replace('/api', '')}/uploads/petualangan/${k.foto}` : null;
+                const fotoUrl = k.fotoUrl || (k.foto ? `${API_URL.replace('/api', '')}/uploads/petualangan/${k.foto}` : null);
                 const badgeMedan = k.medan === 'Mudah' ? '🟢' : k.medan === 'Sulit' ? '🔴' : '🟡';
 
                 return `

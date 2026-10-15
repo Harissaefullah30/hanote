@@ -469,7 +469,7 @@ async function downloadFile(url, filename) {
                 const isVideo = m.tipe === 'video';
                 const labelKategori = m.kategori === 'haris' ? '👨 Haris' : m.kategori === 'anita' ? '👩 Anita' : '💑 Berdua';
                 const kategoriClass = m.kategori === 'haris' ? 'haris' : m.kategori === 'anita' ? 'anita' : 'berdua';
-                const fileUrl = `${API_URL.replace('/api', '')}/uploads/galeri/${m.file}`;
+                const fileUrl = m.url || `${API_URL.replace('/api', '')}/uploads/galeri/${m.file}`;
                 
                 return `
                     <div class="museum-item">
