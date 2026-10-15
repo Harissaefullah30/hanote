@@ -44,6 +44,12 @@ const PetualanganSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+
+        // URL Cloudinary
+    fotoUrl: {
+        type: String,
+        default: null
+    },
     
     // Ruangan (untuk multi-user)
     ruangan: {

@@ -48,6 +48,12 @@ const GaleriSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+
+        // URL Cloudinary
+    url: {
+        type: String,
+        default: null
+    },
     
     // Ruangan (untuk multi-user)
     ruangan: {
